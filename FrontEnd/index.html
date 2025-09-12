@@ -569,12 +569,12 @@
           <div class="booking-grid two">
             <label class="field">
               <span>Pickup Location</span>
-              <input name="pickup" type="text" autocomplete="address-line1" required placeholder="for example, 1400 John St, Edmonton" />
+              <input id="pickup"  name="pickup"  type="text" autocomplete="address-line1" required placeholder="for example, 1400 John St, Edmonton" />
               <small class="err" data-for="pickup"></small>
             </label>
             <label class="field">
               <span>Drop off Location</span>
-              <input name="dropoff" type="text" required placeholder="for example, YEG Terminal" />
+             <input id="dropoff" name="dropoff" type="text" required placeholder="for example, YEG Terminal" />
               <small class="err" data-for="dropoff"></small>
             </label>
           </div>
@@ -631,6 +631,11 @@
       </footer>
     </div>
   </div>
+<!-- Google Maps Places API -->
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete"
+  async defer></script>
+
 
   <script type="module" src="js/script.js" defer></script>
 

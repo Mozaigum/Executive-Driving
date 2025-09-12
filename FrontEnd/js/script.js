@@ -672,3 +672,26 @@ Thanks!`;
     textNode.parentNode.replaceChild(frag, textNode);
   });
 })();
+// ---------- Google Places Autocomplete (pickup & dropoff) ----------
+window.initAutocomplete = function () {
+  try {
+    const pickup  = document.getElementById("pickup");
+    const dropoff = document.getElementById("dropoff");
+
+    if (pickup && window.google?.maps?.places) {
+      new google.maps.places.Autocomplete(pickup, {
+        componentRestrictions: { country: "ca" },   // Canada only
+        fields: ["formatted_address", "geometry"]   // we’ll use later for distance calc
+      });
+    }
+    if (dropoff && window.google?.maps?.places) {
+      new google.maps.places.Autocomplete(dropoff, {
+        componentRestrictions: { country: "ca" },
+        fields: ["formatted_address", "geometry"]
+      });
+    }
+  } catch (e) {
+    console.warn("Autocomplete init skipped:", e);
+  }
+};
+
