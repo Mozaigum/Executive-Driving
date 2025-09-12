@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Executive Driving</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <!-- Intro / Splash -->
+  <div id="intro" class="intro" aria-hidden="true">
+    <div class="intro-center">
+      <!-- FIX: file is logo.WebP in your images folder -->
+      <img src="images/logo.WebP" alt="Executive Driving" class="intro-logo" />
+    </div>
+  </div>
+
+  <div id="page">
+    <header id="site-header" class="at-top">
+      <div class="top-bar">
+        <button class="menu-toggle rr-burger-btn" aria-controls="menu-overlay" aria-expanded="false">
+          <span class="rr-burger" aria-hidden="true">
+            <span class="bar bar-1"></span>
+            <span class="bar bar-2"></span>
+            <span class="bar bar-3"></span>
+          </span>
+          <span class="rr-label">
+            <span class="label-open">Menu</span>
+            <span class="label-close">Close</span>
+          </span>
+        </button>
+
+        <a href="#hero" class="logo-link" aria-label="Executive Driving - Home">
+          <!-- FIX: same case as file on disk -->
+          <img src="images/logo.WebP" alt="Executive Driving" class="logo-img" />
+        </a>
+        <a class="top-cta" href="#" data-book-open>Reserve</a>
+      </div>
+    </header>
+
+    <section id="hero" class="hero-section">
+      <!-- FIX: you don't have hero-fallback.jpg; using about-us.jpg which exists -->
+      <video class="hero-video" autoplay muted loop playsinline poster="images/about-us.jpg" aria-hidden="true">
+        <source src="video/hero.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="hero-tag">Private Chauffeur • Edmonton &amp; Grande Prairie</p>
+        <h1>Crafted Journeys, Elevated Comfort.</h1>
+        <h2>On time, discreet, and super comfortable transfers for airport and executive travel.</h2>
+
+        <div class="features-row" role="list">
+          <div class="feature" role="listitem"><span class="icon" aria-hidden="true"></span>
+            <p>Modern, New &amp;<br>Clean Fleet</p>
+          </div>
+          <div class="feature" role="listitem"><span class="icon" aria-hidden="true"></span>
+            <p>Discreet, Professional &amp;<br>Trained Drivers</p>
+          </div>
+          <div class="feature" role="listitem"><span class="icon" aria-hidden="true"></span>
+            <p>Client Satisfaction<br>Guaranteed</p>
+          </div>
+        </div>
+
+        <a class="btn" href="#" data-book-open>Book Now</a>
+      </div>
+    </section>
+
+    <section id="about-us" class="about-min">
+      <div class="about-min__content">
+        <h2 class="about-min__title" data-reveal style="--delay:.05s">A Quiet Standard in Executive Travel</h2>
+        <p class="about-min__lead" data-reveal style="--delay:.15s">
+          Executive Driving sets the benchmark for discreet, polished airport and executive transfers
+          across Edmonton and Grande Prairie. Every journey is curated with precision and subtle elegance.
+        </p>
+        <p class="about-min__lead" data-reveal style="--delay:.25s">
+          Our fleet is immaculately maintained, and our chauffeurs are trained to anticipate your needs
+          with seamless professionalism. We deliver more than transport, we deliver assurance, comfort, and quiet
+          prestige.
+        </p>
+
+        <div class="about-min__features" role="list">
+          <article class="about-min__item" data-reveal style="--delay:.35s" role="listitem">
+            <i class="ri-time-line about-min__icon" aria-hidden="true"></i>
+            <strong>Punctual, Always</strong>
+            <span class="about-min__muted">Proactive flight tracking. Timely, calm arrivals.</span>
+          </article>
+          <article class="about-min__item" data-reveal style="--delay:.45s" role="listitem">
+            <i class="ri-roadster-line about-min__icon" aria-hidden="true"></i>
+            <strong>Refined Comfort</strong>
+            <span class="about-min__muted">Quiet cabins, climate control, effortless ride.</span>
+          </article>
+          <article class="about-min__item" data-reveal style="--delay:.55s" role="listitem">
+            <i class="ri-shield-check-line about-min__icon" aria-hidden="true"></i>
+            <strong>Discreet Conduct</strong>
+            <span class="about-min__muted">Professional, confidential, attention off you.</span>
+          </article>
+          <article class="about-min__item" data-reveal style="--delay:.65s" role="listitem">
+            <i class="ri-calendar-2-line about-min__icon" aria-hidden="true"></i>
+            <strong>Twenty Four Seven Concierge</strong>
+            <span class="about-min__muted">Flexible scheduling. Swift confirmations.</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="fleet">
+      <div class="container">
+        <h2>Our Fleet</h2>
+        <figure class="fleet-collage">
+          <img
+            src="images/fleet.png"
+            alt="Executive Driving fleet — airport, hotel, event centre, and downtown scenes"
+            loading="lazy" width="1920" height="1080">
+        </figure>
+      </div>
+    </section>
+
+
+    <section id="contact" class="concierge" aria-labelledby="concierge-title">
+      <div class="concierge-wrap">
+        <!-- LEFT: Info -->
+        <div class="concierge-info" data-reveal style="--delay:.05s">
+          <h2 id="concierge-title" class="concierge-title">
+            Dedicated <span>Client Care</span>
+          </h2>
+
+          <p class="concierge-lead">
+            Discreet support any time. We coordinate flights, routes, and
+            special requests with quiet precision then confirm in minutes.
+          </p>
+
+          <ul class="concierge-bullets">
+            <li><i class="ri-time-line" aria-hidden="true"></i>Average reply time: <b>about ten to fifteen minutes</b></li>
+            <li><i class="ri-shield-check-line" aria-hidden="true"></i>Encrypted communications</li>
+            <li><i class="ri-roadster-line" aria-hidden="true"></i>Executive fleet availability</li>
+          </ul>
+
+          <div class="contact-chips">
+            <a class="chip" href="tel:+18259739800" aria-label="Call 825 973 9800">
+              <i class="ri-phone-line" aria-hidden="true"></i><span>825.973.9800</span>
+            </a>
+            <a class="chip" href="mailto:info@executivedriving.ca" aria-label="Email info@executivedriving.ca">
+              <i class="ri-mail-line" aria-hidden="true"></i><span>info@executivedriving.ca</span>
+            </a>
+          </div>
+
+          <div class="concierge-cta"></div>
+        </div>
+
+        <!-- RIGHT: Request card -->
+        <div class="concierge-card glass" id="contact-form" data-reveal style="--delay:.15s" role="form" aria-label="Concierge Request">
+          <div class="card-sheen" aria-hidden="true"></div>
+          <h3 class="card-title"><i class="ri-quill-pen-line" aria-hidden="true"></i> Client Care Request</h3>
+
+          <form class="lux-form" action="#" method="post" novalidate>
+            <div class="field-group">
+              <label class="lux-field">
+                <span>Name</span>
+                <input type="text" name="name" placeholder="Jane Doe" required>
+              </label>
+              <label class="lux-field">
+                <span>Phone</span>
+                <input type="tel" name="phone" placeholder="+1 (___) ___ ____" required>
+              </label>
+            </div>
+
+            <div class="field-group">
+              <label class="lux-field">
+                <span>Email</span>
+                <input type="email" name="email" placeholder="you@company.com" required>
+              </label>
+              <label class="lux-field">
+                <span>Service Date</span>
+                <input type="date" name="date" required>
+              </label>
+            </div>
+
+            <label class="lux-field">
+              <span>Request</span>
+              <textarea name="details" rows="4" placeholder="Pickup address, flight number, stops, notes…"></textarea>
+            </label>
+
+            <button type="submit" class="btn-rr btn-block">Submit</button>
+
+            <p class="micro-note">
+              <i class="ri-lock-2-line" aria-hidden="true"></i> Your details are handled under our Privacy Policy.
+            </p>
+          </form>
+        </div>
+      </div>
+
+      <div class="concierge-ambient" aria-hidden="true"></div>
+    </section>
+    <!-- Partners Marquee -->
+<section id="partners" class="partners partners-marquee" aria-labelledby="partners-title">
+  <div class="container">
+    <h2 id="partners-title">Our Growing Network of Trusted Partners</h2>
+
+    <!-- marquee strip -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+
+        <!-- ORIGINAL SET -->
+        <div class="partner" tabindex="0"
+             data-name="TARA Energy Services"
+             data-desc="Compression, processing and energy solutions across Western Canada.">
+          <img src="images/logo1.jpeg" alt="TARA Energy Services logo">
+        </div>
+
+        <div class="partner" tabindex="0"
+             data-name="Browns Socialhouse"
+             data-desc="Restaurant & bar — casual dining and group events.">
+          <img src="images/logo2.jpeg" alt="Browns Socialhouse logo">
+        </div>
+
+        <div class="partner" tabindex="0"
+             data-name="Explore Edmonton"
+             data-desc="Tourism & events — welcoming travelers and delegates.">
+          <img src="images/logo3.jpeg" alt="Explore Edmonton logo">
+        </div>
+
+        <div class="partner" tabindex="0"
+             data-name="Edward’s Factory Outlet"
+             data-desc="Local retail partner for special promotions and gifting.">
+          <img src="images/logo4.jpeg" alt="Edward’s Factory Outlet logo">
+        </div>
+
+        <div class="partner" tabindex="0"
+             data-name="GP Chamber of Commerce"
+             data-desc="Business community & events support.">
+          <img src="images/logo5.jpeg" alt="Grande Prairie & District Chamber of Commerce logo">
+        </div>
+
+        <div class="partner" tabindex="0"
+             data-name="Y Drive Canada"
+             data-desc="Local rideshare logistics & event shuttles.">
+          <img src="images/logo6.jpeg" alt="Y Drive Canada logo">
+        </div>
+
+        <!-- DUPLICATE SET (for seamless loop) -->
+        <div class="partner" tabindex="0"
+             data-name="TARA Energy Services"
+             data-desc="Compression, processing and energy solutions across Western Canada.">
+          <img src="images/logo1.jpeg" alt="TARA Energy Services logo">
+        </div>
+
+        <div class="partner" tabindex="0"
+             data-name="Browns Socialhouse"
+             data-desc="Restaurant & bar — casual dining and group events.">
+          <img src="images/logo2.jpeg" alt="Browns Socialhouse logo">
+        </div>
+
+        <div class="partner" tabindex="0"
+             data-name="Explore Edmonton"
+             data-desc="Tourism & events — welcoming travelers and delegates.">
+          <img src="images/logo3.jpeg" alt="Explore Edmonton logo">
+        </div>
+
+        <div class="partner" tabindex="0"
+             data-name="Edward’s Factory Outlet"
+             data-desc="Local retail partner for special promotions and gifting.">
+          <img src="images/logo4.jpeg" alt="Edward’s Factory Outlet logo">
+        </div>
+
+        <div class="partner" tabindex="0"
+             data-name="GP Chamber of Commerce"
+             data-desc="Business community & events support.">
+          <img src="images/logo5.jpeg" alt="Grande Prairie & District Chamber of Commerce logo">
+        </div>
+
+        <div class="partner" tabindex="0"
+             data-name="Y Drive Canada"
+             data-desc="Local rideshare logistics & event shuttles.">
+          <img src="images/logo6.jpeg" alt="Y Drive Canada logo">
+        </div>
+
+      </div>
+    </div>
+
+    <!-- shared infobar -->
+    <div class="partner-infobar" aria-live="polite" aria-atomic="true">
+      <strong>Hover a logo</strong><span> — we’ll show who they are.</span>
+    </div>
+  </div>
+</section>
+
+ 
+  <footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <img src="images/logo.webp" alt="Executive Driving" class="footer-logo">
+      <p class="footer-tag">Private Chauffeur • Edmonton &amp; Grande Prairie</p>
+    </div>
+    
+
+   <div class="footer-connect">
+  <h4 class="footer-h">Connect</h4>
+
+  <!-- new: quick contact -->
+  <ul class="footer-contact">
+    <li><i class="fa-solid fa-phone"></i>
+      <a href="tel:+18259739800">825.973.9800</a>
+    </li>
+    <li><i class="fa-solid fa-envelope"></i>
+      <a href="mailto:info@executivedriving.ca">info@executivedriving.ca</a>
+    </li>
+  </ul>
+
+  <div class="footer-social">
+    <a href="https://www.facebook.com/ExecutiveDrivingGP" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
+      <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.instagram.com/executivegpab/" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
+      <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+    </a>
+  </div>
+</div>
+
+  </div>
+
+  <div class="footer-divider"></div>
+
+  <div class="container footer-pay">
+    <h5 class="footer-pay-h">Payment Methods</h5>
+    <ul class="pay-logos" aria-label="Accepted cards">
+      <li aria-label="Mastercard"><i class="fa-brands fa-cc-mastercard"></i></li>
+      <!-- UnionPay (inline SVG) -->
+      <li aria-label="UnionPay" class="unionpay">
+        <svg viewBox="0 0 144 96" role="img" aria-label="UnionPay" class="up-svg">
+          <rect x="6" y="10" rx="10" ry="10" width="84" height="76" fill="#0073A8"/>
+          <rect x="54" y="10" rx="10" ry="10" width="84" height="76" fill="#D81E06" opacity=".95"/>
+          <text x="48" y="60" font-size="28" font-family="system-ui, -apple-system, Segoe UI, Arial, sans-serif"
+                fill="#fff" font-weight="700">UnionPay</text>
+        </svg>
+      </li>
+      <li aria-label="Diners Club"><i class="fa-brands fa-cc-diners-club"></i></li>
+      <li aria-label="American Express"><i class="fa-brands fa-cc-amex"></i></li>
+      <li aria-label="Discover"><i class="fa-brands fa-cc-discover"></i></li>
+      <li aria-label="Visa"><i class="fa-brands fa-cc-visa"></i></li>
+    </ul>
+  </div>
+
+  <div class="container footer-copy">
+    <p>© 2025 Executive Driving. All Rights Reserved.</p>
+  </div>
+</footer>
+    <!-- Overlay Menu -->
+    <div id="menu-overlay" class="menu-overlay" aria-hidden="true" role="dialog">
+      <div class="menu-panel">
+        <button class="menu-close" aria-label="Close menu">✕</button>
+        <nav class="overlay-nav" role="menu">
+          <a class="overlay-link" href="#about-us" role="menuitem">Our Story</a>
+          <a class="overlay-link" href="#fleet" role="menuitem">The Collection</a>
+          <a class="overlay-link js-open-terms" href="#" role="menuitem">Terms and Conditions</a>
+          <a class="overlay-link js-open-privacy" href="#" role="menuitem">Privacy Policy</a>
+          <a class="overlay-link" href="#contact" role="menuitem">Concierge</a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="terms-overlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-panel" role="document">
+        <button class="modal-close" aria-label="Close Terms">✕</button>
+        <div class="modal-content">
+          <h3>Executive Driving Services — Terms and Conditions (Alberta)</h3>
+          <p><em>Last updated: (fill in)</em></p>
+
+          <h4>1) Who we are and scope</h4>
+          <p>These Terms and Conditions govern all executive or private SUV transportation and related concierge services provided by Executive Driving Services to any client or booking party. They apply to bookings made by phone, email, our website, and the Y Drive App. By placing a booking or riding with us, you accept these Terms.</p>
+
+          <h4>2) Bookings, changes and substitutions</h4>
+          <ul>
+            <li>Accuracy. You are responsible for accurate pickup times, locations, passenger count, luggage, special needs such as child seats, and any access constraints such as gates or loading bays.</li>
+            <li>Verification. We may pre authorize a payment method before dispatch.</li>
+            <li>Vehicle substitution. For safety, maintenance, or operational reasons we may substitute a comparable or higher class vehicle at no extra cost. This does not give rise to any refund or credit unless the replacement materially fails to meet the booked capacity or specification.</li>
+            <li>Delays outside our control. Traffic, road closures, weather, law enforcement stops, and force majeure may affect arrival or ETA; we are not liable for consequential losses such as missed flights or meetings. See Limits of liability below.</li>
+          </ul>
+
+          <h4>3) Rates, waiting time and extras</h4>
+          <ul>
+            <li>Quoted rates cover vehicle, chauffeur, and standard distance or time as quoted or per hour as directed.</li>
+            <li>Waiting time. A fifteen minute grace at pickup; thereafter billed in fifteen minute increments at the hourly rate attached to your booking. Airport meet and greet may include a longer grace where stated.</li>
+            <li>Tolls, parking, and fees. Charged at cost where incurred.</li>
+            <li>After hours and peak surcharges may apply as disclosed at booking.</li>
+            <li>Overtime. If your service exceeds the booked duration, overtime is billed at the prevailing hourly rate.</li>
+          </ul>
+
+          <h4>4) Cancellations and no shows</h4>
+          <p>Unless your confirmation states different terms:</p>
+          <ul>
+            <li>Sedan or SUV point to point or hourly:
+              <ul>
+                <li>Free cancel or change at least twenty four hours before pickup.</li>
+                <li>Fifty percent charge if cancelled two to twenty four hours before pickup.</li>
+                <li>Full charge if cancelled under two hours before pickup or no show.</li>
+              </ul>
+            </li>
+            <li>Special events, long distance, or multi day: seventy two hour free window; otherwise full charge once within seventy two hours.</li>
+            <li>No show means driver waits full grace period at the pickup point and cannot reach you on the phone or email or app on file.</li>
+          </ul>
+          <p>You can tighten or loosen the windows above. These are industry standard starting points.</p>
+
+          <h4>5) Passenger conduct and safety</h4>
+          <ul>
+            <li>Seatbelts. All occupants must wear seatbelts. Drivers must ensure minors are properly restrained; clients must arrange appropriate child restraints where required by law. Alberta law requires proper occupant restraint; children under six years and at most eighteen kilograms must be in an appropriate child safety seat.</li>
+            <li>Child seats. On request and if available, we can provide child seats for a stated fee. Ultimate compliance remains your responsibility.</li>
+            <li>No smoking or vaping. Smoking or vaping of any substance is prohibited in all vehicles.</li>
+            <li>Alcohol and cannabis. Open liquor must not be within easy reach of occupants, and consumption of cannabis is prohibited in moving vehicles. Keep any permitted cannabis sealed and out of reach. We may refuse carriage if rules are breached.</li>
+            <li>Pets and service animals. Service animals are welcome. Pets must be declared in advance and travel crated or as directed.</li>
+            <li>Right to refuse. We may refuse or terminate service with fees as applicable for unsafe, abusive, intoxicated, or unlawful conduct.</li>
+          </ul>
+
+          <h4>6) Cleaning, damage and downtime</h4>
+          <p>To keep vehicles immaculate for all clients, the following cost recovery amounts apply where applicable. These are genuine pre estimates of likely costs such as detailing, materials, protective equipment, staff time, and downtime and are not penalties. We will document the condition with photos and invoices and adjust up or down to reflect actual, reasonable costs:</p>
+          <ul>
+            <li>Standard detailing beyond normal wear: ninety five to one hundred fifty dollars.</li>
+            <li>Spills or stains requiring extraction: one hundred fifty to three hundred dollars.</li>
+            <li>Biohazard such as vomit or bodily fluids: three hundred to six hundred dollars plus downtime if vehicle is out of service.</li>
+            <li>Odour remediation for smoking or vaping: two hundred fifty to five hundred dollars plus remediation costs.</li>
+            <li>Damage, repairs, or replacement of interior or exterior parts: actual parts and labour plus reasonable downtime at your stated shop rate.</li>
+          </ul>
+          <p>Receipts are provided where applicable. If you disagree, you may request an itemized review.</p>
+
+          <h4>7) Payment, overdue amounts and chargebacks</h4>
+          <ul>
+            <li>Payment methods. We accept major credit cards, corporate invoicing if approved, Interac e Transfer, and cash. For security, card processing may be via a third party processor; we do not store full card numbers.</li>
+            <li>Pre authorization. We may place a pre authorization hold before dispatch.</li>
+            <li>Overdue amounts. Past due balances accrue interest at one point five percent per month or the maximum lawful rate, whichever is lower, plus reasonable collection and legal costs actually incurred in recovering the debt.</li>
+            <li>Interac e Transfers. Once a transfer is deposited, it generally cannot be reversed; disputes must be resolved between sender and recipient.</li>
+          </ul>
+
+          <h5>Seven point one friendly fraud or unjust chargebacks — seventy two hour cure</h5>
+          <p>We take billing accuracy seriously and will work quickly to resolve any issue. Before initiating a card chargeback, you agree to notify us by phone, email, or app message and allow up to seventy two hours to investigate and propose a fix. If you still dispute the charge after our response, you may pursue a chargeback through your issuer.</p>
+          <ul>
+            <li>If a chargeback is filed without first contacting us and the bank later determines it was unfounded such as you received the service as described, you agree we may invoice:
+              <ul>
+                <li>Our actual third party processor fees for the dispute, and</li>
+                <li>An administration or response cost recovery amount as a genuine pre estimate of time spent collecting trip records, GPS logs, and driver statements plus any proven external legal or collection costs actually incurred.</li>
+              </ul>
+            </li>
+            <li>Seventy two hour cure with no fees. If you repay the disputed amount by cash or Interac e Transfer within seventy two hours of our first documented contact attempt about the dispute, we waive admin or collection fees and simply close the account paid in full.</li>
+            <li>Timelines. Banks and merchants operate under strict dispute timelines. Consumers typically have thirty to forty five days from statement date to dispute, and merchants must respond promptly. Contact us first. We resolve most issues faster than a bank dispute.</li>
+          </ul>
+          <p>Important. Card network rules ultimately govern chargeback outcomes. We cannot contractually remove your right to dispute a charge. Our clause above is limited to documented cost recovery for unjustified chargebacks and does not penalize good faith disputes.</p>
+
+          <h4>8) Lost property</h4>
+          <p>We are not responsible for items left in vehicles, but we will help coordinate recovery when possible.</p>
+
+          <h4>9) Limits of liability</h4>
+          <p>To the maximum extent permitted by law, our total liability for any claim is limited to the amount paid for the affected service. We are not liable for indirect, special, punitive, or consequential losses such as missed flights or meetings or lost profits. This clause does not exclude liability that cannot legally be limited under Alberta law. Alberta’s Consumer Protection Act construes ambiguous terms in the consumer’s favour; we have drafted plainly and fairly.</p>
+
+          <h4>10) Dispute resolution, governing law and venue</h4>
+          <p>These Terms are governed by the laws of Alberta. If you are a consumer, you may bring a claim in Alberta Small Claims or Court of Justice. Arbitration is optional by mutual agreement after a dispute arises; we do not require mandatory arbitration in consumer contracts. Forum selection and arbitration provisions in consumer agreements are restricted in Alberta; we follow those rules.</p>
+
+          <h4>11) Changes to Terms</h4>
+          <p>We may update these Terms from time to time. The version in effect at booking applies unless you agree to an update in writing or via the app.</p>
+
+          <h4>12) Contact</h4>
+          <p>Executive Driving Services — Legal and Client Care<br>
+            Email: add<br>
+            Phone: add<br>
+            Address: add
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div id="privacy-overlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-panel" role="document">
+        <button class="modal-close" aria-label="Close Privacy">✕</button>
+        <div class="modal-content">
+          <h3>Executive Driving Services — Privacy Policy Alberta PIPA</h3>
+          <p><em>Last updated: (fill in)</em></p>
+
+          <h4>1) About this Policy</h4>
+          <p>We are committed to protecting your personal information in compliance with Alberta’s Personal Information Protection Act PIPA. This Policy explains what we collect, why, how we use or share it, where we store it, and your choices.</p>
+
+          <h4>2) What we collect</h4>
+          <ul>
+            <li>Identity and contact such as name, company, phone, email.</li>
+            <li>Trip data such as pickup and drop off, dates and times, routing, special instructions.</li>
+            <li>Communications such as calls, emails, app messages.</li>
+            <li>Payment data such as tokenized card details via our processor. We do not store full card numbers and Interac e Transfer confirmations.</li>
+            <li>Device or app telemetry tied to bookings such as push tokens and crash logs.</li>
+            <li>Safety and compliance data such as incident reports, lost and found records, driver notes.</li>
+          </ul>
+
+          <h4>3) Purposes</h4>
+          <p>We collect and use personal information to:</p>
+          <ul>
+            <li>Accept, manage, and complete bookings; dispatch drivers; provide support.</li>
+            <li>Verify identity, prevent fraud or chargebacks; manage payments and invoicing.</li>
+            <li>Ensure safety and comply with traffic, seatbelt, child seat, and open liquor or cannabis rules.</li>
+            <li>Improve our services and app performance.</li>
+            <li>Communicate transactional notices; with your consent, send marketing per CASL. You can unsubscribe anytime.</li>
+          </ul>
+
+          <h4>4) Consent and your choices</h4>
+          <p>We rely on your consent express or implied under PIPA for most collections and uses, and on other lawful grounds where permitted such as fraud prevention, fee collection, legal claims. You may withdraw consent, subject to legal or contractual limits and reasonable notice.</p>
+
+          <h4>5) Sharing and cross border transfers</h4>
+          <p>We share personal information with:</p>
+          <ul>
+            <li>Payment processors and banking networks to process transactions and disputes.</li>
+            <li>Technology vendors such as hosting, email or SMS, app support under confidentiality agreements.</li>
+            <li>Law enforcement or regulators when legally required or to protect safety.</li>
+          </ul>
+          <p>Some providers may store or process data outside Canada; that data may be subject to foreign laws. We use contractual and technical safeguards appropriate to the sensitivity of the information.</p>
+
+          <h4>6) Security and retention</h4>
+          <p>We use administrative, technical, and physical safeguards proportionate to the sensitivity of the data. We retain information only as long as reasonably necessary to provide services, meet legal or accounting requirements, and resolve disputes, then securely delete or de identify it.</p>
+
+          <h4>7) Access, correction and complaints</h4>
+          <p>You may request access to, or correction of, your personal information. If you are not satisfied with our response, you may contact the Office of the Information and Privacy Commissioner of Alberta for a review or complaint.<br>
+            OIPC info: one eight eight eight eight seven eight four zero four four. See Request a Review or File a Complaint for procedure.</p>
+
+          <h4>8) Breach notification</h4>
+          <p>If a privacy incident creates a real risk of significant harm, we will notify you and the OIPC as required by PIPA.</p>
+
+          <h4>9) Marketing under CASL</h4>
+          <p>We send commercial electronic messages only with consent or under an exemption and always include an unsubscribe mechanism. You can withdraw consent at any time.</p>
+
+          <h4>10) Contact privacy</h4>
+          <p>Privacy Officer — Executive Driving Services<br>
+            Email: add<br>
+            Phone: add<br>
+            Address: add
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="booking-overlay" class="booking-overlay centered" aria-hidden="true">
+      <div class="booking-modal center" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
+        <button class="booking-close" type="button" aria-label="Close booking form" data-book-close>✕</button>
+
+        <header class="booking-header">
+          <h2 id="bookingTitle">Reserve Your Ride</h2>
+        </header>
+
+        <form id="booking-form" class="booking-form" novalidate>
+          <div class="booking-grid two">
+            <label class="field">
+              <span>Full Name</span>
+              <input name="name" type="text" autocomplete="name" required placeholder="John Smith" />
+              <small class="err" data-for="name"></small>
+            </label>
+            <label class="field">
+              <span>Phone</span>
+              <input name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="(825) 973 9800" />
+              <small class="err" data-for="phone"></small>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Email</span>
+            <input name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
+            <small class="err" data-for="email"></small>
+          </label>
+
+          <div class="booking-grid two">
+            <label class="field">
+              <span>Pickup Location</span>
+              <input name="pickup" type="text" autocomplete="address-line1" required placeholder="for example, 1400 John St, Edmonton" />
+              <small class="err" data-for="pickup"></small>
+            </label>
+            <label class="field">
+              <span>Drop off Location</span>
+              <input name="dropoff" type="text" required placeholder="for example, YEG Terminal" />
+              <small class="err" data-for="dropoff"></small>
+            </label>
+          </div>
+
+          <div class="booking-grid three">
+            <label class="field">
+              <span>Date</span>
+              <input name="date" type="date" required />
+              <small class="err" data-for="date"></small>
+            </label>
+            <label class="field">
+              <span>Time</span>
+              <input name="time" type="time" required />
+              <small class="err" data-for="time"></small>
+            </label>
+            <label class="field">
+              <span>Passengers</span>
+              <input name="passengers" type="number" min="1" max="7" step="1" required placeholder="1" />
+              <small class="err" data-for="passengers"></small>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Notes optional</span>
+            <textarea name="notes" rows="4" placeholder="Flight number, stops, special requests…"></textarea>
+          </label>
+
+          <div class="booking-actions">
+            <button type="submit" class="btn-rr book">Submit Reservation</button>
+            <p class="booking-note"><i class="ri-lock-2-line" aria-hidden="true"></i> Your details are handled under our Privacy Policy.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Chat Toggle -->
+    <button class="xd-chat__toggle" type="button" aria-label="Open chat">💬</button>
+
+    <!-- Chat Popup -->
+    <div class="xd-chat" hidden>
+      <header class="xd-chat__hdr">
+        <div class="xd-chat__brand">
+          <img class="xd-chat__avatar" src="images/batman.png" alt="NAVI — Executive Driving Concierge" />
+          <div><strong>NAVI — Executive Driving Concierge</strong></div>
+        </div>
+        <button class="xd-chat__close" aria-label="Close">✕</button>
+      </header>
+
+      <main class="xd-chat__body" id="xdChatBody" role="log" aria-live="polite"></main>
+
+      <footer class="xd-chat__ftr">
+        <input id="xdChatInput" class="xd-chat__input" type="text" placeholder="Type your message…" />
+                <button id="xdChatSend" class="xd-chat__send" type="button" aria-label="Send">➤</button>
+      </footer>
+    </div>
+  </div>
+
+  <script type="module" src="js/script.js" defer></script>
+
+</body>
+</html>

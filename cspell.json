@@ -1,0 +1,45 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "ignorePaths": [
+    "node_modules/**",
+    "dist/**",
+    "build/**",
+    ".git/**",
+    ".env",
+    "public/video/**",
+    "**/*.svg"
+  ],
+  "words": [
+    "NAVI",
+    "dropoff",
+    "pickup",
+    "Addressy",
+    "airportish",
+    "cityish",
+    "dateish",
+    "timeish",
+    "yessir",
+    "remixicon",
+    "OpenAI",
+    "edmonton",
+    "yeg",
+    "yyc",
+    "yxe",
+    "Grande",
+    "Prairie",
+    "chauffeur",
+    "SUV",
+    "SUVs",
+    "luggage",
+    "noshow",
+    "preauth",
+    "eTransfer",
+    "asdirected",
+    "misconfig",
+    "company",
+    "convo",
+    "userdp"
+    
+  ]
+}

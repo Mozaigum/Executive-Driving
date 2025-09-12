@@ -1,0 +1,8 @@
+{
+  "liveServer.settings.ignoreFiles": [
+    "**/knowledge.json",
+    "**/*.log",
+    "**/node_modules/**",
+    ".vscode/**"
+  ]
+}

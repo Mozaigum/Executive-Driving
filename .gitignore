@@ -1,0 +1,16 @@
+# deps
+node_modules/
+BackEnd/node_modules/
+
+# env & secrets
+.env
+BackEnd/.env
+
+# sqlite (if used)
+BackEnd/data/*.db*
+BackEnd/data/*.sqlite
+
+# logs & editor
+npm-debug.log*
+.vscode/
+.DS_Store

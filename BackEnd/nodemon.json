@@ -1,0 +1,4 @@
+{
+  "ignore": ["knowledge.json", "logs/*", "*.log", "node_modules/**"],
+  "ext": "js,json"
+}
