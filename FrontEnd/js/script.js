@@ -1,4 +1,5 @@
-import { postJSON } from './api.js';
+import { postJSON, API_CONCIERGE, API_BOOK } from './api.js';
+
 console.log('script.js loaded v8');
 
 console.log('script.js loaded v7');
@@ -75,7 +76,6 @@ console.log('script.js loaded v7');
   const form = document.getElementById('booking-form');
   if (!form) return;
 
-  const API_BOOK = 'http://localhost:3001/book';
   const overlay = document.getElementById('booking-overlay');
 
   const get = (name) => form.querySelector(`[name="${name}"]`);
@@ -391,12 +391,13 @@ console.log('script.js loaded v7');
 
   if (!chatEl || !toggle || !closeBtn || !bodyEl || !inputEl || !sendBtn) return;
 
-  const API_URL   = 'http://localhost:3001/chat';
+
   const MAX_TURNS = 20;
   const convo     = [];
 
-  const AVATAR_AI   = 'images/batman.png';
-  const AVATAR_USER = 'images/userdp.png';
+const AVATAR_AI   = './images/batman.png';
+const AVATAR_USER = './images/userdp.png';
+
 
   const escapeHTML = (s = '') =>
     s.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
@@ -506,7 +507,8 @@ console.log('script.js loaded v7');
     typing.show();
     sendBtn.disabled = true;
     try {
-      const data = await postJSON(API_URL, { messages: convo });
+      const data = await postJSON(API_CONCIERGE, { messages: convo });
+
 
       const rawReply = (data && typeof data.reply === 'string') ? data.reply : 'Sorry, I didn’t catch that.';
       const reply = adjustReply(rawReply, lastUserMessage);

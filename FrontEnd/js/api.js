@@ -1,3 +1,8 @@
+// LIVE backend base + endpoints (Render)
+export const API_BASE = 'https://executive-driving-backend.onrender.com';
+export const API_CONCIERGE = `${API_BASE}/api/concierge`;
+export const API_BOOK      = `${API_BASE}/api/book`;
+
 // /js/api.js
 export async function postJSON(url, body) {
   const r = await fetch(url, {
