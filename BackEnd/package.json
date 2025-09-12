@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.6.1",
     "express": "^4.21.2",
     "nodemailer": "^7.0.6",
-    "openai": "4.104.0"
+    "openai": "^4.104.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
@@ -24,5 +24,8 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
