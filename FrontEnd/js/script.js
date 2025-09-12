@@ -110,7 +110,7 @@ console.log('script.js loaded v7');
         overlay?.classList.remove('open');
         overlay?.setAttribute('aria-hidden', 'true');
       } else {
-        alert('Sorry—could not send just now. Please call 825-973-9800 or email info@executivedriving.ca.');
+        alert('Sorry could not send just now. Please call 825-973-9800 or email info@executivedriving.ca.');
       }
     } catch (e) {
       alert(e.message || 'Network error. Please try again or contact us directly.');
@@ -454,11 +454,11 @@ const AVATAR_USER = './images/userdp.png';
     if (/❌\s*Could you share the \*\*exact (pickup|drop-off) address/i.test(txt) && isAirportish(last)) {
       if (/drop-off/i.test(txt)) {
         // They gave an airport as drop-off
-        return `Got it — ${last.replace(/\*+/g,'')} ✈️. What date do you need the service?`;
+        return `Got it ${last.replace(/\*+/g,'')} ✈️. What date do you need the service?`;
       }
       if (/pickup/i.test(txt)) {
         // They gave an airport as pickup
-        return `Got it — pickup at ${last.replace(/\*+/g,'')} ✈️. Where are we dropping you off?`;
+        return `Got itbpickup at ${last.replace(/\*+/g,'')} ✈️. Where are we dropping you off?`;
       }
     }
 
@@ -472,12 +472,12 @@ const AVATAR_USER = './images/userdp.png';
 
   const GREET_KEY = 'xd_greeted';
   const greet = () => {
-    bubble("Hi, I’m NAVI 👋 Welcome to Executive Driving — how can I help you today?", "ai");
+    bubble("Hi, I’m NAVI 👋 Welcome to Executive Driving how can I help you today?", "ai");
   };
 
   const openChat = () => {
     chatEl.hidden = false;
-    inputEl.placeholder = "Ask about pricing, availability, vehicles, or say 'book a ride'…";
+    inputEl.placeholder = "Book a pickup, drop-off, date, time & passengers. I answer FAQs (pricing, availability, routes, vehicles, policies). Serving Edmonton & Grande Prairie. Type 'talk to a human' to reach us.";
     inputEl.focus();
 
     if (!sessionStorage.getItem(GREET_KEY)) {
@@ -672,26 +672,112 @@ Thanks!`;
     textNode.parentNode.replaceChild(frag, textNode);
   });
 })();
-// ---------- Google Places Autocomplete (pickup & dropoff) ----------
-window.initAutocomplete = function () {
+// ---- Google Places Autocomplete (pickup & dropoff) ----
+function realInitAutocomplete() {
+  console.log("✅ initAutocomplete (real) running");
   try {
     const pickup  = document.getElementById("pickup");
     const dropoff = document.getElementById("dropoff");
+    if (!window.google?.maps?.places) return;
 
-    if (pickup && window.google?.maps?.places) {
+    if (pickup) {
       new google.maps.places.Autocomplete(pickup, {
-        componentRestrictions: { country: "ca" },   // Canada only
-        fields: ["formatted_address", "geometry"]   // we’ll use later for distance calc
+        componentRestrictions: { country: "ca" },
+        fields: ["formatted_address", "geometry"]
       });
+      gluePacTo(pickup);    // keep dropdown glued to this input
     }
-    if (dropoff && window.google?.maps?.places) {
+
+    if (dropoff) {
       new google.maps.places.Autocomplete(dropoff, {
         componentRestrictions: { country: "ca" },
         fields: ["formatted_address", "geometry"]
       });
+      gluePacTo(dropoff);   // keep dropdown glued to this input
     }
   } catch (e) {
     console.warn("Autocomplete init skipped:", e);
   }
-};
+}
 
+/* Keep the Google dropdown (.pac-container) aligned to the focused input */
+function gluePacTo(input){
+  if(!input) return;
+
+  const place = () => {
+    const pac = document.querySelector('.pac-container');
+    if(!pac) return;
+    const r = input.getBoundingClientRect();
+    pac.style.setProperty('--pac-width', r.width + 'px'); // match input width
+    pac.style.left = Math.round(r.left + window.scrollX) + 'px';
+    pac.style.top  = Math.round(r.bottom + window.scrollY) + 'px';
+  };
+
+  input.addEventListener('focus', () => requestAnimationFrame(place));
+  input.addEventListener('input', place);
+  input.addEventListener('keydown', place);
+  window.addEventListener('resize', place, { passive: true });
+  window.addEventListener('scroll', place, { passive: true });
+  document.addEventListener('scroll', place, { passive: true, capture: true });
+
+  // If Google re-creates the container, re-place it
+  new MutationObserver(() => {
+    const pac = document.querySelector('.pac-container');
+    if (pac && document.activeElement === input) place();
+  }).observe(document.body, { childList: true, subtree: true });
+}
+
+// Expose for inline callback if needed + run if already loaded
+window.__xdInitAutocomplete = realInitAutocomplete;
+if (window.google?.maps?.places) realInitAutocomplete();
+
+/* ---------- Fleet section: reveal title, subline, and cards (slower) ---------- */
+(() => {
+  const root = document.querySelector('#fleet');
+  if (!root) return;
+
+  const css = getComputedStyle(root);
+  const dur  = (css.getPropertyValue('--reveal-dur') || '1.1s').trim();
+  const stag = (css.getPropertyValue('--reveal-stagger') || '.14s').trim();
+
+  const toSecs = v => /ms/i.test(v) ? parseFloat(v)/1000 : parseFloat(v);
+  const STAG   = toSecs(stag);
+  const BASE   = 0.10;
+
+  // Targets in the order we want them to pop
+  const header    = root.querySelector('.fleet-h');
+  const sub       = root.querySelector('.fleet-sub');
+  const cards     = [...root.querySelectorAll('.fleet-card')];
+
+  const obs = new IntersectionObserver((entries, ob) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        ob.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.18 });
+
+  const prep = (el, delay, extra = 0) => {
+    if (!el) return;
+    if (!el.hasAttribute('data-reveal')) el.setAttribute('data-reveal','');
+    el.style.setProperty('--dur', `calc(${dur} + ${extra}s)`);
+    el.style.setProperty('--delay', `${delay.toFixed(3)}s`);
+    obs.observe(el);
+  };
+
+  // Title then subline
+  prep(header, BASE + 0 * STAG, 0.00);
+  prep(sub,    BASE + 1 * STAG, 0.05);
+
+  // Cards + their inner bits (img, h3, p)
+  cards.forEach((card, i) => {
+    const cardDelay = BASE + (2 + i) * STAG;     // starts after header+sub
+    prep(card, cardDelay, 0.00);
+
+    const inner = card.querySelectorAll('img, h3, p');
+    inner.forEach((el, k) => {
+      prep(el, cardDelay + (k + 1) * 0.10, 0.08); // slight cascade inside card
+    });
+  });
+})();

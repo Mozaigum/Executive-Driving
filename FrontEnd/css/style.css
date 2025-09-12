@@ -1914,50 +1914,92 @@ body.intro-done #page {
   opacity: .8;
 }
 
-/* Payments – no background card */
+/* Payments – larger, rectangular logos with pro spacing (no hover effects) */
 .footer-pay { text-align: center; }
-.footer-pay-h {
+
+.footer-pay-h{
   margin: 0 0 10px;
-  font-size: 14px; letter-spacing: .14em; text-transform: uppercase;
-  color: #cfcfcf; font-weight: 800;
+  font-size: 14px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #cfcfcf;
+  font-weight: 800;
+}
+.footer-pay-h::after{
+  content:"";
+  display:block;
+  width:140px;
+  height:2px;
+  margin:8px auto 0;
+  background:linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity:.85;
 }
 
-.pay-logos {
-  display: inline-flex;
-  gap: clamp(12px, 2.5vw, 26px);
-  align-items: center;
-  padding: 6px 0;                 /* no grey pill */
-  border: 0;
+/* Row */
+.pay-logos{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap: 12px;   /* more spread out */
+  list-style:none;
+  padding:0;
+  margin:0;
+  border:0;
 }
 
-/* Brand marks */
-.pay-logos i {
-  font-size: 46px;
-  line-height: 1;
-  color: #fff;
-  opacity: .95;
-  transition: transform .25s, color .25s, filter .25s;
+/* Consistent rectangular tiles (no background) */
+.pay-logos li{
+  width: 120px;                 /* controls rectangle width */
+  height: 60px;                 /* controls rectangle height */
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-/* UnionPay size to match FA icons */
-.pay-logos .up-svg { width: 70px; height: 44px; display: block; border-radius: 6px; }
-.pay-logos .unionpay { transform: translateY(1px); }
+/* Images scale inside the rectangle */
+.pay-logos img,
+.pay-logos .up-svg{
+  max-height: 44px;             /* logo size – increase if you want bigger */
+  max-width: 110px;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  display:block;
+  border-radius:6px;            /* softens JPEG corners */
+  background:transparent;
+}
 
-/* Gold accent on hover (subtle) */
-.pay-logos li:hover i { 
-  color: var(--gold); 
-  transform: translateY(-2px); 
-  filter: drop-shadow(0 8px 16px rgba(212,175,55,.25));
+/* If you still use icon fonts, keep them aligned */
+.pay-logos i{
+  font-size:44px;
+  line-height:1;
+  color:#fff;
+  opacity:.95;
 }
-.pay-logos li:hover .up-svg {
-  transform: translateY(-2px);
-  filter: drop-shadow(0 8px 16px rgba(212,175,55,.25));
-  transition: transform .25s, filter .25s;
+
+/* No hover effects */
+.pay-logos li:hover i,
+.pay-logos li:hover .up-svg{
+  color:inherit;
+  transform:none;
+  filter:none;
 }
+
+/* Mobile tune: keep spacing but shrink tiles a touch */
+@media (max-width:600px){
+  .pay-logos li{ width: 100px; height: 54px; }
+  .pay-logos img, .pay-logos .up-svg{ max-height: 38px; max-width: 92px; }
+}
+
 
 
 /* Copy */
 .footer-copy { text-align: center; color: #bbb; font-size: 13px; margin-top: 16px; }
+/* --- Payment logos --- */
+
+/* If your footer background is dark and a logo is also dark,
+   you can optionally add a subtle outline for visibility: */
+.pay-logos img { background: transparent; }
 
 /* Responsive */
 @media (max-width:700px) {
@@ -2027,3 +2069,307 @@ body.intro-done #page {
   aspect-ratio:16/9;      /* keeps it neat on mobile */
   object-fit:cover;
 }
+/* === Executive Driving — Google Places dropdown (compact) === */
+.pac-container{
+  position: absolute !important;
+  z-index: 99999 !important;
+
+  /* size/shape */
+  width: var(--pac-width, auto) !important;   /* JS sets this = input width */
+  max-height: 320px !important;
+  overflow-y: auto !important;
+  margin-top: -1px !important;                /* sit flush under input */
+  border: 1px solid rgba(255,255,255,.10) !important;
+  border-radius: 12px !important;
+  background: rgba(15,16,19,.96) !important;
+  box-shadow: 0 18px 36px rgba(0,0,0,.5) !important;
+
+  /* typography */
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Arial, sans-serif !important;
+  font-size: 12px !important;                 /* smaller, elegant */
+  line-height: 1.25 !important;
+  color: #e9e9e9 !important;
+}
+
+/* rows */
+.pac-item{
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 10px !important;               /* tighter row */
+  border-bottom: 1px solid rgba(255,255,255,.06) !important;
+  background: transparent !important;
+  cursor: pointer !important;
+}
+.pac-item:last-child{ border-bottom: 0 !important; }
+
+/* hover / keyboard selection */
+.pac-item:hover,
+.pac-item.pac-item-selected{
+  background: rgba(212,175,55,.10) !important;
+  border-left: 3px solid #d4af37 !important;
+  padding-left: 7px !important; /* compensate for left border */
+}
+
+/* icon */
+.pac-item .pac-icon{
+  opacity: .7 !important;
+  filter: saturate(.9) !important;
+}
+
+/* primary text (street) */
+.pac-item .pac-item-query{
+  font-weight: 700 !important;
+  color: #fff !important;
+  letter-spacing: .1px !important;
+}
+
+/* secondary text (city, province, country) */
+.pac-item > span:not(.pac-icon):not(.pac-item-query){
+  color: #cfcfcf !important;
+  font-weight: 500 !important;
+}
+
+/* “powered by Google” */
+.pac-container:after{
+  padding: 6px 10px !important;
+  font-size: 10px !important;
+  color: #9aa3af !important;
+  background: transparent !important;
+}
+
+/* Make only Drop Off span full width under Pickup */
+.booking-grid.two .field--dropoff {
+  grid-column: 1 / -1;
+  margin-top: 0.75rem; /* small gap below pickup */
+}
+/* === Fleet Section === */
+.fleet-section {
+  padding: 60px 20px;
+  text-align: center;
+  background: transparent;
+}
+
+.fleet-h {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.fleet-sub {
+  color: #bbb;
+  font-size: 16px;
+  margin-bottom: 40px;
+}
+
+.fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+  justify-items: center;
+}
+
+.fleet-card {
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 14px;
+  padding: 16px;
+  max-width: 320px;
+  text-align: center;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.fleet-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .45);
+}
+
+.fleet-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 14px;
+}
+
+.fleet-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 6px 0;
+  color: #fff;
+}
+
+.fleet-card p {
+  font-size: 14px;
+  color: #cfcfcf;
+  line-height: 1.6;
+}
+/* use CSS vars for duration + delay */
+.is-visible[data-reveal]{
+  animation: rrReveal var(--dur, 1.1s) cubic-bezier(.19,.84,.22,1) both;
+  animation-delay: var(--delay, .08s);
+}
+/* Control panel for Fleet section */
+#fleet{
+  --reveal-dur: 1.6s;       /* slower overall animation */
+  --reveal-stagger: .18s;   /* bigger gap between items */
+}
+/* Title matches About look (size, weight, underline accent) */
+.fleet-h{
+  font-family: "Playfair Display", serif;
+  font-weight: 800;
+  font-size: clamp(36px, 5.5vw, 56px);
+  line-height: 1.15;
+  margin: 0 0 10px;
+  color: #fff;
+}
+.fleet-h::after{
+  content:"";
+  display:block;
+  width: 88px; height: 2px;
+  margin: 12px auto 0;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: .9;
+}
+
+/* Subline style + layout like About */
+.fleet-sub{
+  max-width: 75ch;
+  margin: 6px auto 32px;
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.85;
+  color: #e0e0e0;
+}
+
+/* Subtle gold text treatment just on the phrase */
+.gold-em{
+  background: linear-gradient(90deg, #f0d989, var(--gold));
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent; /* Safari */
+  white-space: nowrap;
+}
+
+/* Optional: slower section default for fleet reveals */
+#fleet{
+  --reveal-dur: 1.6s;       /* slower animation than default */
+  --reveal-stagger: .18s;   /* bigger gap between items */
+}
+
+/* Concierge card back to compact sizing */
+#contact .concierge-card.glass{
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 18px;
+  border-radius: 16px;
+}
+
+#contact .lux-field span{ font-size:12px; letter-spacing:.12em; }
+#contact input, #contact textarea{ padding:12px 12px; font-size:14px; }
+#contact .btn-rr{ padding:12px 16px; font-size:15px; }
+
+/* make sure the 2-col grid breathes but isn’t huge */
+#contact .concierge-wrap{ gap: clamp(18px,3vw,32px); }
+/* === Compact, on-brand Flatpickr (booking modal only) === */
+:root{
+  --xd-gold:#d7b464;            /* brand accent */
+  --xd-ink:#e9ecf2;
+  --xd-muted:#a7adba;
+  --xd-panel:#121417;
+  --xd-border:rgba(255,255,255,.08);
+}
+
+/* visible input (altInput) should look like your fields */
+.booking-form input.flatpickr-input{
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--xd-border);
+  color: var(--xd-ink);
+  height: 44px;
+  border-radius: 12px;
+  padding: 0 14px;
+}
+.booking-form input.flatpickr-input:focus{
+  outline: none;
+  border-color: var(--xd-gold);
+  box-shadow: 0 0 0 3px rgba(215,180,100,.15);
+}
+
+/* calendar panel */
+.booking-modal .flatpickr-calendar{
+  width: 288px;                 /* smaller */
+  font-size: 12.5px;            /* compact */
+  background: var(--xd-panel);
+  border: 1px solid var(--xd-border);
+  border-radius: 14px;
+  color: var(--xd-ink);
+  box-shadow: 0 18px 50px rgba(0,0,0,.55);
+  z-index: 9999;                /* above glass modal */
+}
+.booking-modal .flatpickr-calendar.arrowTop:before,
+.booking-modal .flatpickr-calendar.arrowTop:after{ display:none; }
+
+/* header */
+.booking-modal .flatpickr-months .flatpickr-month,
+.booking-modal .flatpickr-current-month .cur-month,
+.booking-modal .flatpickr-current-month input.cur-year{
+  color: var(--xd-ink);
+  font-weight: 600;
+}
+.booking-modal .flatpickr-weekday{ color: var(--xd-muted); font-weight: 600; }
+
+/* days grid – tighter, round pills */
+.booking-modal .flatpickr-day{
+  width: 28px; height: 28px; line-height: 28px;
+  border-radius: 999px;
+  color: #cfd3db;
+  border: 1px solid transparent;
+}
+.booking-modal .flatpickr-day:hover,
+.booking-modal .flatpickr-day:focus{
+  background: rgba(215,180,100,.14);
+  border-color: rgba(215,180,100,.35);
+  color: #fff;
+}
+.booking-modal .flatpickr-day.today{
+  box-shadow: inset 0 0 0 1px rgba(215,180,100,.55);
+}
+.booking-modal .flatpickr-day.selected,
+.booking-modal .flatpickr-day.startRange,
+.booking-modal .flatpickr-day.endRange{
+  background: var(--xd-gold);
+  border-color: var(--xd-gold);
+  color: #111;
+}
+
+/* time footer */
+.booking-modal .flatpickr-time{
+  border-top: 1px solid var(--xd-border);
+}
+.booking-modal .flatpickr-time .numInput,
+.booking-modal .flatpickr-time .flatpickr-am-pm{
+  color: var(--xd-ink);
+  background: transparent;
+}
+.booking-modal .flatpickr-calendar .flatpickr-next-month,
+.booking-modal .flatpickr-calendar .flatpickr-prev-month{
+  fill: var(--xd-ink); color: var(--xd-ink);
+}
+/* Flatpickr — compact + match dark glass theme */
+.flatpickr-calendar {
+  font-size: 12.5px;
+  background: rgba(23,25,31,.96);
+  color: #e8eaed;
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.5);
+  z-index: 9999;
+}
+.flatpickr-day { height: 28px; line-height: 28px; width: 32px; }
+.flatpickr-day.today { box-shadow: inset 0 0 0 1px rgba(212,175,55,.7); }
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange { background: #d4af37; color:#111; }
+.flatpickr-months, .flatpickr-weekdays { background: transparent; }
+.flatpickr-time input { color: #e8eaed; }

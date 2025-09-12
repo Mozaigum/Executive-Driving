@@ -29,7 +29,7 @@ const FAQ_SEED = [
   { q: "which areas do you cover", a: "Edmonton and Grande Prairie (and nearby communities on request)." },
   { q: "how do i book", a: "You can book right here in chat or via the Reserve form—share your name, phone, email, pickup, destination, date, time, and passengers." },
   { q: "contact", a: "Phone 825-973-9800 • Email info@executivedriving.ca." },
-  { q: "fleet", a: "Premium, modern SUVs—quiet cabins, climate control, and ample luggage space." },
+  { q: "fleet", a: "Premium, modern SUVs quiet cabins, climate control, and ample luggage space." },
   { q: "pricing", a: "Rates vary by route, time, and availability. Share pickup, destination, date & time and I’ll quote and reserve." }
 ];
 
@@ -308,7 +308,7 @@ function dropoffNeedsEscalation(text = "") {
 function dropoffEscalationLine(_text = "") {
   return (
     "Drop-off noted. This appears to be **outside Alberta** — " +
-    "**we’ll proceed with your booking** and **inform the team** since it’s long-distance. " +
+    "we’ll proceed with your booking** and inform the team since it’s long-distance. " +
     "They’ll confirm final details and pricing shortly."
   );
 }
@@ -422,7 +422,7 @@ function askForPreciseAddress(which = "pickup") {
   if (which === "pickup") {
     return "Could you share the **exact pickup address** (number + street) or a precise place like “Days Inn by Wyndham Edmonton Downtown – Front Entrance” or “YEG – Arrivals”?";
   }
-  return "Could you share the **exact drop-off** — either a street address or a place like “Springbank Airport (YBW)” or “YYZ – Terminal 1 Arrivals”?";
+  return "Could you share the **exact drop-off**  either a street address or a place like “Springbank Airport (YBW)” or “YYZ – Terminal 1 Arrivals”?";
 }
 
 /* ---------- Conversational helpers ---------- */
@@ -605,7 +605,7 @@ function parseDateSmart(input, now = new Date()) {
     const mon = monthFromToken(m[2]);
     if (!mon || day < 1 || day > 31) return null;
     const year = parseYearToken(m[3], mon, day);
-    return { iso: toISO(year, mon, day), note: `Got it — I’ll set your date to ${toISO(year, mon, day)}.` };
+    return { iso: toISO(year, mon, day), note: `Got it. I’ll set your date to ${toISO(year, mon, day)}.` };
   }
 
   // month-first
@@ -614,7 +614,7 @@ function parseDateSmart(input, now = new Date()) {
     const day = +m[2];
     if (!mon || day < 1 || day > 31) return null;
     const year = parseYearToken(m[3], mon, day);
-    return { iso: toISO(year, mon, day), note: `Got it — I’ll set your date to ${toISO(year, mon, day)}.` };
+    return { iso: toISO(year, mon, day), note: `Got it. I’ll set your date to ${toISO(year, mon, day)}.` };
   }
 
   // fuzzy extraction
@@ -623,7 +623,7 @@ function parseDateSmart(input, now = new Date()) {
     const mon = monthFromToken(m[2]);
     if (!mon || day < 1 || day > 31) return null;
     const year = parseYearToken(m[3], mon, day);
-    return { iso: toISO(year, mon, day), note: `Got it — I’ll set your date to ${toISO(year, mon, day)}.` };
+    return { iso: toISO(year, mon, day), note: `Got it. I’ll set your date to ${toISO(year, mon, day)}.` };
   }
 
   // "on the 7th"
@@ -632,7 +632,7 @@ function parseDateSmart(input, now = new Date()) {
     if (day < 1 || day > 31) return null;
     const month = now.getMonth() + 1;
     const year = resolveYearForLocal(month, day);
-    return { iso: toISO(year, month, day), note: `Got it — I’ll set your date to ${toISO(year, month, day)}.` };
+    return { iso: toISO(year, month, day), note: `Got it. I’ll set your date to ${toISO(year, month, day)}.` };
   }
 
   return null;
@@ -928,7 +928,7 @@ app.post("/chat", async (req, res) => {
 
     /* 0) If user explicitly says they're NOT booking, stop the booking flow */
     if (NOT_BOOKING_RE.test(lastUser)) {
-      return res.json({ reply: "All good — no booking. I’m here for info too: pricing, routes, service area, vehicles, or policies. What would you like to know?" });
+      return res.json({ reply: "All good no booking. I’m here for info too: pricing, routes, service area, vehicles, or policies. What would you like to know?" });
     }
 
     /* 0a) Conversation wrap-up: thanks / bye */
@@ -973,7 +973,7 @@ if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_R
               return res.json({ reply: pickupHardStopNonAlberta(txt), done: true });
             }
             if (addressTooVague(txt)) {
-              return res.json({ reply: "❌ Could you share the **exact pickup address** (number + street) or a precise place like “Days Inn by Wyndham Edmonton Downtown – Front Entrance” or “YEG – Arrivals”?" });
+              return res.json({ reply: "OOPSI! Could you share the **exact pickup address** (number + street) or a precise place like “Days Inn by Wyndham Edmonton Downtown – Front Entrance” or “YEG – Arrivals”?" });
             }
           }
         }
@@ -1033,7 +1033,7 @@ if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_R
     if (wantsHuman) {
       return res.json({
         reply:
-          "No problem—I can loop in a team member. Fastest options: call 825-973-9800 or email info@executivedriving.ca. " +
+          "No problem! I can loop in a team member. Fastest options: call 825-973-9800 or email info@executivedriving.ca. " +
           "If you’d like, share your name and number and I’ll have someone reach out. Meanwhile, what’s the pickup and destination?"
       });
     }
@@ -1078,7 +1078,7 @@ if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_R
     const hasBookingIntent = (t) =>
       /\b(book(ing)?|reserve|reservation|ride|pick(?:\s|-)?up)\b/i.test(t) && !/[?]\s*$/.test(t);
     if (hasBookingIntent(lastUser) && !assistantAskedForDetail(messages)) {
-      return res.json({ reply: "Absolutely — happy to arrange that. What’s your full name?" });
+      return res.json({ reply: "Absolutely happy to arrange that. What’s your full name?" });
     }
 
     /* 4) Allowance check / fallback KB */
@@ -1109,7 +1109,7 @@ if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_R
     if (extractedNow.date) {
       const parsed = parseDateSmart(extractedNow.date);
       if (parsed?.iso) {
-        extractedNow.__dateNote = userJustMentionedDate(lastUserRaw) ? (parsed.note || `Got it — I’ll set your date to ${parsed.iso}.`) : null;
+        extractedNow.__dateNote = userJustMentionedDate(lastUserRaw) ? (parsed.note || `Got it I’ll set your date to ${parsed.iso}.`) : null;
         extractedNow.date = parsed.iso;
       }
     }
@@ -1238,7 +1238,7 @@ app.post("/kb/reset", (_req, res) => {
 app.use((err, _req, res, _next) => {
   console.error("Express error handler:", err);
   if (!res.headersSent) {
-    res.status(500).json({ reply: "Whoops—there was a hiccup on my side. Let’s continue your booking—what’s the pickup and destination?" });
+    res.status(500).json({ reply: "Whoops,there was a hiccup on my side. Let’s continue your booking—what’s the pickup and destination?" });
   }
 });
 

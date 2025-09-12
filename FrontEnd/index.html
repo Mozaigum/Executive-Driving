@@ -6,9 +6,17 @@
   <title>Executive Driving</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+<!-- 3rd-party first -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+
+<!-- YOUR overrides last (wins the cascade) -->
+<link rel="stylesheet" href="css/style.css?v=fix2">
+
+
 </head>
 
 <body>
@@ -101,24 +109,54 @@
           </article>
           <article class="about-min__item" data-reveal style="--delay:.65s" role="listitem">
             <i class="ri-calendar-2-line about-min__icon" aria-hidden="true"></i>
-            <strong>Twenty Four Seven Concierge</strong>
+            <strong>24/7 Concierge</strong>
             <span class="about-min__muted">Flexible scheduling. Swift confirmations.</span>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="fleet">
-      <div class="container">
-        <h2>Our Fleet</h2>
-        <figure class="fleet-collage">
-          <img
-            src="images/fleet.png"
-            alt="Executive Driving fleet — airport, hotel, event centre, and downtown scenes"
-            loading="lazy" width="1920" height="1080">
-        </figure>
+   <section id="fleet" class="fleet-section">
+  <div class="container">
+    <h2 class="fleet-h" data-reveal style="--delay:.05s">Our Luxury Fleet</h2>
+<p class="fleet-sub" data-reveal style="--delay:.15s">
+  <span class="gold-em">Premium SUVs</span> designed for comfort, privacy, and style.
+</p>
+
+
+    <div class="fleet-grid">
+      <!-- Card 1 -->
+      <div class="fleet-card">
+        <img src="images/fleet1.jpeg" alt="Lincoln Navigator at GPA">
+        <h3>Lincoln Navigator L</h3>
+        <p>discription coming soon with more pictures .</p>
       </div>
-    </section>
+
+      <!-- Card 2 -->
+      <div class="fleet-card">
+        <img src="images/fleet2.jpeg" alt="Luxury SUV at Grande Prairie Airport">
+        <h3>Executive SUV</h3>
+        <p>discription coming soon with more pictures .</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="fleet-card">
+        <img src="images/fleet3.jpeg" alt="SUV rear with GPA sign">
+        <h3>Ample Space</h3>
+        <p>discription coming soon with more pictures .</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="fleet-card">
+        <img src="images/about-us.jpg" alt="SUVs with private jet">
+        <h3>VIP Transfers</h3>
+        <p>discription coming soon with more pictures .</p>
+    </div>
+  </div>
+</section>
+
+
+
 
 
     <section id="contact" class="concierge" aria-labelledby="concierge-title">
@@ -291,6 +329,7 @@
 
  
   <footer class="site-footer">
+    
   <div class="container footer-grid">
     <div class="footer-brand">
       <img src="./images/logo.WebP" alt="Executive Driving" class="footer-logo">
@@ -328,21 +367,11 @@
   <div class="container footer-pay">
     <h5 class="footer-pay-h">Payment Methods</h5>
     <ul class="pay-logos" aria-label="Accepted cards">
-      <li aria-label="Mastercard"><i class="fa-brands fa-cc-mastercard"></i></li>
-      <!-- UnionPay (inline SVG) -->
-      <li aria-label="UnionPay" class="unionpay">
-        <svg viewBox="0 0 144 96" role="img" aria-label="UnionPay" class="up-svg">
-          <rect x="6" y="10" rx="10" ry="10" width="84" height="76" fill="#0073A8"/>
-          <rect x="54" y="10" rx="10" ry="10" width="84" height="76" fill="#D81E06" opacity=".95"/>
-          <text x="48" y="60" font-size="28" font-family="system-ui, -apple-system, Segoe UI, Arial, sans-serif"
-                fill="#fff" font-weight="700">UnionPay</text>
-        </svg>
-      </li>
-      <li aria-label="Diners Club"><i class="fa-brands fa-cc-diners-club"></i></li>
-      <li aria-label="American Express"><i class="fa-brands fa-cc-amex"></i></li>
-      <li aria-label="Discover"><i class="fa-brands fa-cc-discover"></i></li>
-      <li aria-label="Visa"><i class="fa-brands fa-cc-visa"></i></li>
-    </ul>
+  <li><img src="images/visa.jpeg" alt="Visa" loading="lazy" decoding="async"></li>
+  <li><img src="images/mastercard.jpeg" alt="Mastercard" loading="lazy" decoding="async"></li>
+  <li><img src="images/amex.jpeg" alt="American Express" loading="lazy" decoding="async"></li>
+  <li><img src="images/intract.jpeg" alt="Interac e-Transfer" loading="lazy" decoding="async"></li>
+</ul>
   </div>
 
   <div class="container footer-copy">
@@ -566,30 +595,32 @@
             <small class="err" data-for="email"></small>
           </label>
 
-          <div class="booking-grid two">
-            <label class="field">
-              <span>Pickup Location</span>
-              <input id="pickup"  name="pickup"  type="text" autocomplete="address-line1" required placeholder="for example, 1400 John St, Edmonton" />
-              <small class="err" data-for="pickup"></small>
-            </label>
-            <label class="field">
-              <span>Drop off Location</span>
-             <input id="dropoff" name="dropoff" type="text" required placeholder="for example, YEG Terminal" />
-              <small class="err" data-for="dropoff"></small>
-            </label>
-          </div>
+         <div class="booking-grid two">
+  <label class="field">
+    <span>Pickup Location</span>
+    <input id="pickup" name="pickup" type="text" required placeholder="for example, 1400 John St, Edmonton" />
+    <small class="err" data-for="pickup"></small>
+  </label>
+  <label class="field field--dropoff">
+    <span>Drop Off Location</span>
+    <input id="dropoff" name="dropoff" type="text" required placeholder="for example, YEG Terminal" />
+    <small class="err" data-for="dropoff"></small>
+  </label>
+</div>
+
 
           <div class="booking-grid three">
-            <label class="field">
-              <span>Date</span>
-              <input name="date" type="date" required />
-              <small class="err" data-for="date"></small>
-            </label>
-            <label class="field">
-              <span>Time</span>
-              <input name="time" type="time" required />
-              <small class="err" data-for="time"></small>
-            </label>
+           <label class="field">
+  <span>Date</span>
+  <input id="bookDate" name="date" type="text" required />
+  <small class="err" data-for="date"></small>
+</label>
+<label class="field">
+  <span>Time</span>
+  <input id="bookTime" name="time" type="text" required />
+  <small class="err" data-for="time"></small>
+</label>
+
             <label class="field">
               <span>Passengers</span>
               <input name="passengers" type="number" min="1" max="7" step="1" required placeholder="1" />
@@ -631,13 +662,49 @@
       </footer>
     </div>
   </div>
-<!-- Google Maps Places API -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- A. Tiny GLOBAL stub so Google always has something to call -->
+<script>
+  window.initAutocomplete = function () {
+    if (typeof window.__xdInitAutocomplete === 'function') {
+      window.__xdInitAutocomplete();
+    }
+  };
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    flatpickr('#bookDate', {
+      altInput: true,
+      altFormat: 'D, M j, Y',
+      dateFormat: 'Y-m-d',
+      minDate: 'today',
+      disableMobile: true,
+      prevArrow: '‹',
+      nextArrow: '›'
+    });
+
+    flatpickr('#bookTime', {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: 'h:i K',
+      minuteIncrement: 5,
+      time_24hr: false,
+      disableMobile: true
+    });
+  });
+</script>
+
+
+
+<!-- B. Your module defines the real initializer -->
+<script type="module" src="js/script.js"></script>
+
+<!-- C. Load Google async; it will call the global stub above -->
 <script
-  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete"
-  async defer></script>
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjj6vTETlSwX63xekV2kN6xge0OXcPcdM&libraries=places&callback=initAutocomplete"
+  loading="async"></script>
 
-
-  <script type="module" src="js/script.js" defer></script>
 
 </body>
 </html>
