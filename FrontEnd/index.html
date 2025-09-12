@@ -699,11 +699,29 @@
 
 <!-- B. Your module defines the real initializer -->
 <script type="module" src="js/script.js"></script>
+<script>
+  // Google will call this after the Maps script loads
+  window.initAutocomplete = function () {
+    let tries = 0;
+    (function boot() {
+      if (typeof window.__xdInitAutocomplete === 'function') {
+        window.__xdInitAutocomplete();
+      } else if (tries++ < 60) {      // retry ~3 seconds
+        setTimeout(boot, 50);
+      } else {
+        console.warn('Autocomplete init timeout: __xdInitAutocomplete not found');
+      }
+    })();
+  };
+</script>
 
 <!-- C. Load Google async; it will call the global stub above -->
+
 <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjj6vTETlSwX63xekV2kN6xge0OXcPcdM&libraries=places&callback=initAutocomplete"
-  loading="async"></script>
+  defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAitl8PFwdBCzyO_1WgSkzuzfwijfthw1w&libraries=places&loading=async&callback=initAutocomplete">
+</script>
+
 
 
 </body>
