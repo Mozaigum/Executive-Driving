@@ -19,9 +19,6 @@
   "devDependencies": {
     "nodemon": "^3.1.10"
   },
-  "overrides": {
-    "openai": "4.104.0"
-  },
   "engines": {
     "node": ">=18"
   },
