@@ -1,6 +1,7 @@
 export const API_BASE = 'https://executive-driving-backend.onrender.com';
 export const API_CHAT = `${API_BASE}/chat`;        // matches app.post("/chat", ...)
-export const API_BOOK = `${API_BASE}/api/book`;    // change to /book if your backend uses /book
+export const API_BOOK = `${API_BASE}/book`;
+   // change to /book if your backend uses /book
 
 // /js/api.js
 export async function postJSON(url, body) {
