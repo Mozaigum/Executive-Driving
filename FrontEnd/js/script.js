@@ -1,4 +1,5 @@
-import { postJSON, API_CONCIERGE, API_BOOK } from './api.js';
+import { postJSON, API_CHAT, API_BOOK } from './api.js';
+
 
 console.log('script.js loaded v8');
 
@@ -507,7 +508,8 @@ const AVATAR_USER = './images/userdp.png';
     typing.show();
     sendBtn.disabled = true;
     try {
-      const data = await postJSON(API_CONCIERGE, { messages: convo });
+      const data = await postJSON(API_CHAT, { messages: convo });
+
 
 
       const rawReply = (data && typeof data.reply === 'string') ? data.reply : 'Sorry, I didn’t catch that.';

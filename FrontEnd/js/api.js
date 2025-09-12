@@ -1,7 +1,6 @@
-// LIVE backend base + endpoints (Render)
 export const API_BASE = 'https://executive-driving-backend.onrender.com';
-export const API_CONCIERGE = `${API_BASE}/api/concierge`;
-export const API_BOOK      = `${API_BASE}/api/book`;
+export const API_CHAT = `${API_BASE}/chat`;        // matches app.post("/chat", ...)
+export const API_BOOK = `${API_BASE}/api/book`;    // change to /book if your backend uses /book
 
 // /js/api.js
 export async function postJSON(url, body) {
