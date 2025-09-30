@@ -2765,9 +2765,28 @@ img {
   }
 }
 /* Stop horizontal scroll on mobile */
+h/* ✅ Stop horizontal scroll everywhere */
 html, body {
+  width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+  position: relative;
 }
 
+/* ✅ Contain all main grid/strip sections */
+.story-grid,
+.team-strip,
+.fleet-grid,
+.partners,
+.marquee,
+.marquee__track {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
 
+/* ✅ Images/videos never overflow */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
