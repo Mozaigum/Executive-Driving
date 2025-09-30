@@ -2790,3 +2790,7 @@ img, video {
   height: auto;
   display: block;
 }
+/* DEBUG: outline every element */
+* {
+  outline: 1px solid red !important;
+}
