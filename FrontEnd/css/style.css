@@ -2811,3 +2811,19 @@ html, body {
     object-position: center 30%; /* shift framing, tweak % as needed */
   }
 }
+.hero-image-mobile {
+  display: none;
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center bottom; /* <-- Option 2 */
+}
+
+@media (max-width: 768px) {
+  .hero-video {
+    display: none;
+  }
+  .hero-image-mobile {
+    display: block;
+  }
+}
