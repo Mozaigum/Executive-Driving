@@ -7,7 +7,11 @@
   --border-line: rgba(255, 255, 255, .1);
   --gold: #d4af37;
 }
-
+@media (max-width: 1024px) {
+  :root {
+    --ui-scale: 1 !important;
+  }
+}
 /* ===== base ===== */
 html,
 body {
@@ -1563,22 +1567,7 @@ body.intro-done #page {
 /* =========================
    Executive Driving – chat widget (final)
    ========================= */
-.xd-chat__toggle {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  background: #d4af37;
-  color: #111;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, .4);
-  z-index: 1400;
-  /* above overlays */
-}
+
 
 .xd-chat[hidden] {
   display: none !important;
@@ -1603,6 +1592,22 @@ body.intro-done #page {
   z-index: 1400;
   /* above menu (1200) and modal (1300) */
 }
+/* Apple-style smooth open/close for chat widget */
+.xd-chat {
+  transform: scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* When active */
+.xd-chat.open {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
 
 .xd-chat__hdr {
   display: flex;
@@ -2373,3 +2378,275 @@ body.intro-done #page {
 .flatpickr-day.endRange { background: #d4af37; color:#111; }
 .flatpickr-months, .flatpickr-weekdays { background: transparent; }
 .flatpickr-time input { color: #e8eaed; }
+/* Luxury Sections */
+.lux-section {
+  padding: 80px 20px;
+}
+
+.lux-section.dark {
+  background: #111;
+  color: #eee;
+}
+
+.lux-section h2, 
+.lux-section h3 {
+  font-family: 'Playfair Display', serif;
+}
+
+.gold-em {
+  color: #c9a45c;
+  font-weight: 600;
+}
+
+/* Founder Story */
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.story-photo img {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.story-text .subtitle {
+  font-size: 1.1rem;
+  color: #bbb;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+/* Team Section */
+.team-strip .team-member {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
+.team-strip .team-member.reverse {
+  flex-direction: row-reverse;
+}
+
+.team-photo {
+  flex: 1 1 50%;
+}
+
+.team-photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+}
+
+.team-text {
+  flex: 1 1 50%;
+}
+
+.team-text h3 {
+  margin-bottom: 8px;
+  font-size: 1.8rem;
+  color: #c9a45c;
+}
+
+.team-text .subtitle {
+  font-size: 1.1rem;
+  color: #bbb;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.team-text p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 16px;
+  color: #ddd;
+}
+
+/* === Scroll Reveal System (final clean version) === */
+
+/* Base hidden state */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s ease, transform 1s ease;
+  will-change: opacity, transform;
+}
+
+/* Shown state */
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Optional directional variants */
+.reveal-up    { transform: translateY(40px); }
+.reveal-left  { transform: translateX(-60px); }
+.reveal-right { transform: translateX(60px); }
+
+/* When visible, reset transforms */
+[data-reveal].is-visible.reveal-up,
+[data-reveal].is-visible.reveal-left,
+[data-reveal].is-visible.reveal-right {
+  transform: none;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+/* === Customer Care Card matches left column height === */
+#contact .concierge-wrap {
+  align-items: stretch;  /* make both columns equal height */
+}
+
+#contact .concierge-card.glass {
+  height: 115%;          /* card fills the column height */
+}
+/* Fix chat toggle: pill, gold text */
+.xd-chat__toggle{
+  width: auto !important;
+  height: auto !important;
+  padding: 12px 22px !important;
+  border-radius: 999px !important;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  background: #111 !important;
+  color: var(--gold) !important;
+  border: 1px solid var(--border-line);
+  font-weight: 800;
+  font-size: 15px !important;
+  letter-spacing: .04em;
+  line-height: 1;            /* keeps it single-line tight */
+  white-space: nowrap;       /* prevents wrapping */
+  box-shadow: 0 10px 24px rgba(0,0,0,.4);
+  z-index: 1400;
+}
+
+.xd-chat__toggle:hover{
+  background: var(--gold) !important;
+  color: #111 !important;
+  border-color: var(--gold);
+}
+/* === Force “Ask NAVI” to gold pill === */
+#page .xd-chat__toggle {
+  position: fixed !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  height: 44px !important;
+  padding: 0 18px !important;
+  border-radius: 999px !important;
+
+  /* solid gold background */
+  background: var(--gold) !important;
+  color: #111 !important; /* black text */
+  border: 1px solid var(--gold) !important;
+
+  font-weight: 800 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+  font-size: 13px !important;
+  white-space: nowrap !important;
+
+  box-shadow: 0 10px 28px rgba(0,0,0,.45) !important;
+  transition: transform .25s, box-shadow .25s, background .25s, color .25s !important;
+  z-index: 1400 !important;
+}
+
+#page .xd-chat__toggle::before {
+  content:"" !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: #111 !important;
+  box-shadow: 0 0 6px rgba(0,0,0,.5) !important;
+}
+
+#page .xd-chat__toggle:hover {
+  background: #111 !important;
+  color: var(--gold) !important;
+  border-color: var(--gold) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 16px 40px rgba(0,0,0,.55) !important;
+}
+
+
+/* tiny gold “live” dot */
+/* tiny dot: white by default */
+#page .xd-chat__toggle::before {
+  content:"" !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: #fff !important; /* white */
+  box-shadow: 0 0 10px rgba(255,255,255,0.6) !important; /* white glow */
+  transition: background .25s, box-shadow .25s !important;
+}
+
+/* hover: dot turns gold */
+#page .xd-chat__toggle:hover::before,
+#page .xd-chat__toggle:focus-visible::before {
+  background: var(--gold) !important; /* gold */
+  box-shadow: 0 0 10px rgba(212,175,55,.6) !important; /* gold glow */
+}
+
+
+/* mobile nudge */
+@media (max-width:480px){
+  #page .xd-chat__toggle{ right:12px !important; bottom:12px !important; }
+}
+/* =======================
+   Mobile adjustments
+   ======================= */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;   /* keeps text readable but not massive */
+    line-height: 1.4;
+  }
+
+  h1 { font-size: 26px; }
+  h2 { font-size: 18px; }
+  h3 { font-size: 16px; }
+
+  /* Hero section scaling */
+  .hero-section {
+    min-height: 90vh;  /* stop cutting video on small screens */
+  }
+  .hero-video {
+    object-fit: cover;
+    object-position: center;
+  }
+  .hero-content h1 {
+    font-size: 22px;  /* shrink hero headline */
+  }
+  .hero-content h2 {
+    font-size: 14px;  /* shrink hero subheadline */
+  }
+
+  /* Chatbot (Ask NAVI) */
+  .xd-chat {
+    width: 100% !important;
+    max-width: 95vw !important;
+    height: 70vh !important; /* prevent zoom issues */
+    bottom: 80px !important;
+  }
+  .xd-chat__toggle {
+    font-size: 12px !important;
+    padding: 10px 16px !important;
+  }
+}

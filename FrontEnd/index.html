@@ -157,6 +157,59 @@
 
 
 
+<!-- Our Story -->
+<section id="our-story-owner" class="lux-section dark">
+  <div class="container story-grid">
+    <div class="story-photo reveal-up" data-reveal style="--delay:.1s">
+      <img src="images/Sir-Gez.jpeg" alt="Founder Gezim Veliu">
+    </div>
+    <div class="story-text reveal-right" data-reveal style="--delay:.2s">
+      <h2>A Vision of Quiet Luxury</h2>
+      <h4 class="subtitle">Gezim Veliu — Founder & Owner</h4>
+      <p>Since 2016, Executive Driving has redefined what it means to travel in comfort.</p>
+      <p>For our founder, Gezim Veliu, success has never been about distance covered, but about the trust built with every client. From discreet airport arrivals to executive transfers, each journey reflects a promise of punctuality, refinement, and calm assurance.</p>
+      <p class="gold-em">Because true luxury is not loud. It’s quiet confidence.</p>
+    </div>
+  </div>
+</section>
+
+<!-- People Behind the Wheel -->
+<section id="team" class="lux-section">
+  <div class="container team-strip">
+    
+    <!-- Dean -->
+<div class="team-member">
+  <div class="team-photo reveal-left" data-reveal style="--delay:.1s">
+    <img src="images/Sir-Dean.jpeg" alt="Dean – GP Operations">
+  </div>
+  <div class="team-text reveal-up" data-reveal style="--delay:.2s">
+    <h3>Dean — Partner, GP Operations</h3>
+        <h4 class="subtitle">Grounded leadership, built on trust.</h4>
+        <p>Dean has been more than a colleague; he has been a pillar since our founding. His steady hand ensures Grande Prairie operations remain seamless, grounding bold ideas with operational excellence.</p>
+        <p>Through challenges like the pandemic, Dean’s commitment and calm leadership never wavered. His ability to balance vision with stability is what keeps our operations running with quiet precision.</p>
+      </div>
+    </div>
+
+    <!-- Karlee -->
+  <div class="team-member reverse">
+  <div class="team-photo reveal-right" data-reveal style="--delay:.1s">
+    <img src="images/Mam-Karlee.jpeg" alt="Karlee – Executive Travel Associate">
+  </div>
+  <div class="team-text reveal-up" data-reveal style="--delay:.2s">
+    <h3>Karlee — Executive Travel Associate</h3>
+        <h4 class="subtitle">Warmth and professionalism, in every ride.</h4>
+        <p>With a strong background in hospitality, Karlee embodies both warmth and precision. From her career as a Licensed Optician and Dental Assistant to instructing at Bliss Be Fit, she has always put people first.</p>
+        <p>At Executive Driving, Karlee brings that same attention to detail and vibrant personality, ensuring every client feels valued and cared for from the moment they step inside the vehicle.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
 
 
     <section id="contact" class="concierge" aria-labelledby="concierge-title">
@@ -195,40 +248,40 @@
           <div class="card-sheen" aria-hidden="true"></div>
           <h3 class="card-title"><i class="ri-quill-pen-line" aria-hidden="true"></i> Client Care Request</h3>
 
-          <form class="lux-form" action="#" method="post" novalidate>
-            <div class="field-group">
-              <label class="lux-field">
-                <span>Name</span>
-                <input type="text" name="name" placeholder="Jane Doe" required>
-              </label>
-              <label class="lux-field">
-                <span>Phone</span>
-                <input type="tel" name="phone" placeholder="+1 (___) ___ ____" required>
-              </label>
-            </div>
+          <form id="client-form" class="lux-form" novalidate>
+  <div class="field-group">
+    <label class="lux-field">
+      <span>Name</span>
+      <input type="text" name="name" placeholder="Jane Doe" required>
+    </label>
+    <label class="lux-field">
+      <span>Phone</span>
+      <input type="tel" name="phone" placeholder="+1 (___) ___ ____" required>
+    </label>
+  </div>
 
-            <div class="field-group">
-              <label class="lux-field">
-                <span>Email</span>
-                <input type="email" name="email" placeholder="you@company.com" required>
-              </label>
-              <label class="lux-field">
-                <span>Service Date</span>
-                <input type="date" name="date" required>
-              </label>
-            </div>
+  <div class="field-group">
+    <label class="lux-field">
+      <span>Email</span>
+      <input type="email" name="email" placeholder="you@company.com" required>
+    </label>
+    <label class="lux-field">
+      <span>Service Date</span>
+      <input type="date" name="date" required>
+    </label>
+  </div>
 
-            <label class="lux-field">
-              <span>Request</span>
-              <textarea name="details" rows="4" placeholder="Pickup address, flight number, stops, notes…"></textarea>
-            </label>
+  <label class="lux-field">
+    <span>Request</span>
+    <textarea name="details" rows="4" placeholder="Pickup address, flight number, stops, notes…"></textarea>
+  </label>
 
-            <button type="submit" class="btn-rr btn-block">Submit</button>
+  <button type="submit" class="btn-rr btn-block">Submit</button>
+  <p class="micro-note">
+    <i class="ri-lock-2-line" aria-hidden="true"></i> Your details are handled under our Privacy Policy.
+  </p>
+</form>
 
-            <p class="micro-note">
-              <i class="ri-lock-2-line" aria-hidden="true"></i> Your details are handled under our Privacy Policy.
-            </p>
-          </form>
         </div>
       </div>
 
@@ -383,11 +436,11 @@
       <div class="menu-panel">
         <button class="menu-close" aria-label="Close menu">✕</button>
         <nav class="overlay-nav" role="menu">
-          <a class="overlay-link" href="#about-us" role="menuitem">Our Story</a>
+          <a href="#our-story-owner" class="overlay-link">OUR STORY</a>
           <a class="overlay-link" href="#fleet" role="menuitem">The Collection</a>
           <a class="overlay-link js-open-terms" href="#" role="menuitem">Terms and Conditions</a>
           <a class="overlay-link js-open-privacy" href="#" role="menuitem">Privacy Policy</a>
-          <a class="overlay-link" href="#contact" role="menuitem">Concierge</a>
+          <a class="overlay-link" href="#contact" role="menuitem">Customer care</a>
         </nav>
       </div>
     </div>
@@ -641,8 +694,10 @@
       </div>
     </div>
 
-    <!-- Chat Toggle -->
-    <button class="xd-chat__toggle" type="button" aria-label="Open chat">💬</button>
+<button class="xd-chat__toggle" type="button">Ask NAVI?</button>
+
+
+
 
     <!-- Chat Popup -->
     <div class="xd-chat" hidden>
@@ -695,6 +750,7 @@
   });
 </script>
 <meta name="api-base" content="https://executive-driving-backend.onrender.com">
+
 
 
 

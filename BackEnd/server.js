@@ -1,11 +1,19 @@
 // server.js
 import "dotenv/config";
+console.log("BOOKING_EMAIL_TO:", process.env.BOOKING_EMAIL_TO);
+console.log("BOOKING_EMAIL_FROM:", process.env.BOOKING_EMAIL_FROM);
+console.log("SMTP_USER:", process.env.SMTP_USER);
+
 import express from "express";
 import cors from "cors";
 import OpenAI from "openai";
 import nodemailer from "nodemailer";
 import fs from "fs";
 import path from "path";
+
+
+// path to inline email logo
+const LOGO_PATH = path.join(process.cwd(), "assets", "logo-email.png");
 
 /* ---------- Crash guards (log but don't exit) ---------- */
 process.on("unhandledRejection", (reason) => {
@@ -215,15 +223,19 @@ function lastAssistantSaidCompanyInfo(messages = []) {
       )
   );
 }
-
 function lastAssistantCompletedBooking(messages = []) {
   return messages.slice(-4).some(m =>
     m.role === "assistant" &&
     /submitted your reservation|reservation (?:request )?submitted|you(?:’|'|)ll receive a confirmation|confirmation shortly/i.test(m.content || "")
   );
 }
+function lastAssistantClosedSession(messages = []) {
+  return messages.slice(-4).some(m =>
+    m.role === "assistant" && /session closed/i.test(m.content || "")
+  );
+}
 
-/* ---------- STRICT service area helpers (modified to be permissive local) ---------- */
+/* ---------- STRICT service area helpers (improved) ---------- */
 // Postal parsing (Canada-wide)
 const POSTAL_RE = /\b([A-Za-z]\d[A-Za-z])[ -]?(\d[A-Za-z]\d)\b/;
 // First FSA letter province map (simplified): T=Alberta
@@ -237,32 +249,6 @@ function postalRegion(code = "") {
 const EDMONTON_FSA = /^(T5|T6)/;
 const GP_FSA       = /^(T8V|T8W|T8X)/;
 
-// Province names + abbreviations (non-AB)
-const PROVINCES_NON_AB = [
-  "british\\s*columbia","bc","b\\.c\\.","saskatchewan","sk",
-  "manitoba","mb","ontario","on","qu[eé]bec","qc","new\\s*brunswick","nb",
-  "nova\\s*scotia","ns","prince\\s*edward\\s*island","pei","pe",
-  "newfoundland(?:\\s*and\\s*labrador)?","labrador","nl",
-  "yukon","yt","northwest\\s*territories","nt","nunavut","nu"
-];
-// Broad Canada-wide city hints
-const CITIES_NON_AB = [
-  // BC
-  "vancouver","surrey","burnaby","richmond","victoria","kelowna","kamloops","nanaimo","abbotsford","coquitlam","langley",
-  // SK/MB
-  "regina","saskatoon","winnipeg","brandon","prince\\s*albert",
-  // ON
-  "toronto","mississauga","brampton","ottawa","hamilton","london","kitchener","waterloo","guelph","markham","vaughan",
-  "richmond\\s*hill","scarborough","north\\s*york","etobicoke","pickering","ajax","whitby","oshawa","barrie","windsor",
-  "kingston","niagara\\s*falls","thunder\\s*bay","sudbury","oakville","burlington","milton",
-  // QC
-  "montreal","qu[eé]bec\\s*city","laval","gatineau","longueuil","sherbrooke","trois-?rivi[eè]res","saguenay",
-  // ATL
-  "moncton","saint\\s*john","fredericton","halifax","dartmouth","sydney","charlottetown","st\\.?\\s*john's",
-  // North
-  "whitehorse","yellowknife","iqaluit"
-];
-
 // Airports: Alberta vs non-Alberta (IATA)
 const ALBERTA_AIRPORTS = /\b(YEG|YYC|YMM|YQU|YQL|YBW)\b/i;
 const NON_AB_IATA = /\b(YYZ|YVR|YUL|YOW|YHZ|YQB|YXE|YQR|YWG|YYJ|YXX|YHM|YKF|YTZ|YQT|YXS|YZF|YXY|YQM)\b/i;
@@ -270,14 +256,27 @@ const NON_AB_IATA = /\b(YYZ|YVR|YUL|YOW|YHZ|YQB|YXE|YQR|YWG|YYJ|YXX|YHM|YKF|YTZ|
 // Alberta service cities
 const AB_SERVICE_CITIES = /\b(edmonton|st\.?\s*albert|sherwood\s*park|leduc|nisku|spruce\s*grove|stony\s*plain|fort\s*saskatchewan|grande\s*prairie|clairmont|sexsmith|beaverlodge|hythe)\b/i;
 
-// Combined non-Alberta hints
-const NON_AB_HINTS = new RegExp(
-  [
-    ...PROVINCES_NON_AB,
-    ...CITIES_NON_AB
-  ].join("|"),
-  "i"
-);
+/* ---- STRICT non-AB city detection with exceptions ---- */
+const NONAB_EXCEPTIONS = [
+  /\blondon\s+drugs\b/i,
+  /\brichmond\s+ave\b/i,
+  /\brichmond\s+park\b/i
+];
+const CITIES_NON_AB_STRICT = [
+  "\\bvancouver\\b","\\bsurrey\\b","\\bburnaby\\b","\\brichmond\\b","\\bvictoria\\b","\\bkelowna\\b","\\bkamloops\\b","\\bnanaimo\\b","\\babbotsford\\b","\\bcoquitlam\\b","\\blangley\\b",
+  "\\bregina\\b","\\bsaskatoon\\b","\\bwinnipeg\\b","\\bbrandon\\b","\\bprince\\s*albert\\b",
+  "\\btoronto\\b","\\bmississauga\\b","\\bbrampton\\b","\\bottawa\\b","\\bhamilton\\b","\\blondon\\b","\\bkitchener\\b","\\bwaterloo\\b","\\bguelph\\b","\\bmarkham\\b","\\bvaughan\\b",
+  "\\brichmond\\s*hill\\b","\\bscarborough\\b","\\bnorth\\s*york\\b","\\betobicoke\\b","\\bpickering\\b","\\bajax\\b","\\bwhitby\\b","\\boshawa\\b","\\bbarrie\\b","\\bwindsor\\b",
+  "\\bkingston\\b","\\bniagara\\s*falls\\b","\\bthunder\\s*bay\\b","\\bsudbury\\b","\\boakville\\b","\\bburlington\\b","\\bmilton\\b",
+  "\\bmontreal\\b","\\bqu[eé]bec\\s*city\\b","\\blaval\\b","\\bgatineau\\b","\\blongueuil\\b","\\bsherbrooke\\b","\\btrois-?rivi[eè]res\\b","\\bsaguenay\\b",
+  "\\bmoncton\\b","\\bsaint\\s*john\\b","\\bfredericton\\b","\\bhalifax\\b","\\bdartmouth\\b","\\bsydney\\b","\\bcharlottetown\\b","\\bst\\.?\\s*john's\\b",
+  "\\bwhitehorse\\b","\\byellowknife\\b","\\biqaluit\\b"
+].join("|");
+const NON_AB_HINTS_STRICT = new RegExp(CITIES_NON_AB_STRICT, "i");
+function looksNonAlbertaButNotException(txt = "") {
+  if (NONAB_EXCEPTIONS.some(rx => rx.test(txt))) return false;
+  return NON_AB_HINTS_STRICT.test(txt);
+}
 
 /* ---------- Canadian airport + POI recognizers ---------- */
 function isCanadianIATA(text = "") { return /\bY[A-Z]{2}\b/.test(String(text).toUpperCase()); }
@@ -289,28 +288,23 @@ function isAirportName(text = "") {
 }
 function isHotelPOI(text = "") {
   const s = String(text).toLowerCase();
-  // Expanded chain list incl. Days Inn / Wyndham and more local hits
   return /\b(best\s*western|hilton|marriott|sheraton|holiday\s*inn|ramada|sandman|delta\s+hotels?|four\s+points|fairmont|comfort\s+inn|super\s*8|westin|staybridge|courtyard|residence\s+inn|hampton\s+inn|matrix\s+hotel|chateau\s+lacombe|varscona|metterra|coast\s+edmonton|doubletree|days\s*inn|wyndham|travelodge|microtel|spark\s*hotels|tru\s*by\s*hilton)\b/.test(s);
 }
 function isSpecificLandmark(text = "") {
   const s = String(text).toLowerCase();
-  return /\b(west\s+edmonton\s+mall|rogers\s+place|u\s*of\s*a|university\s+of\s+alberta|kingsway\s+mall|southgate\s+centre|macewan\s+university|commonwealth\s+stadium|ice\s+district|fort\s*mcmurray\s+international|ymm)\b/.test(s);
+  return /\b(west\s+edmonton\s+mall|wem|west\s+ed\s+mall|rogers\s+place|u\s*of\s*a|university\s+of\s+alberta|kingsway\s+mall|southgate\s+centre|macewan\s+university|commonwealth\s+stadium|ice\s+district|fort\s*mcmurray\s+international|ymm)\b/.test(s);
 }
 
 /** Drop-off: allow anywhere; just add note if looks outside Alberta */
 function dropoffNeedsEscalation(text = "") {
   const s = String(text);
   if (isCanadianIATA(s)) return !ALBERTA_AIRPORTS.test(s);
-  if (NON_AB_HINTS.test(s)) return true;
+  if (looksNonAlbertaButNotException(s)) return true;
   if (NON_AB_IATA.test(s)) return true;
   return false;
 }
 function dropoffEscalationLine(_text = "") {
-  return (
-    "Drop-off noted. This appears to be **outside Alberta** — " +
-    "we’ll proceed with your booking** and inform the team since it’s long-distance. " +
-    "They’ll confirm final details and pricing shortly."
-  );
+  return "Drop-off noted. This appears to be **outside Alberta** — we’ll proceed with your booking and inform the team since it’s long-distance. They’ll confirm final details and pricing shortly.";
 }
 
 /* ---------- Phone, email, time & address helpers ---------- */
@@ -354,22 +348,15 @@ function normalizeAirportHints(text = "") {
   return null;
 }
 
-/* ---------- POSITIVE LOCAL DETECTOR (NEW) ---------- */
-// Strong allow if pickup clearly mentions Edmonton/GP or local postals
+/* ---------- POSITIVE LOCAL DETECTOR (upgraded with WEM/Rogers) ---------- */
 function isClearlyEdmontonOrGP(text = "") {
   const s = String(text).toLowerCase();
 
-  // City/area names and common abbreviations
-  if (/\b(edmonton|yeg|st\.?\s*albert|sherwood\s*park|leduc|nisku|spruce\s*grove|stony\s*plain|fort\s*saskatchewan|grande\s*prairie|gp|yqu|clairmont|sexsmith|beaverlodge|hythe)\b/.test(s)) {
+  if (/\b(yeg|edm|edmonton|grande\s*prairie|gp|yqu|st\.?\s*albert|sherwood\s*park|leduc|nisku|spruce\s*grove|stony\s*plain|fort\s*saskatchewan|clairmont|sexsmith|beaverlodge|hythe)\b/.test(s)) {
     return true;
   }
+  if (/\b(wem|west\s+ed(?:monton)?\s+mall|rogers\s+place)\b/i.test(s)) return true;
 
-  // Hotel/POI + city combo → accept
-  if ((isHotelPOI(s) || isSpecificLandmark(s)) && /\b(edmonton|grande\s*prairie|yeg|yqu)\b/.test(s)) {
-    return true;
-  }
-
-  // Local postals
   const m = s.match(POSTAL_RE);
   if (m) {
     const fsa = m[1].toUpperCase();
@@ -396,25 +383,20 @@ function addressTooVague(raw = "") {
 
   const sl = s.toLowerCase();
 
-  // Block URLs/emails/emojis/junk only
   if (/(https?:\/\/|www\.)/i.test(sl) || /@/.test(sl)) return true;
   if (/★|☆|✔|⚡|🔥|💥|✨/.test(sl)) return true;
 
-  // If it clearly looks local (city names, local postals, or known POIs), it's NOT vague
   if (isClearlyEdmontonOrGP(sl) || isHotelPOI(sl) || isSpecificLandmark(sl) || isAirportName(sl) || POSTAL_RE.test(sl)) {
     return false;
   }
 
-  // Street or intersection patterns are fine
   const hasNum   = /\b\d{1,6}[A-Za-z]?\b/.test(sl);
   const hasRoad  = /\b(st|street|ave|avenue|rd|road|blvd|boulevard|drive|dr|way|trail|trl|cres|crescent|gate|park|plaza|place|pl|lane|ln|court|ct|terrace|ter|highway|hwy|pkwy|parkway)\b/.test(sl);
   const isXing   = /\b(st|street|ave|avenue|rd|road|blvd|drive|dr|way|lane|ln|ct|court|hwy|highway)\b.*\b(&|and|@)\b.*\b(st|street|ave|avenue|rd|road|blvd|drive|dr|way|lane|ln|ct|court|hwy|highway)\b/.test(sl);
   if ((hasNum && hasRoad) || isXing) return false;
 
-  // Words like “Downtown” alone are vague unless paired with a city — we handled city above
   if (/^(airport|mall|downtown|uptown|suburbs|station|centre|center|campus|entrance|gate|hotel)$/i.test(sl)) return true;
 
-  // Otherwise require at least two solid tokens
   const tokens = sl.split(/\s+/).filter(t => t.length >= 2);
   return tokens.length < 2;
 }
@@ -462,7 +444,7 @@ function firstName(s = "") {
   return String(s).trim().split(/\s+/)[0] || "";
 }
 
-/* ---------- Alberta pickup rules (REWRITTEN to be permissive for local) ---------- */
+/* ---------- Alberta pickup rules ---------- */
 function pickupAreaByPostal(text = "") {
   const info = postalRegion(text);
   if (!info) return "none";
@@ -472,7 +454,7 @@ function pickupAreaByPostal(text = "") {
 }
 function inferPickupAreaNoPostal(text = "") {
   const s = String(text).toLowerCase();
-  if (NON_AB_HINTS.test(s)) return "nonab";
+  if (looksNonAlbertaButNotException(s)) return "nonab";
   if (ALBERTA_AIRPORTS.test(s)) return "in";
   if (AB_SERVICE_CITIES.test(s) || /\bedmonton|grande\s*prairie|calgary|fort\s*mcmurray|leduc\b/i.test(s)) return "in";
   if (/\balberta\b/i.test(s)) return "ab-out";
@@ -584,12 +566,14 @@ function parseDateSmart(input, now = new Date()) {
     return { iso: toISO(year, month, day) };
   }
 
-  // today / tomorrow
-  if (s === "today")  return { iso: toISO(now.getFullYear(), now.getMonth()+1, now.getDate()) };
-  if (s === "tomorrow") {
+  // tomorrow (typos)
+  if (s === "tomorrow" || /^tom+?or+?ow$/.test(s) || /^tomm?or?ro?w$/.test(s) || /^tmrw$/.test(s)) {
     const t = new Date(now.getTime() + 24*3600*1000);
     return { iso: toISO(t.getFullYear(), t.getMonth()+1, t.getDate()) };
   }
+
+  // today
+  if (s === "today")  return { iso: toISO(now.getFullYear(), now.getMonth()+1, now.getDate()) };
 
   const parseYearToken = (tok, month, day) => {
     if (!tok) return resolveYearForLocal(month, day);
@@ -649,17 +633,24 @@ function userJustMentionedDate(utterance = "") {
 }
 
 /* ---------- Health ---------- */
-app.get("/health", (_req, res) => {
-  res.status(process.env.OPENAI_API_KEY ? 200 : 500).json({ ok: !!process.env.OPENAI_API_KEY });
+app.get("/health", async (_req, res) => {
+  const smtpOK = await transporter.verify().then(() => true).catch(() => false);
+  res.status(process.env.OPENAI_API_KEY && smtpOK ? 200 : 500).json({ ok: !!process.env.OPENAI_API_KEY, smtp: smtpOK });
 });
 
-/* ---------- Email transporter (Gmail SMTP) ---------- */
+/* ---------- Email transporter (Office 365 SMTP) ---------- */
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+  host: process.env.SMTP_HOST || "smtp.office365.com",
+  port: Number(process.env.SMTP_PORT || 587),
+  secure: false,                 // STARTTLS
+  requireTLS: true,              // ensure TLS upgrade
+  auth: {
+    user: process.env.SMTP_USER, // info@executivedriving.ca
+    pass: process.env.SMTP_PASS, // 16-char App Password
+  },
+  tls: { minVersion: "TLSv1.2" },
 });
+
 transporter.verify()
   .then(() => console.log("📧 SMTP ready"))
   .catch(err => console.error("SMTP verify failed:", err?.message || err));
@@ -672,15 +663,14 @@ function renderBookingEmail({ name, phone, email, pickup, dropoff, date, time, p
   const esc = (s = "-") =>
     String(s).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
   const br = (s = "") => esc(s).replace(/\n/g, "<br>");
-  const LOGO_SRC = "https://i.imgur.com/2QeJxQX.png";
 
   return `
   <div style="font-family:Inter,Arial,sans-serif; max-width:640px; margin:0 auto; border:1px solid #eee; border-radius:12px; overflow:hidden; box-shadow:0 4px 14px rgba(0,0,0,.12)">
     <div style="background:#0a0b0d; padding:20px; text-align:center;">
-      <img src="${LOGO_SRC}" alt="Executive Driving" style="max-height:80px; margin:0 auto; display:block" />
+      <img src="cid:logo" alt="Executive Driving" style="max-height:80px; margin:0 auto; display:block" />
     </div>
     <div style="padding:24px; background:#fff; color:#111; line-height:1.6;">
-      <h2 style="margin:0 0 16px; font-size:20px; color:#0a0b0d;">🚖 New Reservation Request</h2>
+      <h2 style="margin:0 0 16px; font-size:20px; color:#0a0b0d;">🚘 New Reservation Request</h2>
       <table style="width:100%; border-collapse:collapse; font-size:14px;">
         <tr><td style="padding:6px 0;"><b>Name:</b></td><td>${esc(name)}</td></tr>
         <tr><td style="padding:6px 0;"><b>Phone:</b></td><td>${esc(phone || "")}</td></tr>
@@ -706,17 +696,136 @@ function renderBookingEmail({ name, phone, email, pickup, dropoff, date, time, p
   </div>
   `;
 }
+/* ---------- Customer Confirmation Email (to the client) ---------- */
+function renderCustomerConfirmationEmail({ name, pickup, dropoff, date, time, passengers }) {
+  const esc = (s = "-") =>
+    String(s).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+
+  return `
+  <div style="font-family:Inter,Arial,sans-serif; max-width:640px; margin:0 auto; border:1px solid #eee; border-radius:12px; overflow:hidden; box-shadow:0 4px 14px rgba(0,0,0,.12)">
+    <div style="background:#0a0b0d; padding:20px; text-align:center;">
+     <img src="cid:logo" alt="Executive Driving" style="max-height:80px; margin:0 auto; display:block" />
+    </div>
+    <div style="padding:24px; background:#fff; color:#111; line-height:1.6;">
+      <h2 style="margin:0 0 10px; font-size:20px;">Thank you${name ? `, ${esc(name)}` : ""}!</h2>
+
+      <p style="margin:0 0 14px;">
+        Your booking request with <b>Executive Driving</b> has been received.
+        We’ll review availability and send a final confirmation shortly.
+      </p>
+
+      <table style="width:100%; border-collapse:collapse; font-size:14px;">
+        <tr><td style="padding:6px 0;"><b>Pickup:</b></td><td>${esc(pickup)}</td></tr>
+        <tr><td style="padding:6px 0;"><b>Drop-off:</b></td><td>${esc(dropoff)}</td></tr>
+        <tr><td style="padding:6px 0;"><b>Date:</b></td><td>${esc(date)}</td></tr>
+        <tr><td style="padding:6px 0;"><b>Time:</b></td><td>${esc(time)}</td></tr>
+        <tr><td style="padding:6px 0;"><b>Passengers:</b></td><td>${esc(passengers)}</td></tr>
+      </table>
+
+      <p style="margin:18px 0 0; font-size:14px; color:#333;">
+        Our chauffeur will be ready and waiting. If you need to make any changes, just reply to this email.
+      </p>
+
+      <p style="margin:18px 0 0; font-size:15px; font-weight:600; color:#000;">
+        We wish you a pleasant ride with Executive Driving 🚘✨
+      </p>
+
+      <hr style="margin:20px 0; border:none; border-top:1px solid #eee">
+      <p style="font-size:13px; color:#555;">
+        Executive Driving — Edmonton & Grande Prairie<br>
+        📞 825-973-9800 &nbsp; | &nbsp; ✉️ info@executivedriving.ca
+      </p>
+    </div>
+    <div style="background:#0a0b0d; padding:14px; text-align:center; font-size:12px; color:#aaa;">
+      © ${new Date().getFullYear()} Executive Driving. All rights reserved.
+    </div>
+  </div>
+  `;
+}
+/* ---------- Branded Concierge Email ---------- */
+function renderConciergeEmail({ name, phone, email, date, details }) {
+  const esc = (s = "-") =>
+    String(s).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+  const br = (s = "") => esc(s).replace(/\n/g, "<br>");
+
+  return `
+  <div style="font-family:Inter,Arial,sans-serif; max-width:640px; margin:0 auto; border:1px solid #eee; border-radius:12px; overflow:hidden; box-shadow:0 4px 14px rgba(0,0,0,.12)">
+    <div style="background:#0a0b0d; padding:20px; text-align:center;">
+      <img src="cid:logo" alt="Executive Driving" style="max-height:80px; margin:0 auto; display:block" />
+    </div>
+    <div style="padding:24px; background:#fff; color:#111; line-height:1.6;">
+      <h2 style="margin:0 0 16px; font-size:20px; color:#0a0b0d;">📩 New Client Care Request</h2>
+      <table style="width:100%; border-collapse:collapse; font-size:14px;">
+        <tr><td style="padding:6px 0;"><b>Name:</b></td><td>${esc(name)}</td></tr>
+        <tr><td style="padding:6px 0;"><b>Phone:</b></td><td>${esc(phone)}</td></tr>
+        <tr><td style="padding:6px 0;"><b>Email:</b></td><td>${esc(email)}</td></tr>
+        <tr><td style="padding:6px 0;"><b>Requested Date:</b></td><td>${esc(date)}</td></tr>
+      </table>
+      ${details ? `<p style="margin:16px 0 0;"><b>Details:</b><br>${br(details)}</p>` : ""}
+      <hr style="margin:24px 0; border:none; border-top:1px solid #eee">
+      <p style="font-size:13px; color:#555; text-align:center;">
+        Submitted via the Executive Driving website (Client Care section).
+      </p>
+    </div>
+    <div style="background:#0a0b0d; padding:14px; text-align:center; font-size:12px; color:#aaa;">
+      © ${new Date().getFullYear()} Executive Driving. All rights reserved.
+    </div>
+  </div>
+  `;
+}
+
+
+/* ---------- Helper: send customer confirmation ---------- */
+async function sendCustomerConfirmationEmail({ name, pickup, dropoff, date, time, passengers, email }) {
+  if (!email || !validEmail(email)) return;
+  const subject = `Your Executive Driving booking request — ${date} ${time}`;
+  const html = renderCustomerConfirmationEmail({ name, pickup, dropoff, date, time, passengers });
+  await transporter.sendMail({
+    to: email,
+    from: BOOK_FROM,
+    subject,
+    html,
+    attachments: [
+      { filename: "logo-email.png", path: LOGO_PATH, cid: "logo" }
+    ],
+  });
+}
 
 /* ---------- Booking endpoint (popup form) ---------- */
+/* ---------- Booking + Concierge endpoint ---------- */
 app.post("/book", async (req, res) => {
   try {
+    const { type } = req.body || {};
+
+    // --- Concierge form branch ---
+    if (type === "concierge") {
+      const { name, phone, email, date, details } = req.body || {};
+      if (!name || !phone || !email || !date) {
+        return res.status(400).json({ ok: false, error: "Missing required concierge fields" });
+      }
+      if (!BOOK_TO) return res.status(500).json({ ok: false, error: "Server misconfig: BOOKING_EMAIL_TO not set" });
+
+      const subject = `📩 Client Care Request — ${name}`;
+      await transporter.sendMail({
+        to: BOOK_TO,
+        from: BOOK_FROM,
+        replyTo: email,
+        subject,
+        html: renderConciergeEmail({ name, phone, email, date, details }),
+        attachments: [{ filename: "logo-email.png", path: LOGO_PATH, cid: "logo" }],
+      });
+
+      return res.json({ ok: true });
+    }
+
+    // --- Existing booking branch (your old code stays the same) ---
     const { name, phone, email, pickup, dropoff, date, time, passengers, notes } = req.body || {};
     const required = ["name","phone","email","pickup","dropoff","date","time","passengers"];
     const missing = required.filter((k) => !req.body?.[k]);
     if (missing.length) return res.status(400).json({ ok: false, error: `Missing: ${missing.join(", ")}` });
     if (!BOOK_TO) return res.status(500).json({ ok: false, error: "Server misconfig: BOOKING_EMAIL_TO not set" });
 
-    const subject = `🚖 Booking: ${pickup} → ${dropoff} • ${date} ${time} • ${name}`;
+    const subject = `🚘 Booking: ${pickup} → ${dropoff} • ${date} ${time} • ${name}`;
     await transporter.sendMail({
       to: BOOK_TO,
       from: BOOK_FROM,
@@ -734,7 +843,14 @@ app.post("/book", async (req, res) => {
         luggage: null,
         notes
       }),
+      attachments: [{ filename: "logo-email.png", path: LOGO_PATH, cid: "logo" }],
     });
+
+    try {
+      await sendCustomerConfirmationEmail({ name, pickup, dropoff, date, time, passengers, email });
+    } catch (e) {
+      console.error("customer confirmation failed:", e?.message || e);
+    }
 
     return res.json({ ok: true });
   } catch (err) {
@@ -790,7 +906,6 @@ function missingFields(f = {}) {
   });
 }
 function invalidReason(fields = {}) {
-  // coerce up-front
   if ("luggage" in fields && typeof fields.luggage !== "boolean") {
     fields.luggage = coerceLuggage(fields.luggage);
   }
@@ -823,7 +938,6 @@ function invalidReason(fields = {}) {
     if (airportHint) return { key: "dropoff", msg: "❌ " + airportHint };
   }
 
-  // Date normalization
   if (fields.date) {
     const raw = String(fields.date).trim();
     const numericOk = /^(?:\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}(?:\/\d{2,4})?)$/.test(raw);
@@ -841,20 +955,53 @@ function invalidReason(fields = {}) {
   return null;
 }
 
+/* ---------- Google Geocoding helpers ---------- */
+const GOOGLE_KEY = process.env.GOOGLE_MAPS_API_KEY;
+
+async function geocodePlace(q) {
+  if (!GOOGLE_KEY) return null;
+  const url = new URL("https://maps.googleapis.com/maps/api/geocode/json");
+  url.searchParams.set("address", q);
+  url.searchParams.set("key", GOOGLE_KEY);
+
+  const r = await fetch(url, { method: "GET" });
+  const data = await r.json();
+  if (data.status !== "OK" || !data.results?.length) return null;
+
+  const top = data.results[0];
+  const comp = {};
+  for (const c of top.address_components) {
+    for (const t of c.types) comp[t] = c.long_name;
+  }
+  return {
+    formatted: top.formatted_address,
+    location: top.geometry?.location || null,
+    components: comp,
+    raw: top
+  };
+}
+function isInAlberta(components = {}) {
+  const prov = (components.administrative_area_level_1 || "").toLowerCase();
+  const country = (components.country || "").toLowerCase();
+  return country.includes("canada") && (prov.includes("alberta") || prov === "ab");
+}
+function isInServiceCities(components = {}) {
+  const city = (components.locality || components.postal_town || components.sublocality || "").toLowerCase();
+  return /\b(edmonton|grande prairie|st\.?\s*albert|sherwood park|leduc|nisku|spruce grove|stony plain|fort saskatchewan|clairmont|sexsmith|beaverlodge|hythe)\b/.test(city);
+}
+
 /* ---------- AI extract structured info ---------- */
 async function extractBookingWithAI(messages = []) {
   try {
     const transcript = messages.map(m => `${m.role.toUpperCase()}: ${m.content}`).join("\n");
     const sys = `
-You extract booking details from a chat. Output ONLY compact JSON with keys:
-{name, phone, email, pickup, dropoff, date, time, passengers, luggage, notes}
-No prose. No backticks. No explanations. JSON only.
-
+You extract booking details from a chat. Output ONLY JSON (no prose, no code fences) exactly like:
+{"name":null,"phone":null,"email":null,"pickup":null,"dropoff":null,"date":null,"time":null,"passengers":null,"luggage":null,"notes":null}
 Rules:
 - Use the user's own words for date/time if not exact (e.g., "tomorrow", "11 pm").
-- luggage: true/false/null
-- passengers should be a number if stated, else null
-- If a field is unknown, set it to null. Do not invent values.
+- passengers: number or null.
+- luggage: true/false/null.
+- If a field is unknown, set it to null. Do NOT invent values.
 `.trim();
 
     const r = await openai.chat.completions.create({
@@ -889,7 +1036,7 @@ Rules:
 
 async function sendBookingEmailFromChat(fields) {
   if (!BOOK_TO) throw new Error("BOOKING_EMAIL_TO not set");
-  const subject = `🚖 Booking: ${fields.pickup} → ${fields.dropoff} • ${fields.date} ${fields.time} • ${fields.name || "Client"}`;
+  const subject = `🚘 Booking: ${fields.pickup} → ${fields.dropoff} • ${fields.date} ${fields.time} • ${fields.name || "Client"}`;
 
   const html = renderBookingEmail({
     ...fields,
@@ -902,8 +1049,25 @@ async function sendBookingEmailFromChat(fields) {
     from: BOOK_FROM,
     replyTo: fields.email || undefined,
     subject,
-    html
+    html,
+    attachments: [
+      { filename: "logo-email.png", path: LOGO_PATH, cid: "logo" }
+    ],
   });
+
+  try {
+    await sendCustomerConfirmationEmail({
+      name: fields.name || "Guest",
+      pickup: fields.pickup,
+      dropoff: fields.dropoff,
+      date: fields.date,
+      time: fields.time,
+      passengers: fields.passengers,
+      email: fields.email
+    });
+  } catch (e) {
+    console.error("chat: customer confirmation failed:", e?.message || e);
+  }
 }
 
 /* ---------- NEW: helper to avoid repeating the long-distance line ---------- */
@@ -931,16 +1095,17 @@ app.post("/chat", async (req, res) => {
       return res.json({ reply: "All good no booking. I’m here for info too: pricing, routes, service area, vehicles, or policies. What would you like to know?" });
     }
 
-    /* 0a) Conversation wrap-up: thanks / bye */
-  /* 0a) Conversation wrap-up: thanks / bye / no */
-if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_RE.test(lastUser)) {
-  const closedAfterBooking = lastAssistantCompletedBooking(messages);
-  const wrap = closedAfterBooking
-    ? "Thank you! 🙏 Your booking is confirmed. Session closed. Start a new chat anytime 👍"
-    : "Session closed. Start a new chat anytime 👍";
-  return res.json({ reply: wrap, done: true });
-}
-
+    /* 0a) Conversation wrap-up: thanks / bye / no */
+    if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_RE.test(lastUser)) {
+      if (lastAssistantClosedSession(messages)) {
+        return res.json({ reply: "Noted. Chat already closed. Start a new chat anytime 👍", done: true });
+      }
+      const closedAfterBooking = lastAssistantCompletedBooking(messages);
+      const wrap = closedAfterBooking
+        ? "Thank you! 🙏 Your booking is submitted. Session closed. Start a new chat anytime 👍"
+        : "Session closed. Start a new chat anytime 👍";
+      return res.json({ reply: wrap, done: true });
+    }
 
     /* 0b) On confirm: collect anything missing, then email */
     if (AFFIRM_RE.test(lastUser)) {
@@ -958,22 +1123,30 @@ if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_R
           const parsed = parseDateSmart(extracted.date);
           if (parsed?.iso) {
             extracted.date = parsed.iso;
-            extracted.__dateNote = null; // no need to show again on confirm
+            extracted.__dateNote = null;
           }
         }
 
-        // --- NEW permissive local pickup rule on confirm ---
+        // --- PICKUP authoritative check ---
         if (extracted.pickup) {
-          const txt = String(extracted.pickup || "");
-
-          // If it’s clearly local, allow
-          if (!isClearlyEdmontonOrGP(txt)) {
-            const nonAB = NON_AB_HINTS.test(txt) || NON_AB_IATA.test(txt);
-            if (nonAB) {
-              return res.json({ reply: pickupHardStopNonAlberta(txt), done: true });
+          const geo = await geocodePlace(extracted.pickup);
+          if (geo) {
+            if (!isInAlberta(geo.components)) {
+              return res.json({ reply: pickupHardStopNonAlberta(geo.formatted), done: true });
             }
-            if (addressTooVague(txt)) {
-              return res.json({ reply: "OOPSI! Could you share the **exact pickup address** (number + street) or a precise place like “Days Inn by Wyndham Edmonton Downtown – Front Entrance” or “YEG – Arrivals”?" });
+            if (!isInServiceCities(geo.components)) {
+              return res.json({ reply: pickupPolitelyDeclineABOut(geo.formatted) });
+            }
+            extracted.pickup = geo.formatted;
+          } else {
+            if (!isClearlyEdmontonOrGP(extracted.pickup)) {
+              const nonAB = looksNonAlbertaButNotException(extracted.pickup) || NON_AB_IATA.test(extracted.pickup);
+              if (nonAB) {
+                return res.json({ reply: pickupHardStopNonAlberta(extracted.pickup), done: true });
+              }
+              if (addressTooVague(extracted.pickup)) {
+                return res.json({ reply: "OOPSI! Could you share the **exact pickup address** (number + street) or a precise place like “Days Inn by Wyndham Edmonton Downtown – Front Entrance” or “YEG – Arrivals”?" });
+              }
             }
           }
         }
@@ -1114,13 +1287,20 @@ if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_R
       }
     }
 
-    // --- NEW permissive local pickup rule during flow ---
+    // --- PICKUP authoritative check ---
     if (extractedNow.pickup) {
-      const txt = String(extractedNow.pickup || "");
-      if (!isClearlyEdmontonOrGP(txt)) {
-        const nonAB = NON_AB_HINTS.test(txt) || NON_AB_IATA.test(txt);
-        if (nonAB) return res.json({ reply: pickupHardStopNonAlberta(txt) });
-        if (addressTooVague(txt)) return res.json({ reply: "❌ Could you share the **exact pickup address** (number + street) or a precise place like “Days Inn by Wyndham Edmonton Downtown – Front Entrance” or “YEG – Arrivals”?" });
+      const geo = await geocodePlace(extractedNow.pickup);
+      if (geo) {
+        if (!isInAlberta(geo.components)) return res.json({ reply: pickupHardStopNonAlberta(geo.formatted) });
+        if (!isInServiceCities(geo.components)) return res.json({ reply: pickupPolitelyDeclineABOut(geo.formatted) });
+        extractedNow.pickup = geo.formatted;
+      } else {
+        const txt = String(extractedNow.pickup || "");
+        if (!isClearlyEdmontonOrGP(txt)) {
+          const nonAB = looksNonAlbertaButNotException(txt) || NON_AB_IATA.test(txt);
+          if (nonAB) return res.json({ reply: pickupHardStopNonAlberta(txt) });
+          if (addressTooVague(txt)) return res.json({ reply: "❌ Could you share the **exact pickup address** (number + street) or a precise place like “Days Inn by Wyndham Edmonton Downtown – Front Entrance” or “YEG – Arrivals”?" });
+        }
       }
     }
 
@@ -1166,49 +1346,26 @@ if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_R
       return res.json({ reply: (nextPromptPrefix ? nextPromptPrefix : "") + tailored });
     }
 
-    /* 6) Persona & style (LLM response for natural continuation) */
-    const systemPrompt = `
-You are NAVI — the Executive Driving Concierge. Be warm, concise, and helpful.
-- Use brief confirmations: “Absolutely”, “Got it”, “No problem”.
-- Ask exactly one next question at a time.
-- Keep replies under ~100–120 words.
-- End with a clear next step.
-
-BOOKING FLOW (ask only what’s missing, in order):
-0) client name → 0b) phone → 0c) email
-1) pickup (must be Edmonton/Grande Prairie area, exact address or precise place)
-2) destination (exact address or precise place; anywhere is fine — if outside Alberta, proceed but note long-distance)
-3) date (natural dates like “7th October” are OK, even with minor typos)
-4) time (ensure AM/PM clarity)
-5) passengers
-6) luggage
-7) notes/flight #.
-
-KNOWLEDGE:
-${COMPANY_FACTS}
-`.trim();
-
-    let reply = REDIRECT;
+    // ✅ No fields missing and no validation errors → submit automatically
     try {
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        temperature: 0.5,
-        presence_penalty: 0.2,
-        max_tokens: 280,
-        messages: [{ role: "system", content: systemPrompt }, ...messages]
+      await sendBookingEmailFromChat(extractedNow);
+      const reply =
+        `Thank you${extractedNow.name ? `, ${extractedNow.name}` : ""}! I’ve submitted your reservation.\n` +
+        `Pickup: ${extractedNow.pickup} → ${extractedNow.dropoff}\n` +
+        `Date/Time: ${extractedNow.date} ${extractedNow.time}\n` +
+        `Passengers: ${extractedNow.passengers}${extractedNow.luggage === true ? " • Luggage noted" : ""}.` +
+        (extractedNow.__dropoffEscalationNote ? `\n\n${extractedNow.__dropoffEscalationNote}` : "") +
+        `\nYou’ll receive a confirmation shortly. Anything else I can arrange?`;
+      return res.json({ reply, done: true });
+    } catch (e) {
+      console.error("auto-submit failed:", e?.message || e);
+      return res.json({
+        reply:
+          "I’ve captured your details. There was a hiccup submitting just now, but **your request is safe**. " +
+          "I’ll escalate this to an agent to finalize and email you the confirmation shortly."
       });
-      reply = (completion.choices?.[0]?.message?.content || "").trim() || REDIRECT;
-    } catch (err) {
-      console.error("OpenAI chat error:", err?.message || err);
-      reply = "I’m here and ready to help with your booking. Share pickup, destination, date & time and I’ll take it from there.";
     }
 
-    const looksBooking = /pickup|drop[- ]?off|date|time|passengers|confirm|reservation/i.test(reply);
-    if (!looksBooking) {
-      learnQnA(lastUserRaw, reply);
-    }
-
-    return res.json({ reply });
   } catch (err) {
     console.error("chat error (outer):", err);
     return res.status(500).json({ reply: "Sorry, something went wrong on my side. Could you try again?" });
