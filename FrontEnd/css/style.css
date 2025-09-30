@@ -2794,3 +2794,14 @@ img, video {
 * {
   outline: 1px solid red !important;
 }
+/* Fix footer payment logos overflow */
+.pay-logos {
+  flex-wrap: wrap;          /* allow logos to wrap instead of forcing one long row */
+  justify-content: center;  /* keep them centered */
+  max-width: 100%;          /* never bigger than screen */
+  overflow-x: hidden;       /* stop sideways push */
+}
+
+.pay-logos li {
+  flex: 0 1 auto;           /* let them shrink if needed */
+}
