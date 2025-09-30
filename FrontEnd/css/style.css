@@ -2792,19 +2792,10 @@ img {
 .pay-logos li {
   flex: 0 1 auto;           /* let them shrink if needed */
 }
-/* Remove hero image completely, always video */
-.hero-image {
-  display: none !important;
-}
-
-
 /* Desktop team photo control */
 @media (min-width: 769px) {
   .team-photo img {
     max-width: 480px;   /* keeps them classy, not giant */
     margin: 0 auto;
   }
-}
-* {
-  outline: 1px solid red !important;
 }
