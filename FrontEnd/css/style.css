@@ -2792,26 +2792,12 @@ img {
 .pay-logos li {
   flex: 0 1 auto;           /* let them shrink if needed */
 }
-/* Mobile image swap */
+/* Remove hero image completely, always video */
 .hero-image {
-  display: none; /* hidden on desktop */
+  display: none !important;
 }
 
-@media (max-width: 768px) {
-  .hero-video {
-    display: none !important;   /* kill video only on mobile */
-  }
 
-  .hero-image {
-    display: block !important;  /* show image */
-    width: 100%;
-    height: auto;               /* keep natural proportions */
-    max-height: 100vh;          /* never taller than screen */
-    object-fit: cover;          /* scale nicely if needed */
-    position: relative;         /* stays inside hero section */
-    z-index: 0;
-  }
-}
 /* Desktop team photo control */
 @media (min-width: 769px) {
   .team-photo img {
