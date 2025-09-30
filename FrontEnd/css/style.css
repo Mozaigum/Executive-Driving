@@ -2710,8 +2710,7 @@ img {
   /* Stack grids on mobile */
   .fleet-grid,
   .story-grid,
-  .team-strip,
-  .partners-marquee {
+  .team-strip {
     display: block !important;
   }
 
@@ -2764,36 +2763,7 @@ img {
     text-align: center !important;
   }
 }
-/* Stop horizontal scroll on mobile */
-h/* ✅ Stop horizontal scroll everywhere */
-html, body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-  position: relative;
-}
 
-/* ✅ Contain all main grid/strip sections */
-.story-grid,
-.team-strip,
-.fleet-grid,
-.partners,
-.marquee,
-.marquee__track {
-  max-width: 100% !important;
-  overflow-x: hidden !important;
-}
-
-/* ✅ Images/videos never overflow */
-img, video {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-/* DEBUG: outline every element */
-* {
-  outline: 1px solid red !important;
-}
 /* Fix footer payment logos overflow */
 .pay-logos {
   flex-wrap: wrap;          /* allow logos to wrap instead of forcing one long row */
@@ -2804,4 +2774,31 @@ img, video {
 
 .pay-logos li {
   flex: 0 1 auto;           /* let them shrink if needed */
+}
+/* Mobile image swap */
+.hero-image {
+  display: none; /* hidden on desktop */
+}
+
+@media (max-width: 768px) {
+  .hero-video {
+    display: none !important;   /* kill video only on mobile */
+  }
+
+  .hero-image {
+    display: block !important;  /* show image */
+    width: 100%;
+    height: auto;               /* keep natural proportions */
+    max-height: 100vh;          /* never taller than screen */
+    object-fit: cover;          /* scale nicely if needed */
+    position: relative;         /* stays inside hero section */
+    z-index: 0;
+  }
+}
+/* Desktop team photo control */
+@media (min-width: 769px) {
+  .team-photo img {
+    max-width: 480px;   /* keeps them classy, not giant */
+    margin: 0 auto;
+  }
 }
