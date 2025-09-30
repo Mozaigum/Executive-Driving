@@ -2729,19 +2729,41 @@ img {
   .partner img {
     margin: 0 auto;
   }
-}
+}/* =======================
+   Team Section — Mobile Fix
+   ======================= */
 @media (max-width: 768px) {
   .team-strip {
     display: block !important;
   }
+
   .team-member {
     width: 100% !important;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     text-align: center;
   }
-  .team-member img {
-    margin: 0 auto 15px auto;
-    border-radius: 12px; /* keep classy */
-    max-width: 320px;   /* so it doesn’t stretch too wide */
+
+  .team-photo img {
+    margin: 0 auto 18px auto;
+    border-radius: 12px;
+    max-width: 320px;
+    display: block;
+  }
+
+  .team-text {
+    text-align: center !important;
+    margin: 0 auto;
+    max-width: 600px; /* keeps paragraphs from going too wide */
+  }
+
+  .team-text h3 {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+
+  .team-text p {
+    font-size: 15px;
+    line-height: 1.6;
   }
 }
+
