@@ -839,11 +839,13 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       try {
-        const res = await fetch("https://executive-driving-backend.onrender.com", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData)
-        });
+       const res = await fetch(API_BOOK, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(formData)
+});
+
+
 
         const data = await res.json();
         console.log("Server response:", data);
