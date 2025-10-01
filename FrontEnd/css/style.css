@@ -3027,4 +3027,45 @@ body {
     from { opacity: 0; }
     to   { opacity: 1; }
   }
+    /* Center footer logo on mobile */
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-logo {
+    margin: 0 auto 0.5rem;
+  }
+
+}
+/* === Faces of Quiet Luxury (matches Fleet style) === */
+.faces-h {
+  font-family: "Playfair Display", serif;
+  font-weight: 800;
+  font-size: clamp(36px, 5.5vw, 56px);
+  line-height: 1.15;
+  margin: 0 0 10px;
+  color: #fff;
+  text-align: center;
+}
+
+.faces-h::after {
+  content: "";
+  display: block;
+  width: 88px;
+  height: 2px;
+  margin: 12px auto 0;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: .9;
+}
+
+.faces-sub {
+  max-width: 75ch;
+  margin: 6px auto 32px;
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.85;
+  color: #e0e0e0;
+  text-align: center;
 }
