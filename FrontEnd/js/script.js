@@ -583,8 +583,8 @@ if (data.done) {
     const partners = [...section.querySelectorAll('.partner')];
 
     // Safe defaults
-    const DEFAULT_TITLE = 'Trusted Partners';
-    const DEFAULT_DESC  = ' — Hover a logo to learn more.';
+    const DEFAULT_TITLE = 'Trusted Partners,';
+    const DEFAULT_DESC  = ' Hover Over a logo to learn more.';
 
     const setInfo = (el) => {
       if (!infoBar || !titleEl || !descEl) return;
