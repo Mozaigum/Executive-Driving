@@ -471,8 +471,9 @@
 
     const GREET_KEY = 'xd_greeted';
     const greet = () => {
-      bubble("Hi, I’m NAVI 👋 Welcome to Executive Driving how can I help you today?", "ai");
-    };
+  bubble("Hi, I’m NAVI 👋 Welcome to Executive Driving how can I help you today?", "ai");
+};
+
 
 const openChat = () => {
   chatEl.hidden = false;   // make it renderable first
@@ -484,11 +485,7 @@ const openChat = () => {
 
   inputEl.placeholder = "Book Your Chauffeur • FAQs";
   inputEl.focus();
-
-  if (!sessionStorage.getItem(GREET_KEY)) {
     greet();
-    sessionStorage.setItem(GREET_KEY, '1');
-  }
 };
 
 
