@@ -1335,8 +1335,8 @@ return res.json({ reply });
       const next = missNow[0];
       const fname = firstName(extractedNow.name || "");
       const tailored =
-        next === "phone" ? `Great${fname ? `, ${fname}` : ""}. what’s the best phone number for confirmation?` :
-        next === "email" ? `Thanks${fname ? `, ${fname}` : ""}. What’s the best email for your confirmation?` :
+        next === "phone" ? `Great${fname ? `, ${fname}` : ""}. what’s the best phone number for confirmation ?` :
+        next === "email" ? `Thanks${fname ? `, ${fname}` : ""}. What’s the best email for your confirmation, Please ?` :
         next === "pickup" ? "Got it. What’s the pickup address?" :
         next === "dropoff" ? "Thanks. Where are we dropping you off?" :
         next === "date" ? "What date do you need the service?" :
