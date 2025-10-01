@@ -482,7 +482,7 @@ const openChat = () => {
     chatEl.classList.add('open');   // now transition runs
   });
 
-  inputEl.placeholder = "Book a pickup, drop-off, date, time & passengers. I answer FAQs (pricing, availability, routes, vehicles, policies). Serving Edmonton & Grande Prairie. Type 'talk to a human' to reach us.";
+  inputEl.placeholder = "Book Your Chauffeur • FAQs";
   inputEl.focus();
 
   if (!sessionStorage.getItem(GREET_KEY)) {
