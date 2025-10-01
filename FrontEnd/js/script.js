@@ -536,13 +536,11 @@ const closeChat = () => {
         convo.push({ role: 'assistant', content: reply });
         bubble(reply, 'ai');
         // Respect server "done" flag: lock the chat so it doesn't keep looping
-  if (data.done) {
-    bubble('Session closed. Start a new chat anytime 👍', 'ai');
-    inputEl.disabled = true;
-    sendBtn.disabled = true;
-    inputEl.placeholder = 'Session ended';
-    return; // stop processing this send()
-  }
+ // Respect server "done" flag: don’t lock chat, just continue
+if (data.done) {
+  return; // let backend reply stand, keep chat open
+}
+
 
 
         if (convo.length > MAX_TURNS) convo.splice(0, convo.length - MAX_TURNS);

@@ -229,11 +229,7 @@ function lastAssistantCompletedBooking(messages = []) {
     /submitted your reservation|reservation (?:request )?submitted|you(?:’|'|)ll receive a confirmation|confirmation shortly/i.test(m.content || "")
   );
 }
-function lastAssistantClosedSession(messages = []) {
-  return messages.slice(-4).some(m =>
-    m.role === "assistant" && /session closed/i.test(m.content || "")
-  );
-}
+
 
 /* ---------- STRICT service area helpers (improved) ---------- */
 // Postal parsing (Canada-wide)
@@ -1096,16 +1092,20 @@ app.post("/chat", async (req, res) => {
     }
 
     /* 0a) Conversation wrap-up: thanks / bye / no */
-    if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_RE.test(lastUser)) {
-      if (lastAssistantClosedSession(messages)) {
-        return res.json({ reply: "Noted. Chat already closed. Start a new chat anytime 👍", done: true });
-      }
-      const closedAfterBooking = lastAssistantCompletedBooking(messages);
-      const wrap = closedAfterBooking
-        ? "Thank you! 🙏 Your booking is submitted. Session closed. Start a new chat anytime 👍"
-        : "Session closed. Start a new chat anytime 👍";
-      return res.json({ reply: wrap, done: true });
-    }
+/* 0a) Conversation wrap-up: thanks / bye / no */
+if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_RE.test(lastUser)) {
+  // If booking was just completed, keep it soft
+  if (lastAssistantCompletedBooking(messages)) {
+    return res.json({
+      reply: "All set 🙏 Your booking is confirmed. Thank You, I’ll stay here if you need anything else."
+    });
+  }
+  // Otherwise, generic polite reply
+  return res.json({
+    reply: "Thanks 🙏 I’m here if you need anything else."
+  });
+}
+
 
     /* 0b) On confirm: collect anything missing, then email */
     if (AFFIRM_RE.test(lastUser)) {
@@ -1181,15 +1181,16 @@ app.post("/chat", async (req, res) => {
           return res.json({ reply: "Will you have luggage? (Yes/No is perfect.)" });
         }
 
-        await sendBookingEmailFromChat(extracted);
-        const reply =
-          `Thank you${extracted.name ? `, ${extracted.name}` : ""}! I’ve submitted your reservation.\n` +
-          `Pickup: ${extracted.pickup} → ${extracted.dropoff}\n` +
-          `Date/Time: ${extracted.date} ${extracted.time}\n` +
-          `Passengers: ${extracted.passengers}${extracted.luggage === true ? " • Luggage noted" : ""}.` +
-          (addEscalation || "") +
-          `\nYou’ll receive a confirmation shortly. Anything else I can arrange?`;
-        return res.json({ reply, done: true });
+      await sendBookingEmailFromChat(extracted);
+const reply =
+  `Thank you${extracted.name ? `, ${extracted.name}` : ""}! I’ve submitted your reservation.\n` +
+  `Pickup: ${extracted.pickup} → ${extracted.dropoff}\n` +
+  `Date/Time: ${extracted.date} ${extracted.time}\n` +
+  `Passengers: ${extracted.passengers}${extracted.luggage === true ? " • Luggage noted" : ""}.` +
+  (addEscalation || "") +
+  `\nYou’ll receive a confirmation shortly. Anything else I can arrange?`;
+return res.json({ reply });
+
       } catch (e) {
         console.error("chat booking email failed:", e);
         return res.json({
@@ -1356,7 +1357,7 @@ app.post("/chat", async (req, res) => {
         `Passengers: ${extractedNow.passengers}${extractedNow.luggage === true ? " • Luggage noted" : ""}.` +
         (extractedNow.__dropoffEscalationNote ? `\n\n${extractedNow.__dropoffEscalationNote}` : "") +
         `\nYou’ll receive a confirmation shortly. Anything else I can arrange?`;
-      return res.json({ reply, done: true });
+      return res.json({ reply});
     } catch (e) {
       console.error("auto-submit failed:", e?.message || e);
       return res.json({
