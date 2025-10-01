@@ -3013,10 +3013,12 @@ body {
     top: 50%;
     transform: translateY(-50%);
   }
-   /* === Mobile reveal animation (fade only) === */
+
+  /* === Mobile reveal animation (fade only) === */
   [data-reveal] {
     opacity: 0;
-    transform: none; /* stop shifting around */
+    transform: none;
+    /* stop shifting around */
   }
 
   [data-reveal].is-visible {
@@ -3024,11 +3026,17 @@ body {
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
   }
-    /* Center footer logo on mobile */
-  .footer-brand {
+
+  /* Center footer logo on mobile */
+  .footer-brand .footer-contact {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -3040,6 +3048,7 @@ body {
   }
 
 }
+
 /* === Faces of Quiet Luxury (matches Fleet style) === */
 .faces-h {
   font-family: "Playfair Display", serif;
@@ -3069,6 +3078,7 @@ body {
   color: #e0e0e0;
   text-align: center;
 }
+
 .about-min__lead,
 .fleet-sub,
 .story-text p {
