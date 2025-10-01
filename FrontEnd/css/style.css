@@ -3069,3 +3069,11 @@ body {
   color: #e0e0e0;
   text-align: center;
 }
+.about-min__lead,
+.fleet-sub,
+.story-text p {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  word-break: normal !important;
+}
