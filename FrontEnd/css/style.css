@@ -2916,7 +2916,7 @@ img {
   /* let them shrink if needed */
 }
 
-/* Desktop team photo controlhjreghtbhurehuer */
+/* Desktop team photo controlhr */
 @media (min-width: 769px) {
   .team-photo img {
     max-width: 480px;
@@ -2937,7 +2937,7 @@ body {
   .hero-video {
     object-fit: cover;
     object-position: center 30%;
-    /* shift framing, tweak % as needed hererrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr */
+    /* shift framing, tweak % as needed  */
   }
 }
 
@@ -3036,7 +3036,7 @@ body {
   }
 
   /* Center footer logo on mobile */
-  .footer-brand .footer-contact {
+  .footer-brand, .footer-contact {
     display: flex;
     flex-direction: column;
     align-items: center;
