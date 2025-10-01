@@ -3013,4 +3013,18 @@ body {
     top: 50%;
     transform: translateY(-50%);
   }
+   /* === Mobile reveal animation (fade only) === */
+  [data-reveal] {
+    opacity: 0;
+    transform: none; /* stop shifting around */
+  }
+
+  [data-reveal].is-visible {
+    animation: fadeIn 0.8s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
 }
