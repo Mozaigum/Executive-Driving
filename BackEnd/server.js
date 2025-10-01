@@ -1220,7 +1220,7 @@ return res.json({ reply });
       const inFlow = hadBookingIntentBefore(messages) || assistantAskedForDetail(messages);
       const justExplainedCompany = lastAssistantSaidCompanyInfo(messages);
       const nextStep = inFlow
-        ? "Great—shall we lock it in? What’s your full name?"
+        ? "Great,shall we lock it in? What’s your full name?"
         : (justExplainedCompany
           ? "Glad that helps. Want a quick quote? Share pickup, destination, date & time."
           : "Awesome. If you’re ready, share pickup, destination, date & time and I’ll quote it.");
@@ -1335,7 +1335,7 @@ return res.json({ reply });
       const next = missNow[0];
       const fname = firstName(extractedNow.name || "");
       const tailored =
-        next === "phone" ? `Great${fname ? `, ${fname}` : ""} — what’s the best phone number for confirmation?` :
+        next === "phone" ? `Great${fname ? `, ${fname}` : ""}. what’s the best phone number for confirmation?` :
         next === "email" ? `Thanks${fname ? `, ${fname}` : ""}. What’s the best email for your confirmation?` :
         next === "pickup" ? "Got it. What’s the pickup address?" :
         next === "dropoff" ? "Thanks. Where are we dropping you off?" :
