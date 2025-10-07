@@ -1,4 +1,3 @@
-/* --- UI scale (optional, tweak or remove) --- */
 :root {
   --ui-scale: .80;
   --page-bg: #0a0b0d;
@@ -21,12 +20,10 @@ body {
 
 }
 
-/* body scrollbar mirrors (cover setups where body is the scroller) */
+/* body scrollbar mirrors  */
 body {
   scrollbar-width: thin;
-  /* Firefox */
   scrollbar-color: transparent #0a0b0d;
-  /* Firefox track */
 }
 
 body::-webkit-scrollbar {
@@ -228,7 +225,7 @@ section {
   color: var(--gold);
 }
 
-/* --- Rolls-Royce style burger --- */
+/* - style burger --- */
 .rr-burger-btn {
   display: inline-flex;
   align-items: center;
@@ -535,7 +532,7 @@ section {
   transform: translateY(-3px);
 }
 
-/* ===== Minimal, luxe RR-style buttons ===== */
+/* ===== luxe RR-style buttons ===== */
 .btn-rr {
   --rr-bg: rgba(255, 255, 255, .03);
   --rr-bg-hover: rgba(255, 255, 255, .06);
@@ -693,7 +690,7 @@ section {
   color: #cfcfcf;
 }
 
-/* --- Card grid (fleet etc.) --- */
+/* --- Card grid (fleet.) --- */
 .fleet-Grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -710,8 +707,6 @@ section {
   text-align: left;
 }
 
-/* --- Overlay Menu & Legal Modals (merged, final) --- */
-.menu-overlay,
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -950,9 +945,7 @@ section {
   }
 }
 
-/* =========================
-   LUXE CONCIERGE SECTION
-   ========================= */
+
 .concierge {
   position: relative;
   padding: clamp(64px, 8vw, 120px) 20px;
@@ -1567,9 +1560,6 @@ body.intro-done #page {
   right: auto;
 }
 
-/* =========================
-   Executive Driving – chat widget (final)
-   ========================= */
 
 
 .xd-chat[hidden] {
@@ -1692,7 +1682,7 @@ body.intro-done #page {
   border-color: transparent;
   border-bottom-right-radius: 6px;
   text-align: right;
-  /* only change requested */
+
 }
 
 .xd-chat__row--ai .xd-chat__msg {
@@ -1795,7 +1785,7 @@ body.intro-done #page {
   }
 }
 
-/* ===== Partners Marquee (HTML block you pasted) ===== */
+/* ===== Partners Marquee  ===== */
 .partners-marquee .marquee {
   position: relative;
   overflow: hidden;
@@ -1843,7 +1833,7 @@ body.intro-done #page {
 
 .partners-marquee .partner img {
   max-height: 90px;
-  /* tweak if you want even bigger */
+
   object-fit: contain;
   transition: transform .35s cubic-bezier(.22, .9, .2, 1), box-shadow .35s ease;
   transform: translateZ(0);
@@ -1906,7 +1896,6 @@ body.intro-done #page {
 }
 
 /* Bigger company logo */
-/* Footer brand logo — make it big */
 .footer-logo {
   height: clamp(170px, 16vw, 260px);
   /* big on desktop, sensible on mobile */
@@ -2028,7 +2017,7 @@ body.intro-done #page {
 .pay-logos img,
 .pay-logos .up-svg {
   max-height: 44px;
-  /* logo size – increase if you want bigger */
+  /* logo size */
   max-width: 110px;
   width: auto;
   height: auto;
@@ -2039,7 +2028,6 @@ body.intro-done #page {
   background: transparent;
 }
 
-/* If you still use icon fonts, keep them aligned */
 .pay-logos i {
   font-size: 44px;
   line-height: 1;
@@ -2081,8 +2069,7 @@ body.intro-done #page {
 
 /* --- Payment logos --- */
 
-/* If your footer background is dark and a logo is also dark,
-   you can optionally add a subtle outline for visibility: */
+
 .pay-logos img {
   background: transparent;
 }
@@ -2358,7 +2345,6 @@ body.intro-done #page {
   /* bigger gap between items */
 }
 
-/* Title matches About look (size, weight, underline accent) */
 .fleet-h {
   font-family: "Playfair Display", serif;
   font-weight: 800;
@@ -2397,7 +2383,6 @@ body.intro-done #page {
   white-space: nowrap;
 }
 
-/* Optional: slower section default for fleet reveals */
 #fleet {
   --reveal-dur: 1.6s;
   /* slower animation than default */
@@ -2430,7 +2415,6 @@ body.intro-done #page {
   font-size: 15px;
 }
 
-/* make sure the 2-col grid breathes but isn’t huge */
 #contact .concierge-wrap {
   gap: clamp(18px, 3vw, 32px);
 }
@@ -2540,7 +2524,6 @@ body.intro-done #page {
   transform: none;
 }
 
-/* Optional directional variants */
 .reveal-up {
   transform: translateY(40px);
 }
@@ -2572,7 +2555,7 @@ body.intro-done #page {
 /* === Customer Care Card matches left column height === */
 #contact .concierge-wrap {
   align-items: stretch;
-  /* make both columns equal height */
+
 }
 
 #contact .concierge-card.glass {
@@ -2612,7 +2595,7 @@ body.intro-done #page {
   border-color: var(--gold);
 }
 
-/* === Force “Ask NAVI” to gold pill === */
+
 #page .xd-chat__toggle {
   position: fixed !important;
   right: 20px !important;
@@ -2691,9 +2674,9 @@ body.intro-done #page {
   }
 }
 
-/* =======================
+/* 
    Mobile adjustments
-   ======================= */
+    */
 @media (max-width: 768px) {
   body {
     font-size: 15px;
@@ -2766,9 +2749,9 @@ body.intro-done #page {
   }
 }
 
-/* =======================
+/* 
    Universal Mobile Fixes
-   ======================= */
+  */
 
 /* Stop iOS/Android zoom on inputs */
 input,
@@ -2816,9 +2799,9 @@ img {
   flex-shrink: 0;
 }
 
-/* =======================
+/*
    Responsive Layouts
-   ======================= */
+ */
 @media (max-width: 768px) {
 
   /* Fonts */
@@ -2970,7 +2953,6 @@ body {
 
   .hero-section {
     display: flex;
-    /* ✅ flexbox to center content */
     align-items: center;
     /* vertical center */
     justify-content: center;
@@ -3036,7 +3018,8 @@ body {
   }
 
   /* Center footer logo on mobile */
-  .footer-brand, .footer-contact {
+  .footer-brand,
+  .footer-contact {
     display: flex;
     flex-direction: column;
     align-items: center;

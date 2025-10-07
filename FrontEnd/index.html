@@ -12,17 +12,15 @@
     rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
-  <!-- YOUR overrides last (wins the cascade) -->
   <link rel="stylesheet" href="css/style.css?v=fix2">
 
 
 </head>
 
 <body>
-  <!-- Intro / Splash -->
+
   <div id="intro" class="intro" aria-hidden="true">
     <div class="intro-center">
-      <!-- FIX: file is logo.WebP in your images folder -->
       <img src="images/logo.WebP" alt="Executive Driving" class="intro-logo" />
     </div>
   </div>
@@ -43,7 +41,6 @@
         </button>
 
         <a href="#hero" class="logo-link" aria-label="Executive Driving - Home">
-          <!-- FIX: same case as file on disk -->
           <img src="images/logo.WebP" alt="Executive Driving" class="logo-img" />
         </a>
         <a class="top-cta" href="#" data-book-open>Reserve</a>
@@ -51,7 +48,7 @@
     </header>
 
     <section id="hero" class="hero-section">
-      <!-- FIX: you don't have hero-fallback.jpg; using about-us.jpg which exists -->
+
       <video class="hero-video" autoplay muted loop playsinline poster="images/about-us.jpg" aria-hidden="true">
         <source src="video/hero.mp4" type="video/mp4" />
       </video>
@@ -386,11 +383,11 @@
       <div class="container">
         <h2 id="partners-title">Our Growing Network of Trusted Partners</h2>
 
-        <!-- marquee strip -->
+
         <div class="marquee" aria-hidden="true">
           <div class="marquee__track">
 
-            <!-- ORIGINAL SET -->
+
             <div class="partner" tabindex="0" data-name="TARA Energy Services"
               data-desc="Compression, processing and energy solutions across Western Canada.">
               <img src="images/logo1.jpeg" alt="TARA Energy Services logo">
@@ -617,9 +614,8 @@
               costs.</li>
             <li>Damage, repairs, or replacement of interior or exterior parts: actual parts and labour plus reasonable
               downtime at your stated shop rate.</li>
+            <p>Receipts are provided where applicable. If you disagree, you may request an itemized review.</p>
           </ul>
-          <p>Receipts are provided where applicable. If you disagree, you may request an itemized review.</p>
-
           <h4>7) Payment, overdue amounts and chargebacks</h4>
           <ul>
             <li>Payment methods. We accept major credit cards, corporate invoicing if approved, Interac e Transfer, and
@@ -871,7 +867,6 @@
   </div>
 
 
-  <!-- A. Tiny GLOBAL stub so Google always has something to call -->
   <script>
     window.initAutocomplete = function () {
       if (typeof window.__xdInitAutocomplete === 'function') {
@@ -884,17 +879,15 @@
 
 
 
-
-  <!-- B. Your module defines the real initializer -->
   <script type="module" src="js/script.js"></script>
   <script>
-    // Google will call this after the Maps script loads
+
     window.initAutocomplete = function () {
       let tries = 0;
       (function boot() {
         if (typeof window.__xdInitAutocomplete === 'function') {
           window.__xdInitAutocomplete();
-        } else if (tries++ < 60) {      // retry ~3 seconds
+        } else if (tries++ < 60) {
           setTimeout(boot, 50);
         } else {
           console.warn('Autocomplete init timeout: __xdInitAutocomplete not found');
@@ -903,7 +896,7 @@
     };
   </script>
 
-  <!-- C. Load Google async; it will call the global stub above -->
+
 
   <script defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAitl8PFwdBCzyO_1WgSkzuzfwijfthw1w&libraries=places&loading=async&callback=initAutocomplete">

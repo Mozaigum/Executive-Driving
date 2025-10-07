@@ -15,12 +15,12 @@ import path from "path";
 // path to inline email logo
 const LOGO_PATH = path.join(process.cwd(), "assets", "logo-email.png");
 
-/* ---------- Crash guards (log but don't exit) ---------- */
+
 process.on("unhandledRejection", (reason) => {
-  console.error("🚨 Unhandled Rejection:", reason);
+  console.error(" Unhandled Rejection:", reason);
 });
 process.on("uncaughtException", (err) => {
-  console.error("🚨 Uncaught Exception:", err);
+  console.error("Uncaught Exception:", err);
 });
 
 /* ---------- Company facts + lightweight learning KB ---------- */
@@ -90,21 +90,21 @@ const REDIRECT =
 
 /* ---------- Keywords & helpers ---------- */
 const ALLOWED = [
-  "book","booking","reserve","reservation","ride","pickup","pick up","dropoff","drop-off",
-  "airport","yeg","edmonton","grande prairie","destination","quote",
-  "price","pricing","fare","rate","availability","schedule","time",
-  "date","passengers","luggage","car seat","flight",
-  "executive driving","chauffeur","driver","suv","fleet","policy",
-  "cancellation","cancel","payment","invoice","hours","contact",
-  "phone","email","area","service area","reserve your ride"
+  "book", "booking", "reserve", "reservation", "ride", "pickup", "pick up", "dropoff", "drop-off",
+  "airport", "yeg", "edmonton", "grande prairie", "destination", "quote",
+  "price", "pricing", "fare", "rate", "availability", "schedule", "time",
+  "date", "passengers", "luggage", "car seat", "flight",
+  "executive driving", "chauffeur", "driver", "suv", "fleet", "policy",
+  "cancellation", "cancel", "payment", "invoice", "hours", "contact",
+  "phone", "email", "area", "service area", "reserve your ride"
 ];
 
-const GREETINGS = ["hi","hello","hey","good morning","good afternoon","good evening"];
+const GREETINGS = ["hi", "hello", "hey", "good morning", "good afternoon", "good evening"];
 const HUMAN_INTENT = [
-  "talk to a human","talk to human","speak to a human","speak to human",
-  "human please","real person","agent please","customer service",
-  "representative","live agent","operator","call you","call someone",
-  "can i talk to someone","connect me to a human","talk to someone"
+  "talk to a human", "talk to human", "speak to a human", "speak to human",
+  "human please", "real person", "agent please", "customer service",
+  "representative", "live agent", "operator", "call you", "call someone",
+  "can i talk to someone", "connect me to a human", "talk to someone"
 ];
 const NOT_BOOKING_RE = /\b(i (do not|dont|don't) want (to )?book|not booking|no booking|just asking|only info)\b/i;
 const POSITIVE_ACK_RE = /\b(nice|great|awesome|perfect|cool|sweet|amazing|love it|sounds good|sounds great|okay|ok|alright|got it|thanks|thank you|appreciate it|cheers|good)\b/i;
@@ -200,18 +200,18 @@ function salvageFromMessages(messages = []) {
 }
 
 function mergePreferringAI(ai = {}, fb = {}) {
-  const keys = ["name","phone","email","pickup","dropoff","date","time","passengers","luggage","notes"];
+  const keys = ["name", "phone", "email", "pickup", "dropoff", "date", "time", "passengers", "luggage", "notes"];
   const out = {};
   for (const k of keys) {
     out[k] = (ai[k] !== undefined && ai[k] !== null && ai[k] !== "") ? ai[k] :
-             (fb[k] !== undefined && fb[k] !== null && fb[k] !== "") ? fb[k] : null;
+      (fb[k] !== undefined && fb[k] !== null && fb[k] !== "") ? fb[k] : null;
   }
   return out;
 }
 
 // Conversation wrap-up triggers
 const THANKS_CLOSE_RE = /\b(thanks|thank you|appreciate it|cheers|much obliged|gracias|merci|ta|tata)\b/i;
-const END_INTENT_RE   = /\b(that'?s (all|it)|no (need|more|further)|we(?:'| a)re good|all good|bye|goodbye|see (ya|you)|nothing else|done|finish(?:ed)?)\b/i;
+const END_INTENT_RE = /\b(that'?s (all|it)|no (need|more|further)|we(?:'| a)re good|all good|bye|goodbye|see (ya|you)|nothing else|done|finish(?:ed)?)\b/i;
 const NO_CLOSE_RE = /\b(nope|no thanks|no thank you|no need|no more|nothing else|nah|all good|we're good|done|finished)\b/i;
 
 function lastAssistantSaidCompanyInfo(messages = []) {
@@ -243,7 +243,7 @@ function postalRegion(code = "") {
   return { raw: `${m[1]} ${m[2]}`, fsa, provinceLetter };
 }
 const EDMONTON_FSA = /^(T5|T6)/;
-const GP_FSA       = /^(T8V|T8W|T8X)/;
+const GP_FSA = /^(T8V|T8W|T8X)/;
 
 // Airports: Alberta vs non-Alberta (IATA)
 const ALBERTA_AIRPORTS = /\b(YEG|YYC|YMM|YQU|YQL|YBW)\b/i;
@@ -259,14 +259,14 @@ const NONAB_EXCEPTIONS = [
   /\brichmond\s+park\b/i
 ];
 const CITIES_NON_AB_STRICT = [
-  "\\bvancouver\\b","\\bsurrey\\b","\\bburnaby\\b","\\brichmond\\b","\\bvictoria\\b","\\bkelowna\\b","\\bkamloops\\b","\\bnanaimo\\b","\\babbotsford\\b","\\bcoquitlam\\b","\\blangley\\b",
-  "\\bregina\\b","\\bsaskatoon\\b","\\bwinnipeg\\b","\\bbrandon\\b","\\bprince\\s*albert\\b",
-  "\\btoronto\\b","\\bmississauga\\b","\\bbrampton\\b","\\bottawa\\b","\\bhamilton\\b","\\blondon\\b","\\bkitchener\\b","\\bwaterloo\\b","\\bguelph\\b","\\bmarkham\\b","\\bvaughan\\b",
-  "\\brichmond\\s*hill\\b","\\bscarborough\\b","\\bnorth\\s*york\\b","\\betobicoke\\b","\\bpickering\\b","\\bajax\\b","\\bwhitby\\b","\\boshawa\\b","\\bbarrie\\b","\\bwindsor\\b",
-  "\\bkingston\\b","\\bniagara\\s*falls\\b","\\bthunder\\s*bay\\b","\\bsudbury\\b","\\boakville\\b","\\bburlington\\b","\\bmilton\\b",
-  "\\bmontreal\\b","\\bqu[eé]bec\\s*city\\b","\\blaval\\b","\\bgatineau\\b","\\blongueuil\\b","\\bsherbrooke\\b","\\btrois-?rivi[eè]res\\b","\\bsaguenay\\b",
-  "\\bmoncton\\b","\\bsaint\\s*john\\b","\\bfredericton\\b","\\bhalifax\\b","\\bdartmouth\\b","\\bsydney\\b","\\bcharlottetown\\b","\\bst\\.?\\s*john's\\b",
-  "\\bwhitehorse\\b","\\byellowknife\\b","\\biqaluit\\b"
+  "\\bvancouver\\b", "\\bsurrey\\b", "\\bburnaby\\b", "\\brichmond\\b", "\\bvictoria\\b", "\\bkelowna\\b", "\\bkamloops\\b", "\\bnanaimo\\b", "\\babbotsford\\b", "\\bcoquitlam\\b", "\\blangley\\b",
+  "\\bregina\\b", "\\bsaskatoon\\b", "\\bwinnipeg\\b", "\\bbrandon\\b", "\\bprince\\s*albert\\b",
+  "\\btoronto\\b", "\\bmississauga\\b", "\\bbrampton\\b", "\\bottawa\\b", "\\bhamilton\\b", "\\blondon\\b", "\\bkitchener\\b", "\\bwaterloo\\b", "\\bguelph\\b", "\\bmarkham\\b", "\\bvaughan\\b",
+  "\\brichmond\\s*hill\\b", "\\bscarborough\\b", "\\bnorth\\s*york\\b", "\\betobicoke\\b", "\\bpickering\\b", "\\bajax\\b", "\\bwhitby\\b", "\\boshawa\\b", "\\bbarrie\\b", "\\bwindsor\\b",
+  "\\bkingston\\b", "\\bniagara\\s*falls\\b", "\\bthunder\\s*bay\\b", "\\bsudbury\\b", "\\boakville\\b", "\\bburlington\\b", "\\bmilton\\b",
+  "\\bmontreal\\b", "\\bqu[eé]bec\\s*city\\b", "\\blaval\\b", "\\bgatineau\\b", "\\blongueuil\\b", "\\bsherbrooke\\b", "\\btrois-?rivi[eè]res\\b", "\\bsaguenay\\b",
+  "\\bmoncton\\b", "\\bsaint\\s*john\\b", "\\bfredericton\\b", "\\bhalifax\\b", "\\bdartmouth\\b", "\\bsydney\\b", "\\bcharlottetown\\b", "\\bst\\.?\\s*john's\\b",
+  "\\bwhitehorse\\b", "\\byellowknife\\b", "\\biqaluit\\b"
 ].join("|");
 const NON_AB_HINTS_STRICT = new RegExp(CITIES_NON_AB_STRICT, "i");
 function looksNonAlbertaButNotException(txt = "") {
@@ -314,10 +314,10 @@ function formatPhone(raw = "") {
   const d = String(raw).replace(/\D+/g, "");
   if (d.length === 11 && d.startsWith("1")) {
     const n = d.slice(1);
-    return `+1 (${n.slice(0,3)}) ${n.slice(3,6)}-${n.slice(6)}`;
+    return `+1 (${n.slice(0, 3)}) ${n.slice(3, 6)}-${n.slice(6)}`;
   }
   if (d.length === 10) {
-    return `+1 (${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
+    return `+1 (${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
   }
   return raw;
 }
@@ -386,9 +386,9 @@ function addressTooVague(raw = "") {
     return false;
   }
 
-  const hasNum   = /\b\d{1,6}[A-Za-z]?\b/.test(sl);
-  const hasRoad  = /\b(st|street|ave|avenue|rd|road|blvd|boulevard|drive|dr|way|trail|trl|cres|crescent|gate|park|plaza|place|pl|lane|ln|court|ct|terrace|ter|highway|hwy|pkwy|parkway)\b/.test(sl);
-  const isXing   = /\b(st|street|ave|avenue|rd|road|blvd|drive|dr|way|lane|ln|ct|court|hwy|highway)\b.*\b(&|and|@)\b.*\b(st|street|ave|avenue|rd|road|blvd|drive|dr|way|lane|ln|ct|court|hwy|highway)\b/.test(sl);
+  const hasNum = /\b\d{1,6}[A-Za-z]?\b/.test(sl);
+  const hasRoad = /\b(st|street|ave|avenue|rd|road|blvd|boulevard|drive|dr|way|trail|trl|cres|crescent|gate|park|plaza|place|pl|lane|ln|court|ct|terrace|ter|highway|hwy|pkwy|parkway)\b/.test(sl);
+  const isXing = /\b(st|street|ave|avenue|rd|road|blvd|drive|dr|way|lane|ln|ct|court|hwy|highway)\b.*\b(&|and|@)\b.*\b(st|street|ave|avenue|rd|road|blvd|drive|dr|way|lane|ln|ct|court|hwy|highway)\b/.test(sl);
   if ((hasNum && hasRoad) || isXing) return false;
 
   if (/^(airport|mall|downtown|uptown|suburbs|station|centre|center|campus|entrance|gate|hotel)$/i.test(sl)) return true;
@@ -422,7 +422,7 @@ function hadBookingIntentBefore(messages = []) {
 }
 function assistantAskedForDetail(messages = []) {
   const lastFew = messages.slice(-4);
-  const cues = ["name","email","phone","pickup","destination","date","time","passengers","luggage","flight"];
+  const cues = ["name", "email", "phone", "pickup", "destination", "date", "time", "passengers", "luggage", "flight"];
   return lastFew.some(m =>
     m.role === "assistant" &&
     cues.some(c => (m.content || "").toLowerCase().includes(c))
@@ -473,56 +473,56 @@ function pickupPolitelyDeclineABOut(txt = "") {
 }
 
 /* ---------- Natural date parsing (robust, with typos) ---------- */
-function pad2(n){ return String(n).padStart(2,"0"); }
-function toISO(y,m,d){ return `${y}-${pad2(m)}-${pad2(d)}`; }
-function resolveYearFor(month, day, now=new Date()) {
+function pad2(n) { return String(n).padStart(2, "0"); }
+function toISO(y, m, d) { return `${y}-${pad2(m)}-${pad2(d)}`; }
+function resolveYearFor(month, day, now = new Date()) {
   const y = now.getFullYear();
-  const candidate = new Date(y, month-1, day);
+  const candidate = new Date(y, month - 1, day);
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   if (candidate >= today) return y;
   return y + 1;
 }
-function editDist(a,b){
-  a=a.toLowerCase(); b=b.toLowerCase();
-  const dp = Array.from({length:a.length+1},()=>Array(b.length+1).fill(0));
-  for(let i=0;i<=a.length;i++) dp[i][0]=i;
-  for(let j=0;j<=b.length;j++) dp[0][j]=j;
-  for(let i=1;i<=a.length;i++){
-    for(let j=1;j<=b.length;j++){
-      const cost = a[i-1]===b[j-1]?0:1;
-      dp[i][j]=Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+cost);
+function editDist(a, b) {
+  a = a.toLowerCase(); b = b.toLowerCase();
+  const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+  for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+  for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
     }
   }
   return dp[a.length][b.length];
 }
 const MONTH_ALIASES = {
-  jan:1, january:1, "januray":1,
-  feb:2, february:2, "febuary":2,
-  mar:3, march:3,
-  apr:4, april:4,
-  may:5,
-  jun:6, june:6,
-  jul:7, july:7,
-  aug:8, august:8, "agust":8,
-  sep:9, sept:9, september:9, "septembar":9,
-  oct:10, octo:10, october:10, "octobre":10, "octuber":10, "otober":10, "ocober":10, "octber":10,
-  nov:11, november:11,
-  dec:12, december:12
+  jan: 1, january: 1, "januray": 1,
+  feb: 2, february: 2, "febuary": 2,
+  mar: 3, march: 3,
+  apr: 4, april: 4,
+  may: 5,
+  jun: 6, june: 6,
+  jul: 7, july: 7,
+  aug: 8, august: 8, "agust": 8,
+  sep: 9, sept: 9, september: 9, "septembar": 9,
+  oct: 10, octo: 10, october: 10, "octobre": 10, "octuber": 10, "otober": 10, "ocober": 10, "octber": 10,
+  nov: 11, november: 11,
+  dec: 12, december: 12
 };
 const MONTH_NAMES = [
-  ["january",1],["february",2],["march",3],["april",4],["may",5],["june",6],
-  ["july",7],["august",8],["september",9],["october",10],["november",11],["december",12],
-  ["jan",1],["feb",2],["mar",3],["apr",4],["jun",6],["jul",7],["aug",8],["sep",9],["sept",9],["oct",10],["nov",11],["dec",12]
+  ["january", 1], ["february", 2], ["march", 3], ["april", 4], ["may", 5], ["june", 6],
+  ["july", 7], ["august", 8], ["september", 9], ["october", 10], ["november", 11], ["december", 12],
+  ["jan", 1], ["feb", 2], ["mar", 3], ["apr", 4], ["jun", 6], ["jul", 7], ["aug", 8], ["sep", 9], ["sept", 9], ["oct", 10], ["nov", 11], ["dec", 12]
 ];
 function monthFromToken(tok) {
   if (!tok) return null;
-  const raw = tok.toLowerCase().replace(/[^a-z]/g,"");
+  const raw = tok.toLowerCase().replace(/[^a-z]/g, "");
   if (!raw) return null;
   if (MONTH_ALIASES[raw]) return MONTH_ALIASES[raw];
   let best = null;
   for (const [name, num] of MONTH_NAMES) {
     const d = editDist(raw, name);
-    if (d <= 2 && (!best || d < best.d)) best = {d, num};
+    if (d <= 2 && (!best || d < best.d)) best = { d, num };
     if (raw.startsWith(name) || name.startsWith(raw)) { return num; }
   }
   return best ? best.num : null;
@@ -564,12 +564,12 @@ function parseDateSmart(input, now = new Date()) {
 
   // tomorrow (typos)
   if (s === "tomorrow" || /^tom+?or+?ow$/.test(s) || /^tomm?or?ro?w$/.test(s) || /^tmrw$/.test(s)) {
-    const t = new Date(now.getTime() + 24*3600*1000);
-    return { iso: toISO(t.getFullYear(), t.getMonth()+1, t.getDate()) };
+    const t = new Date(now.getTime() + 24 * 3600 * 1000);
+    return { iso: toISO(t.getFullYear(), t.getMonth() + 1, t.getDate()) };
   }
 
   // today
-  if (s === "today")  return { iso: toISO(now.getFullYear(), now.getMonth()+1, now.getDate()) };
+  if (s === "today") return { iso: toISO(now.getFullYear(), now.getMonth() + 1, now.getDate()) };
 
   const parseYearToken = (tok, month, day) => {
     if (!tok) return resolveYearForLocal(month, day);
@@ -723,7 +723,7 @@ function renderCustomerConfirmationEmail({ name, pickup, dropoff, date, time, pa
       </p>
 
       <p style="margin:18px 0 0; font-size:15px; font-weight:600; color:#000;">
-        We wish you a pleasant ride with Executive Driving 🚘✨
+        We wish you a pleasant ride with Executive Driving.
       </p>
 
       <hr style="margin:20px 0; border:none; border-top:1px solid #eee">
@@ -750,7 +750,7 @@ function renderConciergeEmail({ name, phone, email, date, details }) {
       <img src="cid:logo" alt="Executive Driving" style="max-height:80px; margin:0 auto; display:block" />
     </div>
     <div style="padding:24px; background:#fff; color:#111; line-height:1.6;">
-      <h2 style="margin:0 0 16px; font-size:20px; color:#0a0b0d;">📩 New Client Care Request</h2>
+      <h2 style="margin:0 0 16px; font-size:20px; color:#0a0b0d;"> New Client Care Request</h2>
       <table style="width:100%; border-collapse:collapse; font-size:14px;">
         <tr><td style="padding:6px 0;"><b>Name:</b></td><td>${esc(name)}</td></tr>
         <tr><td style="padding:6px 0;"><b>Phone:</b></td><td>${esc(phone)}</td></tr>
@@ -801,7 +801,7 @@ app.post("/book", async (req, res) => {
       }
       if (!BOOK_TO) return res.status(500).json({ ok: false, error: "Server misconfig: BOOKING_EMAIL_TO not set" });
 
-      const subject = `📩 Client Care Request — ${name}`;
+      const subject = `Client Care Request — ${name}`;
       await transporter.sendMail({
         to: BOOK_TO,
         from: BOOK_FROM,
@@ -816,7 +816,7 @@ app.post("/book", async (req, res) => {
 
     // --- Existing booking branch (your old code stays the same) ---
     const { name, phone, email, pickup, dropoff, date, time, passengers, notes } = req.body || {};
-    const required = ["name","phone","email","pickup","dropoff","date","time","passengers"];
+    const required = ["name", "phone", "email", "pickup", "dropoff", "date", "time", "passengers"];
     const missing = required.filter((k) => !req.body?.[k]);
     if (missing.length) return res.status(400).json({ ok: false, error: `Missing: ${missing.join(", ")}` });
     if (!BOOK_TO) return res.status(500).json({ ok: false, error: "Server misconfig: BOOKING_EMAIL_TO not set" });
@@ -889,12 +889,12 @@ function coercePassengers(v) {
   const s = String(v).trim().toLowerCase();
   const n = parseInt(s.replace(/[^\d-]/g, ""), 10);
   if (!Number.isNaN(n) && n > 0 && n < 100) return n;
-  const words = { one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12 };
+  const words = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12 };
   if (s in words) return words[s];
   return null;
 }
 function missingFields(f = {}) {
-  const order = ["name","phone","email","pickup","dropoff","date","time","passengers","luggage"];
+  const order = ["name", "phone", "email", "pickup", "dropoff", "date", "time", "passengers", "luggage"];
   return order.filter(k => {
     if (k === "passengers") return !(+f.passengers > 0);
     if (k === "luggage") return !(typeof f.luggage === "boolean");
@@ -1092,19 +1092,19 @@ app.post("/chat", async (req, res) => {
     }
 
     /* 0a) Conversation wrap-up: thanks / bye / no */
-/* 0a) Conversation wrap-up: thanks / bye / no */
-if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_RE.test(lastUser)) {
-  // If booking was just completed, keep it soft
-  if (lastAssistantCompletedBooking(messages)) {
-    return res.json({
-      reply: "All set 🙏 Your booking is confirmed. Thank You, I’ll stay here if you need anything else."
-    });
-  }
-  // Otherwise, generic polite reply
-  return res.json({
-    reply: "Thanks 🙏 I’m here if you need anything else."
-  });
-}
+    /* 0a) Conversation wrap-up: thanks / bye / no */
+    if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_RE.test(lastUser)) {
+      // If booking was just completed, keep it soft
+      if (lastAssistantCompletedBooking(messages)) {
+        return res.json({
+          reply: "All set, Your booking is confirmed. Thank You, I’ll stay here if you need anything else."
+        });
+      }
+      // Otherwise, generic polite reply
+      return res.json({
+        reply: "Thanks, I’m here if you need anything else."
+      });
+    }
 
 
     /* 0b) On confirm: collect anything missing, then email */
@@ -1115,7 +1115,7 @@ if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_R
         let extracted = mergePreferringAI(ai, fb);
 
         // coerce
-        extracted.luggage    = coerceLuggage(extracted.luggage);
+        extracted.luggage = coerceLuggage(extracted.luggage);
         extracted.passengers = coercePassengers(extracted.passengers);
 
         // date normalize
@@ -1181,15 +1181,15 @@ if (THANKS_CLOSE_RE.test(lastUser) || END_INTENT_RE.test(lastUser) || NO_CLOSE_R
           return res.json({ reply: "Will you have luggage? (Yes/No is perfect.)" });
         }
 
-      await sendBookingEmailFromChat(extracted);
-const reply =
-  `Thank you${extracted.name ? `, ${extracted.name}` : ""}! I’ve submitted your reservation.\n` +
-  `Pickup: ${extracted.pickup} → ${extracted.dropoff}\n` +
-  `Date/Time: ${extracted.date} ${extracted.time}\n` +
-  `Passengers: ${extracted.passengers}${extracted.luggage === true ? " • Luggage noted" : ""}.` +
-  (addEscalation || "") +
-  `\nYou’ll receive a confirmation shortly. Anything else I can arrange?`;
-return res.json({ reply });
+        await sendBookingEmailFromChat(extracted);
+        const reply =
+          `Thank you${extracted.name ? `, ${extracted.name}` : ""}! I’ve submitted your reservation.\n` +
+          `Pickup: ${extracted.pickup} → ${extracted.dropoff}\n` +
+          `Date/Time: ${extracted.date} ${extracted.time}\n` +
+          `Passengers: ${extracted.passengers}${extracted.luggage === true ? " • Luggage noted" : ""}.` +
+          (addEscalation || "") +
+          `\nYou’ll receive a confirmation shortly. Anything else I can arrange?`;
+        return res.json({ reply });
 
       } catch (e) {
         console.error("chat booking email failed:", e);
@@ -1230,7 +1230,7 @@ return res.json({ reply });
     /* 2) Greeting-only */
     const hasAssistantAlready = messages.some(m => m.role === "assistant");
     if (isGreetingOnly(lastUser, hasAssistantAlready)) {
-      return res.json({ reply: "Hi, I’m NAVI 👋 Welcome to Executive Driving. How can I help you today?" });
+      return res.json({ reply: "Hi, I’m NAVI. Welcome to Executive Driving. How can I help you today?" });
     }
 
     /* 2b) General question → KB first, else friendly answer */
@@ -1276,7 +1276,7 @@ return res.json({ reply });
     const fbNow = salvageFromMessages(messages);             // deterministic, last user answers
     const extractedNow = mergePreferringAI(aiNow, fbNow);    // <- prefer the user’s latest message
 
-    extractedNow.luggage    = coerceLuggage(extractedNow.luggage);
+    extractedNow.luggage = coerceLuggage(extractedNow.luggage);
     extractedNow.passengers = coercePassengers(extractedNow.passengers);
 
     // Normalize date; only show note if the latest message mentioned a date
@@ -1336,18 +1336,18 @@ return res.json({ reply });
       const fname = firstName(extractedNow.name || "");
       const tailored =
         next === "phone" ? `Great${fname ? `, ${fname}` : ""}. what’s the best phone number for confirmation ?` :
-        next === "email" ? `Thanks${fname ? `, ${fname}` : ""}. What’s the best email for your confirmation, Please ?` :
-        next === "pickup" ? "Got it. What’s the pickup address?" :
-        next === "dropoff" ? "Thanks. Where are we dropping you off?" :
-        next === "date" ? "What date do you need the service?" :
-        next === "time" ? "What time should we pick you up? Please include AM/PM." :
-        next === "passengers" ? "How many passengers will be traveling?" :
-        next === "luggage" ? "Will you have luggage? (Yes/No is perfect.)" :
-        `Could you share ${FIELD_PROMPTS[next]}?`;
+          next === "email" ? `Thanks${fname ? `, ${fname}` : ""}. What’s the best email for your confirmation, Please ?` :
+            next === "pickup" ? "Got it. What’s the pickup address?" :
+              next === "dropoff" ? "Thanks. Where are we dropping you off?" :
+                next === "date" ? "What date do you need the service?" :
+                  next === "time" ? "What time should we pick you up? Please include AM/PM." :
+                    next === "passengers" ? "How many passengers will be traveling?" :
+                      next === "luggage" ? "Will you have luggage? (Yes/No is perfect.)" :
+                        `Could you share ${FIELD_PROMPTS[next]}?`;
       return res.json({ reply: (nextPromptPrefix ? nextPromptPrefix : "") + tailored });
     }
 
-    // ✅ No fields missing and no validation errors → submit automatically
+    //  No fields missing and no validation errors → submit automatically
     try {
       await sendBookingEmailFromChat(extractedNow);
       const reply =
@@ -1357,7 +1357,7 @@ return res.json({ reply });
         `Passengers: ${extractedNow.passengers}${extractedNow.luggage === true ? " • Luggage noted" : ""}.` +
         (extractedNow.__dropoffEscalationNote ? `\n\n${extractedNow.__dropoffEscalationNote}` : "") +
         `\nYou’ll receive a confirmation shortly. Anything else I can arrange?`;
-      return res.json({ reply});
+      return res.json({ reply });
     } catch (e) {
       console.error("auto-submit failed:", e?.message || e);
       return res.json({
