@@ -130,32 +130,40 @@ console.log('script.js loaded v8');
   on(window, 'load', setState);
   setState();
 })();
-/* ---------- Reveal-on-scroll (fixed for mobile glitch) ---------- */
+/* ---------- Reveal-on-scroll (universal smooth version) ---------- */
 (() => {
   const { $$ } = window.__XD__;
   const els = $$('[data-reveal]');
   if (!els.length || !('IntersectionObserver' in window)) return;
 
-  // 🧠 Disable reveals entirely on small screens for smoother scroll
-  if (window.innerWidth < 768) {
-    els.forEach(el => el.classList.add('is-visible'));
-    return;
-  }
+  // ⚙️ Add GPU hint for smoother animation on mobile
+  els.forEach(el => el.style.willChange = 'opacity, transform');
 
-  // 👇 Once visible, stay visible — prevents flicker
   const io = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
+      const el = entry.target;
+
+      // If element is visible, show it once and stop observing
       if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        obs.unobserve(entry.target);
+        el.classList.add('is-visible');
+        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+        obs.unobserve(el);
       }
     });
   }, {
-    threshold: 0.2,
-    rootMargin: '0px 0px -15% 0px'
+    root: null,
+    threshold: 0.15,
+    rootMargin: '0px 0px -10% 0px'
   });
 
-  els.forEach(el => io.observe(el));
+  els.forEach(el => {
+    // Initial hidden state
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    io.observe(el);
+  });
 })();
 
 
