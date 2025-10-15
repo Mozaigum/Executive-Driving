@@ -130,13 +130,19 @@ console.log('script.js loaded v8');
   on(window, 'load', setState);
   setState();
 })();
-
-/* ---------- Reveal-on-scroll ---------- */
+/* ---------- Reveal-on-scroll (fixed for mobile glitch) ---------- */
 (() => {
   const { $$ } = window.__XD__;
   const els = $$('[data-reveal]');
   if (!els.length || !('IntersectionObserver' in window)) return;
 
+  // 🧠 Disable reveals entirely on small screens for smoother scroll
+  if (window.innerWidth < 768) {
+    els.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+
+  // 👇 Once visible, stay visible — prevents flicker
   const io = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -144,10 +150,14 @@ console.log('script.js loaded v8');
         obs.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.38, rootMargin: '0px 0px -20% 0px' });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -15% 0px'
+  });
 
   els.forEach(el => io.observe(el));
 })();
+
 
 /* ---------- Hero sizing + safe autoplay ---------- */
 (() => {
