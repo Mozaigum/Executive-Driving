@@ -12,8 +12,28 @@ console.log('script.js loaded v8');
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
   // Scroll lock via class 
-  const lockScroll = () => document.body.classList.add('no-scroll');
-  const unlockScroll = () => document.body.classList.remove('no-scroll');
+ // Scroll lock (mobile-safe: freezes page at current scroll)
+const lockScroll = () => {
+  if (document.body.classList.contains('modal-open')) return;
+  const y = window.scrollY || document.documentElement.scrollTop || 0;
+  document.body.dataset.scrollY = String(y);
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${y}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.classList.add('modal-open','no-scroll');
+};
+const unlockScroll = () => {
+  const y = parseInt(document.body.dataset.scrollY || '0', 10);
+  document.body.classList.remove('modal-open','no-scroll');
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  delete document.body.dataset.scrollY;
+  window.scrollTo(0, y);
+};
+
 
   // Safe event add 
   const on = (el, evt, fn, opts) => el && el.addEventListener(evt, fn, opts);
@@ -361,7 +381,7 @@ console.log('script.js loaded v8');
 
 /* ---------- Booking modal ---------- */
 (() => {
-  const { $, $$, on, unlockScroll } = window.__XD__;
+  const { $, $$, on, lockScroll, unlockScroll } = window.__XD__;
   const overlay = $('#booking-overlay');
   if (!overlay) return;
 
@@ -372,10 +392,15 @@ console.log('script.js loaded v8');
   const burger = document.querySelector('.rr-burger-btn');
 
   const setState = (open) => {
-    overlay.classList.toggle('open', open);
-    overlay.setAttribute('aria-hidden', String(!open));
-    if (!open && !menu?.classList.contains('open')) unlockScroll();
-  };
+  overlay.classList.toggle('open', open);
+  overlay.setAttribute('aria-hidden', String(!open));
+  if (open) {
+    lockScroll(); // ✅ freeze background while modal is open
+  } else {
+    if (!menu?.classList.contains('open')) unlockScroll(); // ✅ restore if menu isn’t open
+  }
+};
+
 
   const open = (e) => {
     e?.preventDefault();
