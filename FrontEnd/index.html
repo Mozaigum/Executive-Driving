@@ -13,6 +13,16 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css?v=fix2">
+<style>
+/* 🔴 Outline everything so you can see what's spilling */
+*, *::before, *::after {
+  outline: 1px dashed rgba(255,0,0,.55);
+  outline-offset: -1px;
+}
+
+/* (nice bonus) reduce modal “drift” without JS */
+html { scrollbar-gutter: stable both-edges; }
+</style>
 
 
 </head>

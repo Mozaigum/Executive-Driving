@@ -3321,3 +3321,28 @@ body.modal-open html {
   max-width: 100%;
   box-sizing: border-box;
 }
+/* 1) Make the row a real grid that can shrink */
+.booking-grid.two {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+/* 2) Let the fields actually shrink inside the grid cells */
+.booking-grid.two .field {
+  min-width: 0;
+}
+
+/* 3) Force the date/time controls to respect their box */
+.booking-form input[type="date"],
+.booking-form input[type="time"] {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Optional: stack on smaller phones so nothing ever overflows */
+@media (max-width: 520px) {
+  .booking-grid.two { grid-template-columns: 1fr; }
+}
