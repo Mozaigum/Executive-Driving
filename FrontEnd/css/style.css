@@ -3251,3 +3251,17 @@ body {
   }
   html { scroll-behavior: auto !important; }
 }
+/* phone line inside overlay menu (same style as others) */
+.overlay-nav .overlay-link .fa-phone {
+  font-size: 14px;
+  margin-right: 10px;
+  color: #fff;
+  opacity: 0.85;
+  transform: translateY(1px);
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.overlay-nav .overlay-link:hover .fa-phone {
+  color: #d4af37; /* gold hover, matches others */
+  opacity: 1;
+}
