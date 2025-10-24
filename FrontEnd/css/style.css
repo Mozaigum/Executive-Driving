@@ -13,6 +13,14 @@
     --ui-scale: 1 !important;
   }
 }
+@media (max-width: 1024px) {
+  #page {
+    transform: none !important;
+    width: auto !important;
+    min-height: 100dvh !important;
+  }
+  html { scroll-behavior: auto !important; }
+}
 
 /* ===== base ===== */
 html,
@@ -3233,4 +3241,13 @@ body {
   transform: scale(1.08);
   filter: brightness(1.25) saturate(1.4) sepia(1)
           hue-rotate(5deg) drop-shadow(0 0 10px rgba(212,175,55,.65));
+}
+@media (max-width: 1024px) {
+  #page {
+    transform: none !important;
+    width: auto !important;
+    min-height: 100dvh !important;
+    zoom: 1 !important;
+  }
+  html { scroll-behavior: auto !important; }
 }
