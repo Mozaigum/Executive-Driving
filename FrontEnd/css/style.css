@@ -3265,3 +3265,39 @@ body {
   color: #d4af37; /* gold hover, matches others */
   opacity: 1;
 }
+/* --- Stop drift: real viewport + scroll lock while open --- */
+body.modal-open,
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* Make overlay truly viewport-fixed and centered */
+#booking-overlay.booking-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  min-height: 100dvh;           /* dynamic vh = ignores URL bar jumps */
+  display: grid;                /* grid centering (even if not centered variant) */
+  place-items: start;           /* left-panel layout still okay */
+  overscroll-behavior: contain; /* stop rubber-band scroll */
+}
+
+/* When using the centered variant, also use dvh */
+.booking-overlay.centered .booking-modal {
+  max-height: 82dvh;            /* was 82vh → change to dvh */
+}
+
+/* While modal is open, neutralize transforms that can break 'fixed' */
+body.modal-open [data-reveal],
+body.modal-open .hero-section,
+body.modal-open .hero-video,
+body.modal-open .hero-image-mobile,
+body.modal-open #page {
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Optional: prevent smooth scroll weirdness while open */
+body.modal-open html {
+  scroll-behavior: auto !important;
+}
