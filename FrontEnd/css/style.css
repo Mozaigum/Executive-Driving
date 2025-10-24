@@ -3265,3 +3265,30 @@ body {
   color: #d4af37; /* gold hover, matches others */
   opacity: 1;
 }
+/* Stop overlays from drifting when the page scrolls */
+#menu-overlay,
+#terms-overlay,
+#privacy-overlay,
+#booking-overlay {
+  position: fixed;     /* lock to the viewport */
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: 9999;       /* float above the page */
+}
+
+/* Keep the inner panels centered and stable */
+.menu-panel,
+.modal-panel,
+.booking-modal {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Optional: prevent background from scrolling while an overlay is open
+   (works if your JS toggles aria-hidden="false" on the overlay) */
+body:has(#menu-overlay[aria-hidden="false"]),
+body:has(#terms-overlay[aria-hidden="false"]),
+body:has(#privacy-overlay[aria-hidden="false"]),
+body:has(#booking-overlay[aria-hidden="false"]) {
+  overflow: hidden;
+}
