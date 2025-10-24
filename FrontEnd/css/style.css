@@ -3268,7 +3268,8 @@ body {
 /* make date and time inputs smaller inside the booking modal */
 .booking-form input[type="date"],
 .booking-form input[type="time"] {
-  width: 92; /* ✅ reduces their width */
-  max-width: 92;
+  width: 85%;      /* ✅ reduces their width */
+  max-width: 85%;
   box-sizing: border-box;
 }
+
