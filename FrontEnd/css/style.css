@@ -3265,84 +3265,10 @@ body {
   color: #d4af37; /* gold hover, matches others */
   opacity: 1;
 }
-/* --- Stop drift: real viewport + scroll lock while open --- */
-body.modal-open,
-body.no-scroll {
-  overflow: hidden;
-}
-
-/* Make overlay truly viewport-fixed and centered */
-#booking-overlay.booking-overlay {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  min-height: 100dvh;           /* dynamic vh = ignores URL bar jumps */
-  display: grid;                /* grid centering (even if not centered variant) */
-  place-items: start;           /* left-panel layout still okay */
-  overscroll-behavior: contain; /* stop rubber-band scroll */
-}
-
-/* When using the centered variant, also use dvh */
-.booking-overlay.centered .booking-modal {
-  max-height: 82dvh;            /* was 82vh → change to dvh */
-}
-
-/* While modal is open, neutralize transforms that can break 'fixed' */
-body.modal-open [data-reveal],
-body.modal-open .hero-section,
-body.modal-open .hero-video,
-body.modal-open .hero-image-mobile,
-body.modal-open #page {
-  transform: none !important;
-  will-change: auto !important;
-}
-
-/* Optional: prevent smooth scroll weirdness while open */
-body.modal-open html {
-  scroll-behavior: auto !important;
-}
-/* Fix date/time inputs overflowing the modal grid */
-.booking-grid.two {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem; /* adjust spacing if needed */
-}
-
-.booking-grid.two .field {
-  flex: 1 1 48%; /* two equal halves */
-  min-width: 0;  /* prevent flex children from overflowing */
-  box-sizing: border-box;
-}
-
-/* Ensure inputs don’t exceed their parent width */
+/* make date and time inputs smaller inside the booking modal */
 .booking-form input[type="date"],
 .booking-form input[type="time"] {
-  width: 100%;
-  max-width: 100%;
+  width: 92; /* ✅ reduces their width */
+  max-width: 92;
   box-sizing: border-box;
-}
-/* 1) Make the row a real grid that can shrink */
-.booking-grid.two {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 12px;
-}
-
-/* 2) Let the fields actually shrink inside the grid cells */
-.booking-grid.two .field {
-  min-width: 0;
-}
-
-/* 3) Force the date/time controls to respect their box */
-.booking-form input[type="date"],
-.booking-form input[type="time"] {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-}
-
-/* Optional: stack on smaller phones so nothing ever overflows */
-@media (max-width: 520px) {
-  .booking-grid.two { grid-template-columns: 1fr; }
 }
