@@ -3301,22 +3301,23 @@ body.modal-open #page {
 body.modal-open html {
   scroll-behavior: auto !important;
 }
-/* ===== OVERFLOW DEBUG (CSS) ===== */
-html.debug-frame::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:2147483647;
-  /* the red box around the true viewport */
-  box-shadow: 0 0 0 3px #ff3b30 inset;
+/* Fix date/time inputs overflowing the modal grid */
+.booking-grid.two {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* adjust spacing if needed */
 }
 
-/* any element we mark from JS gets a red outline + label */
-.overflow-out{ outline:2px solid #ff3b30 !important; position:relative !important; }
-.overflow-out::after{
-  content:attr(data-why) " (" attr(data-w) "px)";
-  position:absolute; top:0; left:0;
-  background:#ff3b30; color:#000; font:12px/1.4 system-ui, -apple-system, Segoe UI, Arial;
-  padding:2px 4px; z-index:2147483647;
+.booking-grid.two .field {
+  flex: 1 1 48%; /* two equal halves */
+  min-width: 0;  /* prevent flex children from overflowing */
+  box-sizing: border-box;
+}
+
+/* Ensure inputs don’t exceed their parent width */
+.booking-form input[type="date"],
+.booking-form input[type="time"] {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
