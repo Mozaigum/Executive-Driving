@@ -96,6 +96,14 @@ const unlockScroll = () => {
   const overlay = document.getElementById('booking-overlay');
 
   const get = (name) => form.querySelector(`[name="${name}"]`);
+    const submitBtn = form.querySelector('[type="submit"]');
+  const setLoading = (on) => {
+    if (!submitBtn) return;
+    submitBtn.classList.toggle('is-loading', !!on);
+    submitBtn.disabled = !!on;
+    submitBtn.setAttribute('aria-busy', on ? 'true' : 'false');
+  };
+
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -116,6 +124,7 @@ const unlockScroll = () => {
       if (['notes'].includes(k)) continue;
       if (!v) { alert('Please fill all required fields.'); return; }
     }
+  setLoading(true);
 try {
       const data = await postJSON(API_BOOK, payload);
 
@@ -135,6 +144,9 @@ try {
       }
     } catch (e) {
       alert(e.message || 'Network error. Please try again or contact us directly.');
+    }
+    finally {
+      setLoading(false); // ⬅️ ALWAYS hide spinner
     }
   });
 })();

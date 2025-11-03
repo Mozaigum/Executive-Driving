@@ -3355,3 +3355,25 @@ a:hover .footer-icon {
     display: none !important;
   }
 }
+/* === Booking submit → loading spinner === */
+#booking-form [type="submit"].is-loading {
+  position: relative;
+  color: transparent;          /* hide label without layout shift */
+  pointer-events: none;
+  opacity: .9;
+}
+
+#booking-form [type="submit"].is-loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ffffff;   /* uses button text color */
+  border-top-color: transparent;    /* spinner gap */
+  border-radius: 50%;
+  animation: xd-spin .8s linear infinite;
+}
+
+@keyframes xd-spin { to { transform: rotate(360deg); } }
