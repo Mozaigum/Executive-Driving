@@ -1008,5 +1008,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.__XD__ = Object.assign(window.__XD__||{}, { openThanks });
 })();
+const overlay = document.getElementById('menu-overlay');
+const openBtn  = document.querySelector('.menu-toggle');
+const closeBtn = document.querySelector('.menu-close');
+
+function openMenu(){
+  overlay.setAttribute('aria-hidden','false');
+  document.body.classList.add('menu-open');
+}
+function closeMenu(){
+  overlay.setAttribute('aria-hidden','true');
+  document.body.classList.remove('menu-open');
+}
+
+openBtn?.addEventListener('click', openMenu);
+closeBtn?.addEventListener('click', closeMenu);
+
+// Also close on ESC
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeMenu(); });
 
 });
