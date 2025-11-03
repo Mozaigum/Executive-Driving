@@ -3347,3 +3347,11 @@ a:hover .footer-icon {
     padding-bottom: calc(30px + env(safe-area-inset-bottom));
   }
 }
+
+/* Hide NAVI toggle & chat when the menu overlay is visible (mobile only) */
+@media (max-width: 768px) {
+  #menu-overlay[aria-hidden="false"] ~ .xd-chat__toggle,
+  #menu-overlay[aria-hidden="false"] ~ .xd-chat {
+    display: none !important;
+  }
+}
