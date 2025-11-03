@@ -116,15 +116,20 @@ const unlockScroll = () => {
       if (['notes'].includes(k)) continue;
       if (!v) { alert('Please fill all required fields.'); return; }
     }
-
-    try {
+try {
       const data = await postJSON(API_BOOK, payload);
 
       if (data.ok) {
-        alert('Thanks! Your request was sent. We’ll confirm shortly.');
+        // ✅ close booking modal + open the Thank You overlay with details
         form.reset();
         overlay?.classList.remove('open');
         overlay?.setAttribute('aria-hidden', 'true');
+
+        if (window.__XD__?.openThanks) {
+          window.__XD__.openThanks(payload);
+        } else {
+          alert('Thanks! Your request was sent. We’ll confirm shortly.');
+        }
       } else {
         alert('Sorry could not send just now. Please call 825-973-9800 or email info@executivedriving.ca.');
       }
@@ -332,7 +337,7 @@ const unlockScroll = () => {
   if (!intro) return;
 
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  const INTRO_MIN = reduceMotion ? 0 : 3200;
+  const INTRO_MIN = reduceMotion ? 0 : 1000;
   const INTRO_FADE = 1000;
   let done = false;
 
@@ -885,17 +890,123 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
         console.log("Server response:", data);
 
-        if (data.ok) {
-          alert(" Request sent! We'll contact you shortly.");
-          form.reset();
-        } else {
-          alert(" Error: " + data.error);
-        }
+      if (data.ok) {
+  const payload2 = {
+    name: form.name.value,
+    phone: form.phone.value,
+    email: form.email.value,
+    pickup: '—',
+    dropoff: '—',
+    date: form.date.value,
+    time: '',
+    passengers: '—',
+    notes: form.details.value
+  };
+  window.__XD__?.openThanks(payload2);
+  form.reset();
+} else {
+  alert(" Error: " + data.error);
+}
+
       } catch (err) {
         console.error("Fetch failed:", err);
         alert(" Could not send request. Check console.");
       }
     });
   }
-  
+  // ---- Booking Received modal helpers ----
+(() => {
+  const { $, on, lockScroll, unlockScroll } = window.__XD__ || {
+    $: (s, r=document) => r.querySelector(s),
+    on: (el, evt, fn, opts) => el && el.addEventListener(evt, fn, opts),
+    lockScroll: () => document.body.classList.add('no-scroll'),
+    unlockScroll: () => document.body.classList.remove('no-scroll'),
+  };
+
+  const overlay = document.getElementById('thanks-overlay');
+  if (!overlay) return;
+
+  const panel   = overlay.querySelector('.modal-panel, .ty-panel');
+  const closeBtn= overlay.querySelector('.modal-close');
+  const emailEl = overlay.querySelector('#t-email');
+  const sumEl   = overlay.querySelector('#t-summary');
+  const icsBtn  = overlay.querySelector('#t-ics');
+  const emailBtn= overlay.querySelector('#t-email-link');
+
+  const fmtDate = (d) => d ? new Date(d).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}) : '—';
+  const fmtTime = (t) => {
+    if (!t) return '—';
+    const [h,m] = t.split(':').map(Number); const d=new Date(); d.setHours(h||0,m||0,0,0);
+    return d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+  };
+
+  function buildICS(p) {
+    try {
+      const start = new Date(`${p.date}T${p.time||'09:00'}:00`);
+      const end   = new Date(start.getTime() + 60*60*1000);
+      const pad=(n)=>String(n).padStart(2,'0');
+      const dt=(d)=> d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+'00Z';
+      const details = [
+        `Name: ${p.name||''}`, `Phone: ${p.phone||''}`, `Email: ${p.email||''}`,
+        `Pickup: ${p.pickup||''}`, `Drop-off: ${p.dropoff||''}`,
+        `Passengers: ${p.passengers||''}`, p.notes?`Notes: ${p.notes}`:''
+      ].filter(Boolean).join('\n');
+      const ics = [
+        'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Executive Driving//Booking//EN',
+        'BEGIN:VEVENT',`UID:${Date.now()}@executivedriving.ca`,
+        `DTSTAMP:${dt(new Date())}`,`DTSTART:${dt(start)}`,`DTEND:${dt(end)}`,
+        'SUMMARY:Executive Driving — Chauffeur Booking',
+        `LOCATION:${(p.pickup||'').replace(/\n/g,' ')}`,`DESCRIPTION:${details}`,
+        'END:VEVENT','END:VCALENDAR'
+      ].join('\r\n');
+      return new Blob([ics], { type:'text/calendar' });
+    } catch { return null; }
+  }
+
+  function mailtoHref(p) {
+    const to = p.email || 'info@executivedriving.ca';
+    const subject = 'Your Executive Driving Booking';
+    const body = [
+      'Thank you for your booking. Here are the details:',
+      `• Name: ${p.name||''}`, `• Phone: ${p.phone||''}`, `• Email: ${p.email||''}`,
+      `• Pickup: ${p.pickup||''}`, `• Drop-off: ${p.dropoff||''}`,
+      `• Date: ${fmtDate(p.date)} at ${fmtTime(p.time)}`,
+      `• Passengers: ${p.passengers||''}`, p.notes?`• Notes: ${p.notes}`:''
+    ].filter(Boolean).join('\n');
+    const enc = encodeURIComponent;
+    return `mailto:${to}?subject=${enc(subject)}&body=${enc(body)}`;
+  }
+
+  function openThanks(payload={}) {
+    if (emailEl) emailEl.textContent = payload.email || 'your email';
+    if (sumEl) {
+      sumEl.innerHTML = '';
+      [
+        ['Name', payload.name], ['Phone', payload.phone],
+        ['Pickup', payload.pickup], ['Drop-off', payload.dropoff],
+        ['Date', fmtDate(payload.date)], ['Time', fmtTime(payload.time)],
+        ['Passengers', payload.passengers], ...(payload.notes?[['Notes', payload.notes]]:[])
+      ].forEach(([k,v]) => {
+        const li=document.createElement('li'); li.style.margin='2px 0';
+        li.innerHTML = `<strong>${k}:</strong> ${v||'—'}`; sumEl.appendChild(li);
+      });
+    }
+    if (icsBtn) { const blob=buildICS(payload); if (blob) icsBtn.href=URL.createObjectURL(blob); }
+    if (emailBtn) emailBtn.href = mailtoHref(payload);
+
+    overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); lockScroll();
+    panel.querySelector('a,button,[tabindex]:not([tabindex="-1"])')?.focus({preventScroll:true});
+  }
+
+  function closeThanks() {
+    overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); unlockScroll();
+  }
+
+  on(closeBtn,'click',closeThanks);
+  on(overlay,'click',(e)=>{ if(e.target===overlay) closeThanks(); });
+  on(document,'keydown',(e)=>{ if(e.key==='Escape' && overlay.classList.contains('open')) closeThanks(); });
+
+  window.__XD__ = Object.assign(window.__XD__||{}, { openThanks });
+})();
+
 });

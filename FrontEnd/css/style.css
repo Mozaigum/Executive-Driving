@@ -936,6 +936,47 @@ section {
   animation-duration: .8s;
   letter-spacing: .01em;
 }
+/* Overlay menu: phone as a pill */
+.overlay-link.phone-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 16px;
+  border-radius:999px;
+  border:1px solid var(--border-line);
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  text-transform:none;
+  letter-spacing:.06em;
+  font-weight:800;
+  width:max-content;
+}
+.overlay-link.phone-pill::after{ content:none; } /* kill underline */
+
+.overlay-link.phone-pill .ri-phone-line{
+  color:var(--gold);
+  font-size:1.05rem;
+  margin-right:2px;
+  transition:transform .25s ease, color .25s ease;
+}
+
+.overlay-link.phone-pill:hover{
+  background:var(--gold);
+  color:#111;
+  border-color:var(--gold);
+  transform:translateY(-2px);
+  box-shadow:0 12px 28px rgba(0,0,0,.45);
+}
+.overlay-link.phone-pill:hover .ri-phone-line{ color:#111; transform:translateY(-1px); }
+
+.overlay-link.phone-pill:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 2px rgba(255,255,255,.08), 0 0 0 6px rgba(212,175,55,.25);
+  border-color:rgba(212,175,55,.45);
+}
+
+
+/* small tweak so it sits nicely under the list */
+.overlay-nav .overlay-link.phone-pill{ margin-top:8px; }
 
 /* ---- Reveal on scroll (single, final) ---- */
 @keyframes rrReveal {
@@ -3120,96 +3161,10 @@ body {
     padding-bottom: 30px;
   }
 }
-/* Header phone link – image based */
-.top-bar .phone-link{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  text-transform:none;
-  color:#fff;
-  font-weight:700;
-  letter-spacing:.02em;
-  padding:10px 0; /* keep same vertical rhythm */
-}
 
-/* kill the underline animation that .top-cta adds */
-.top-bar .phone-link::after{ content:none; }
-
-/* size and align the PNG icon */
-.top-bar .phone-link .phone-icon{
-  width:30px;
-  height:30px;
-  flex:0 0 24px;
-  object-fit:contain;
-  vertical-align:-2px;
-  filter:drop-shadow(0 0 6px rgba(212,175,55,.45));
-  transition:transform .25s ease, filter .25s ease;
-}
-
-/* hover: number turns gold, icon lifts slightly */
-.top-bar .phone-link:hover{ color:var(--gold); transform:translateY(-2px); }
-.top-bar .phone-link:hover .phone-icon{
-  transform:scale(1.12);
-  filter:drop-shadow(0 0 10px rgba(212,175,55,.6));
-}
-
-/* smaller icon + text on mobile */
-@media (max-width:640px){
-  .top-bar .phone-link .phone-icon{ width:18px; height:18px; flex-basis:18px; }
-  .top-bar .phone-link{ font-size:13px; }
-}
-/* Footer contact icons (image-based) */
-.footer-contact {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 14px;
-}
-
-.footer-contact li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #e8e8e8;
-  font-size: 16px;
-}
-
-.footer-contact a {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: inherit;
-  text-decoration: none;
-  font-weight: 700;
-}
-
-/* new img icons */
-.footer-contact .footer-icon {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 18px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 6px rgba(212,175,55,.35));
-  transition: transform .25s ease, filter .25s ease;
-}
-
-/* hover state mirrors header: text turns gold, icon lifts */
-.footer-contact a:hover {
-  color: var(--gold);
-}
-
-.footer-contact a:hover .footer-icon {
-  transform: translateY(-1px) scale(1.08);
-  filter: drop-shadow(0 0 10px rgba(212,175,55,.55));
-}
-
-/* Mobile: smaller icons if you like */
-@media (max-width:640px){
-  .footer-contact .footer-icon { width:16px; height:16px; flex-basis:16px; }
-}
 .footer-contact .footer-mail {
   color: var(--gold);
   font-size: 16px;
-  margin-right: 10px;
   filter: drop-shadow(0 0 6px rgba(212,175,55,.4));
   transition: transform .25s ease, filter .25s ease;
   width: 18px;
@@ -3251,20 +3206,7 @@ body {
   }
   html { scroll-behavior: auto !important; }
 }
-/* phone line inside overlay menu (same style as others) */
-.overlay-nav .overlay-link .fa-phone {
-  font-size: 14px;
-  margin-right: 10px;
-  color: #fff;
-  opacity: 0.85;
-  transform: translateY(1px);
-  transition: color 0.3s ease, opacity 0.3s ease;
-}
 
-.overlay-nav .overlay-link:hover .fa-phone {
-  color: #d4af37; /* gold hover, matches others */
-  opacity: 1;
-}
 /* make date and time inputs smaller inside the booking modal */
 .booking-form input[type="date"],
 .booking-form input[type="time"] {
@@ -3272,4 +3214,111 @@ body {
   max-width: 85%;
   box-sizing: border-box;
 }
+/* === Thank You — Booking Received (canonical) === */
+#thanks-overlay{
+  position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.75); backdrop-filter:blur(3px);
+  z-index:10050; opacity:0; pointer-events:none; transition:opacity .35s ease;
+}
+#thanks-overlay.open{ opacity:1; pointer-events:auto; }
 
+#thanks-overlay .ty-panel{
+  position:relative; margin:0; width:min(520px,92vw); max-height:80vh; overflow-y:auto;
+  padding:1.8rem 2rem; color:#fff; border-radius:16px;
+  background:
+    linear-gradient(180deg, rgba(22,22,24,.70), rgba(12,12,14,.60)),
+    radial-gradient(circle at top left, rgba(212,175,55,.05), transparent 60%);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 25px 70px rgba(0,0,0,.55);
+  transform:translateY(8px) scale(.98); opacity:0;
+  transition:transform .35s ease, opacity .35s ease;
+}
+#thanks-overlay.open .ty-panel{ transform:translateY(0) scale(1); opacity:1; }
+
+#thanks-overlay .ty-panel::after{
+  content:""; position:absolute; inset:0; border:1px solid rgba(212,175,55,.15);
+  border-radius:inherit; pointer-events:none;
+}
+
+#thanks-overlay .modal-close{
+  position:absolute; top:10px; right:14px; background:none; border:0; color:#9aa0a6;
+  font-size:1.5rem; cursor:pointer; transition:color .2s ease;
+}
+#thanks-overlay .modal-close:hover{ color:#fff; }
+
+#thanks-overlay h3{
+  margin:0 0 .6rem; font-family:"Playfair Display",serif; font-weight:800;
+  letter-spacing:.5px; font-size:1.55rem; color:#f5e8b0;
+  text-shadow:0 0 12px rgba(212,175,55,.25); text-align:center;
+}
+#thanks-overlay .lead{
+  color:#e3e3e3; font-size:1rem; line-height:1.55; margin:6px 0 14px; text-align:center;
+}
+#thanks-overlay .lead strong{
+  color:#fff; border-bottom:1px dotted rgba(212,175,55,.4);
+}
+
+/* Force content visible inside this overlay (cancels global modal animations) */
+#thanks-overlay .modal-content > *{
+  opacity:1 !important; transform:none !important; animation:none !important;
+}
+
+/* === Big golden tick === */
+.ty-check{ display:grid; place-items:center; width:120px; height:120px; margin:0 auto 12px; }
+.ty-check svg{ width:120px; height:120px; display:block; }
+.ty-ring{ stroke-dasharray:330; stroke-dashoffset:330; opacity:.85;
+  animation:tyDraw 900ms ease forwards 120ms; }
+.ty-mark{ stroke-dasharray:90; stroke-dashoffset:90;
+  animation:tyDraw 700ms cubic-bezier(.2,.9,.2,1) forwards 360ms,
+             tyPop 280ms ease 1 forwards 1s; }
+
+@keyframes tyDraw{ to{ stroke-dashoffset:0; } }
+@keyframes tyPop{ 50%{ transform:scale(1.05); } 100%{ transform:scale(1); } }
+
+/* Summary + actions */
+.ty-summary{ list-style:none; padding:0; margin:10px 0 6px; }
+.ty-summary li{
+  display:grid; grid-template-columns:140px 1fr; gap:10px; padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.ty-summary li:last-child{ border-bottom:0; }
+.ty-summary strong{ color:#cfcfcf; }
+
+.ty-actions{
+  margin-top:14px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
+}
+#thanks-overlay .btn-rr{
+  background:linear-gradient(90deg,#d4af37,#b99629); color:#000; border:none;
+  font-weight:600; letter-spacing:.03em; transition:all .25s ease;
+}
+#thanks-overlay .btn-rr:hover{
+  background:linear-gradient(90deg,#f4d65b,#d4af37);
+  transform:translateY(-2px);
+  box-shadow:0 6px 14px rgba(212,175,55,.35);
+}
+
+#thanks-overlay .micro-note{
+  border-top:1px solid rgba(255,255,255,.08);
+  margin-top:1.2rem !important; padding-top:.6rem;
+  font-size:.85rem; color:#ccc; text-align:center;
+}
+#thanks-overlay .micro-note i{ color:#d4af37; margin-right:4px; }
+/* Consistent phone icon look (Remix Icon) */
+.phone-icon,
+.footer-icon,
+.overlay-link .ri-phone-line {
+  font-size: 1.05rem;
+  vertical-align: middle;
+  margin-right: 6px;
+  color: #d4af37;          /* gold by default */
+  transition: color .25s ease;
+}
+
+/* hover: brighten to white */
+a:hover .ri-phone-line,
+a:hover .phone-icon,
+a:hover .footer-icon {
+  color: #fff;
+}
+/* add this */
+.overlay-link.phone-pill { margin-left: -16px; }  /* aligns pill with other items */
