@@ -680,12 +680,13 @@ function renderBookingEmail({ name, phone, email, pickup, dropoff, date, time, p
       </table>
       ${notes ? `
   <p style="
-    margin:16px 0 0;
-    white-space: normal !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-    line-height: 1.6;
-  ">
+  margin:24px 0 0; /* increased top margin */
+  padding-top:6px; /* extra gap */
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  line-height: 1.6;
+">
     <b>Notes:</b><br>${br(notes)}
   </p>
 ` : ""}
