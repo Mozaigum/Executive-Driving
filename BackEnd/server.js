@@ -678,7 +678,18 @@ function renderBookingEmail({ name, phone, email, pickup, dropoff, date, time, p
         <tr><td style="padding:6px 0;"><b>Passengers:</b></td><td>${esc(passengers)}</td></tr>
         <tr><td style="padding:6px 0;"><b>Luggage:</b></td><td>${luggage === true ? "Yes" : luggage === false ? "No" : "-"}</td></tr>
       </table>
-      ${notes ? `<p style="margin:16px 0 0;"><b>Notes:</b><br>${br(notes)}</p>` : ""}
+      ${notes ? `
+  <p style="
+    margin:16px 0 0;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.6;
+  ">
+    <b>Notes:</b><br>${br(notes)}
+  </p>
+` : ""}
+
       ${escalationNote ? `<p style="margin:16px 0 0; color:#7a5;"><b>Agent Escalation:</b> ${br(escalationNote)}</p>` : ""}
       <hr style="margin:24px 0; border:none; border-top:1px solid #eee">
       <p style="font-size:13px; color:#555; text-align:center;">
