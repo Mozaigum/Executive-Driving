@@ -718,8 +718,10 @@ function renderCustomerConfirmationEmail({ name, pickup, dropoff, date, time, pa
       <h2 style="margin:0 0 10px; font-size:20px;">Thank you${name ? `, ${esc(name)}` : ""}!</h2>
 
       <p style="margin:0 0 14px;">
+       <strong>
         Your booking request with <b>Executive Driving</b> has been received.
         We’ll review availability and send a final confirmation shortly.
+        </strong>
       </p>
 
       <table style="width:100%; border-collapse:collapse; font-size:14px;">
@@ -729,10 +731,6 @@ function renderCustomerConfirmationEmail({ name, pickup, dropoff, date, time, pa
         <tr><td style="padding:6px 0;"><b>Time:</b></td><td>${esc(time)}</td></tr>
         <tr><td style="padding:6px 0;"><b>Passengers:</b></td><td>${esc(passengers)}</td></tr>
       </table>
-
-      <p style="margin:18px 0 0; font-size:14px; color:#333;">
-        Our chauffeur will be ready and waiting. If you need to make any changes, just reply to this email.
-      </p>
 
       <p style="margin:18px 0 0; font-size:15px; font-weight:600; color:#000;">
         We wish you a pleasant ride with Executive Driving.
