@@ -717,9 +717,9 @@ function renderCustomerConfirmationEmail({ name, pickup, dropoff, date, time, pa
     <div style="padding:24px; background:#fff; color:#111; line-height:1.6;">
       <h2 style="margin:0 0 10px; font-size:20px;">Thank you${name ? `, ${esc(name)}` : ""}!</h2>
 
-      <p style="margin:0 0 14px;">
+      <p style="margin:0 0 14px; font-weight:800; font-size:16px;">
        <strong>
-        Your booking request with <b>Executive Driving</b> has been received.
+        Your booking request with Executive Driving has been received.
         We’ll review availability and send a final confirmation shortly.
         </strong>
       </p>
