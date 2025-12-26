@@ -1417,9 +1417,8 @@ app.get("/api/events/test", async (_req, res) => {
     if (!process.env.EVENTBRITE_TOKEN) {
       return res.status(500).json({ error: "EVENTBRITE_TOKEN not set" });
     }
-
-    const r = await fetch(
-  "https://www.eventbriteapi.com/v3/events/search/?location.latitude=55.1707&location.longitude=-118.7947&location.within=150km&expand=venue",
+const r = await fetch(
+  "https://www.eventbriteapi.com/v3/events/search/?location.latitude=53.5461&location.longitude=-113.4938&location.within=50km&expand=venue",
   {
     headers: {
       Authorization: `Bearer ${process.env.EVENTBRITE_TOKEN}`,
