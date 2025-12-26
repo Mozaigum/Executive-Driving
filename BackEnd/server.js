@@ -1409,6 +1409,37 @@ app.use((err, _req, res, _next) => {
     res.status(500).json({ reply: "Whoops,there was a hiccup on my side. Let’s continue your booking—what’s the pickup and destination?" });
   }
 });
+import fetch from "node-fetch";
+
+/* ---------- Eventbrite test route ---------- */
+app.get("/api/events/test", async (_req, res) => {
+  try {
+    if (!process.env.EVENTBRITE_TOKEN) {
+      return res.status(500).json({ error: "EVENTBRITE_TOKEN not set" });
+    }
+
+    const r = await fetch(
+      "https://www.eventbriteapi.com/v3/events/search/?location.address=Alberta,Canada&expand=venue",
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.EVENTBRITE_TOKEN}`,
+        },
+      }
+    );
+
+    const data = await r.json();
+
+    // Just return raw data for now
+    res.json({
+      ok: true,
+      count: data.events?.length || 0,
+      sample: data.events?.slice(0, 3) || []
+    });
+  } catch (err) {
+    console.error("Eventbrite test error:", err);
+    res.status(500).json({ error: "Eventbrite test failed" });
+  }
+});
 
 /* ---------- Start ---------- */
 const PORT = process.env.PORT || 3001;
