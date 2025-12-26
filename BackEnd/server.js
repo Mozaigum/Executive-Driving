@@ -1419,13 +1419,13 @@ app.get("/api/events/test", async (_req, res) => {
     }
 
     const r = await fetch(
-      "https://www.eventbriteapi.com/v3/events/search/?location.address=Alberta,Canada&expand=venue",
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.EVENTBRITE_TOKEN}`,
-        },
-      }
-    );
+  "https://www.eventbriteapi.com/v3/events/search/?location.latitude=55.1707&location.longitude=-118.7947&location.within=150km&expand=venue",
+  {
+    headers: {
+      Authorization: `Bearer ${process.env.EVENTBRITE_TOKEN}`,
+    },
+  }
+);
 
     const data = await r.json();
 
