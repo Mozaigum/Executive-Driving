@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-  
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
-  <title>Executive Driving</title>
+  <title>Events | Executive Driving</title>
 
-  <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -17,222 +15,175 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=fix3">
-  <link rel="stylesheet" href="css/nav.css?v=3">
+  <link rel="stylesheet" href="css/style.css?v=fix2">
+  <link rel="stylesheet" href="css/event.css?v=5">
+  <link rel="stylesheet" href="css/nav.css?v=2">
 
   <meta name="api-base" content="https://executive-driving-backend-b79y.onrender.com">
+
+  <style>
+    /* Events page: page is visible immediately (no intro splash) */
+    body.intro-done #page { opacity: 1; }
+  </style>
 </head>
 
-<body>
+<body class="intro-done">
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W7JXP7VP" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div id="page">
 
-    <!-- ═══════════════════════════════════════
-         HEADER — Horizontal nav (desktop)
-                  Burger slide-out (mobile)
-    ═══════════════════════════════════════ -->
-   <header id="site-header" class="at-top">
-  <div class="top-bar">
+    <!-- HEADER -->
+    <header id="site-header">
+      <div class="top-bar">
 
-    <!-- Mobile burger -->
-    <button class="menu-toggle rr-burger-btn" aria-controls="menu-overlay" aria-expanded="false">
-      
-      <span class="rr-burger" aria-hidden="true">
-        <span class="bar bar-1"></span>
-        <span class="bar bar-2"></span>
-        <span class="bar bar-3"></span>
-      </span>
-      <span class="rr-label">
-        <span class="label-open">Menu</span>
-        <span class="label-close">Close</span>
-      </span>
-    </button>
+        <button class="menu-toggle rr-burger-btn" aria-controls="menu-overlay" aria-expanded="false">
+          <span class="rr-burger" aria-hidden="true">
+            <span class="bar bar-1"></span><span class="bar bar-2"></span><span class="bar bar-3"></span>
+          </span>
+          <span class="rr-label">
+            <span class="label-open">Menu</span><span class="label-close">Close</span>
+          </span>
+        </button>
 
-    <!-- Logo -->
-    <a href="index.html" class="logo-link" aria-label="Executive Driving — Home">
-      <img src="images/logo.WebP" alt="Executive Driving" class="logo-img">
-    </a>
-<a href="tel:+18259739800" class="mobile-phone">
+        <a href="index.html" class="logo-link">
+          <img src="images/logo.WebP" alt="Executive Driving" class="logo-img">
+        </a>
+        <a href="tel:+18259739800" class="mobile-phone">
   <i class="ri-phone-line"></i> 825.973.9800
 </a>
 
-    <!-- NAV CONTAINER -->
-    <nav class="site-nav">
+        <nav class="site-nav" aria-label="Main navigation">
+          <div class="site-nav-left">
+            <div class="nav-item"><a href="index.html"  class="nav-link">Home</a></div>
+            <div class="nav-item"><a href="events.html" class="nav-link active">Events</a></div>
+            <div class="nav-item"><a href="fleet.html"  class="nav-link">Fleet</a></div>
+          </div>
+          <div class="site-nav-right">
+            <div class="nav-item"><a href="team.html"          class="nav-link">Our Team</a></div>
+            <div class="nav-item"><a href="index.html#contact" class="nav-link">Contact</a></div>
+            <div class="nav-item">
+              <button class="nav-link" aria-haspopup="true" aria-expanded="false">
+                Policy <i class="ri-arrow-down-s-line nav-arrow"></i>
+              </button>
+              <ul class="nav-dropdown" role="menu">
+                <li><button class="nav-dropdown-item js-open-terms"><i class="ri-file-text-line"></i>Terms &amp; Conditions</button></li>
+                <li><button class="nav-dropdown-item js-open-privacy"><i class="ri-shield-check-line"></i>Privacy Policy</button></li>
+              </ul>
+            </div>
+            <a href="tel:+18259739800" class="nav-phone"><i class="ri-phone-line"></i>825.973.9800</a>
+          </div>
+        </nav>
 
-      <!-- LEFT SIDE -->
-      <div class="site-nav-left">
-        <div class="nav-item"><a href="index.html" class="nav-link active">Home</a></div>
-        <div class="nav-item"><a href="events.html" class="nav-link">Events</a></div>
-        <div class="nav-item"><a href="fleet.html" class="nav-link">Fleet</a></div>
       </div>
+    </header>
 
-      <!-- RIGHT SIDE -->
-      <div class="site-nav-right">
-        <div class="nav-item"><a href="team.html" class="nav-link">Our Team</a></div>
-        <div class="nav-item"><a href="index.html#contact" class="nav-link">Contact</a></div>
-<div class="nav-item">
-  <button class="nav-link" aria-haspopup="true" aria-expanded="false">
-    Policy <i class="ri-arrow-down-s-line nav-arrow"></i>
-  </button>
-  <ul class="nav-dropdown" role="menu">
-    <li>
-      <button class="nav-dropdown-item js-open-terms">
-        <i class="ri-file-text-line"></i>Terms &amp; Conditions
-      </button>
-    </li>
-    <li>
-      <button class="nav-dropdown-item js-open-privacy">
-        <i class="ri-shield-check-line"></i>Privacy Policy
-      </button>
-    </li>
-  </ul>
-</div>
-        <a href="tel:+18259739800" class="nav-phone">825.973.9800</a>
-      </div>
+    <!-- Events Section -->
+    <section class="events-section events-page">
+      <div class="container events-layout">
 
-    </nav>
-
-  </div>
-</header>
-    <!-- ── end header ── -->
-
-    <section id="hero" class="hero-section">
-      <video class="hero-video" autoplay muted loop playsinline poster="images/about-us.jpg" aria-hidden="true">
-        <source src="video/hero.mp4" type="video/mp4" />
-      </video>
-      <img src="images/heropicz.png" alt="Executive Driving — luxury SUV and private jet" class="hero-image-mobile">
-      <div class="hero-overlay" aria-hidden="true"></div>
-      <div class="hero-content">
-        <p class="hero-tag">Private Chauffeur • Edmonton &amp; Grande Prairie</p>
-        <h1>Crafted Journeys, Elevated Comfort.</h1>
-        <h2>On time, discreet, and super comfortable transfers for airport and executive travel.</h2>
-
-        <div class="features-row" role="list">
-          <div class="feature" role="listitem">
-            <p>Modern, New &amp;<br>Clean Fleet</p>
-          </div>
-          <div class="feature" role="listitem">
-            <p>Discreet, Professional &amp;<br>Trained Drivers</p>
-          </div>
-          <div class="feature" role="listitem">
-            <p>Client Satisfaction<br>Guaranteed</p>
-          </div>
+        <div class="filter-header">
+          <h3>
+            <span class="regular-text">Discover Events And Let </span>
+            <span class="highlight-text">Us Do The Driving!</span>
+          </h3>
+          <p class="subtitle">Experience luxury transportation to Alberta's premier events</p>
         </div>
 
-        <a class="btn" href="#" data-book-open>Book Now</a>
+        <div class="events-content-grid">
+
+          <button class="mobile-filter-btn" id="openFilters">
+            <i class="ri-filter-3-line"></i> Filters
+          </button>
+
+          <!-- Sidebar -->
+          <aside class="events-sidebar">
+            <div class="sidebar-section search-section">
+              <h3 class="sidebar-title"><i class="ri-search-line"></i> Search Events</h3>
+              <div class="search-wrapper">
+                <input type="text" id="event-search" class="search-input" placeholder="Event name or venue..." autocomplete="off">
+                <i class="ri-search-2-line search-icon"></i>
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <h3 class="sidebar-title"><i class="ri-calendar-line"></i> When</h3>
+              <div class="dropdown-wrapper">
+                <button class="dropdown-toggle" id="dateDropdownToggle">
+                  <span class="dropdown-label">Select Date</span>
+                  <i class="ri-arrow-down-s-line dropdown-arrow"></i>
+                </button>
+                <div class="dropdown-menu" id="dateDropdownMenu">
+                  <div class="date-picker-container">
+                    <input type="date" id="eventDatePicker" class="date-picker-input">
+                    <div class="quick-dates">
+                      <button class="quick-date-btn" data-range="all">All Dates</button>
+                      <button class="quick-date-btn" data-range="today">Today</button>
+                      <button class="quick-date-btn" data-range="thisWeek">This Week</button>
+                      <button class="quick-date-btn" data-range="thisMonth">This Month</button>
+                      <button class="quick-date-btn" data-range="nextMonth">Next Month</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <h3 class="sidebar-title"><i class="ri-map-pin-line"></i> Location</h3>
+              <div class="dropdown-wrapper">
+                <button class="dropdown-toggle" id="cityDropdownToggle">
+                  <span class="dropdown-label">All Cities</span>
+                  <i class="ri-arrow-down-s-line dropdown-arrow"></i>
+                </button>
+                <div class="dropdown-menu" id="cityDropdownMenu">
+                  <button class="dropdown-item active" data-city="all"><i class="ri-building-line"></i>All Cities</button>
+                  <button class="dropdown-item" data-city="edmonton"><i class="ri-map-pin-2-line"></i>Edmonton</button>
+                  <button class="dropdown-item" data-city="grande prairie"><i class="ri-map-pin-3-line"></i>Grande Prairie</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <h3 class="sidebar-title"><i class="ri-calendar-event-line"></i> Event Type</h3>
+              <div class="dropdown-wrapper">
+                <button class="dropdown-toggle" id="typeDropdownToggle">
+                  <span class="dropdown-label">All Types</span>
+                  <i class="ri-arrow-down-s-line dropdown-arrow"></i>
+                </button>
+                <div class="dropdown-menu" id="typeDropdownMenu">
+                  <label class="dropdown-checkbox-item"><input type="checkbox" data-category="concert"><span class="checkbox-custom"></span><span class="checkbox-label">Music &amp; Concerts</span><span class="checkbox-count">0</span></label>
+                  <label class="dropdown-checkbox-item"><input type="checkbox" data-category="sports"><span class="checkbox-custom"></span><span class="checkbox-label">Sports</span><span class="checkbox-count">0</span></label>
+                  <label class="dropdown-checkbox-item"><input type="checkbox" data-category="nightlife"><span class="checkbox-custom"></span><span class="checkbox-label">Nightlife</span><span class="checkbox-count">0</span></label>
+                  <label class="dropdown-checkbox-item"><input type="checkbox" data-category="arts"><span class="checkbox-custom"></span><span class="checkbox-label">Arts &amp; Theatre</span><span class="checkbox-count">0</span></label>
+                  <label class="dropdown-checkbox-item"><input type="checkbox" data-category="family"><span class="checkbox-custom"></span><span class="checkbox-label">Family</span><span class="checkbox-count">0</span></label>
+                </div>
+              </div>
+              <button id="clear-filters" class="clear-filters"><i class="ri-refresh-line"></i> Clear Filters</button>
+            </div>
+          </aside>
+
+          <div id="events-list" class="events-list"></div>
+        </div>
       </div>
     </section>
 
-    <section id="about-us" class="about-min">
-      <div class="about-min__content">
-        <h2 class="about-min__title" data-reveal style="--delay:.05s">A Quiet Standard in Executive Travel</h2>
-        <p class="about-min__lead" data-reveal style="--delay:.15s">
-          Executive Driving sets the benchmark for discreet, polished airport and executive transfers
-          across Edmonton and Grande Prairie. Every journey is curated with precision and subtle elegance.
-        </p>
-        <p class="about-min__lead" data-reveal style="--delay:.25s">
-          Our fleet is immaculately maintained, and our chauffeurs are trained to anticipate your needs
-          with seamless professionalism. We deliver more than transport we deliver assurance, comfort, and quiet prestige.
-        </p>
-        <div class="about-min__features" role="list">
-          <article class="about-min__item" data-reveal style="--delay:.35s" role="listitem">
-            <i class="ri-time-line about-min__icon" aria-hidden="true"></i>
-            <strong>Punctual, Always</strong>
-            <span class="about-min__muted">Proactive flight tracking. Timely, calm arrivals.</span>
-          </article>
-          <article class="about-min__item" data-reveal style="--delay:.45s" role="listitem">
-            <i class="ri-roadster-line about-min__icon" aria-hidden="true"></i>
-            <strong>Refined Comfort</strong>
-            <span class="about-min__muted">Quiet cabins, climate control, effortless ride.</span>
-          </article>
-          <article class="about-min__item" data-reveal style="--delay:.55s" role="listitem">
-            <i class="ri-shield-check-line about-min__icon" aria-hidden="true"></i>
-            <strong>Discreet Conduct</strong>
-            <span class="about-min__muted">Professional, confidential, attention off you.</span>
-          </article>
-          <article class="about-min__item" data-reveal style="--delay:.65s" role="listitem">
-            <i class="ri-calendar-2-line about-min__icon" aria-hidden="true"></i>
-            <strong>24/7 Concierge</strong>
-            <span class="about-min__muted">Flexible scheduling. Swift confirmations.</span>
-          </article>
-        </div>
-      </div>
-    </section>
-<!-- Reviews -->
-<section class="reviews-section" aria-labelledby="reviews-title">
-  <h2 id="reviews-title">What Our Clients Say</h2>
-  <p class="reviews-subtitle">Real reviews from real passengers</p>
-  <div class="reviews-stars-summary">
-    <span class="stars">★★★★★</span>
-    <span>5.0 out of 5 &nbsp;·&nbsp; 22 Google Reviews</span>
-  </div>
-  <div class="reviews-grid">
-
-    <div class="review-card">
-      <div class="review-card__quote">"</div>
-      <div class="review-card__stars">★★★★★</div>
-      <p class="review-card__text">Professional &amp; incredible! Loved my driver Karlee — she is an absolute gem. Used this company for my ride home after my wedding. Me &amp; my hubby loved this service and will be back again.</p>
-      <div class="review-card__author">
-        <div class="review-card__avatar">D</div>
-        <div>
-          <div class="review-card__name">Demi MacPhee</div>
-          <div class="review-card__date">Google Review</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="review-card">
-      <div class="review-card__quote">"</div>
-      <div class="review-card__stars">★★★★★</div>
-      <p class="review-card__text">My wife and I used Executive for a night out at Dome Dining and it was perfect. Gez turned around immediately after a mix-up on our end, never made us feel bad, and got us there on time. The vehicle was so clean and comfortable — will forever recommend!</p>
-      <div class="review-card__author">
-        <div class="review-card__avatar">C</div>
-        <div>
-          <div class="review-card__name">Chris</div>
-          <div class="review-card__date">Google Review</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="review-card">
-      <div class="review-card__quote">"</div>
-      <div class="review-card__stars">★★★★★</div>
-      <p class="review-card__text">I have used Executive a few times and each time it has been a great experience. Always professional and on time — I'll continue to use them for all my driving needs. Highly recommend, 10 out of 10. Keep up the great work!</p>
-      <div class="review-card__author">
-        <div class="review-card__avatar">K</div>
-        <div>
-          <div class="review-card__name">Kyle Cloutier</div>
-          <div class="review-card__date">Google Review</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <div class="reviews-cta">
-    <a href="https://business.google.com/v/executive-chauffeur-driving-inc/017511456303636581549/d25f/_" target="_blank" rel="noopener">
-      <i class="ri-google-line"></i> See All Reviews on Google
-    </a>
-  </div>
-</section>
     <!-- Contact -->
     <section id="contact" class="concierge" aria-labelledby="concierge-title">
       <div class="concierge-wrap">
         <div class="concierge-info" data-reveal style="--delay:.05s">
           <h2 id="concierge-title" class="concierge-title">Dedicated <span>Client Care</span></h2>
-          <p class="concierge-lead">Discreet support any time. We coordinate flights, routes, and special requests with quiet precision, then confirm in minutes.</p>
+          <p class="concierge-lead">Discreet support any time. We coordinate flights, routes, and special requests with quiet precision — then confirm in minutes.</p>
           <ul class="concierge-bullets">
-            <li><i class="ri-time-line" aria-hidden="true"></i>Average reply time: <b>about ten to fifteen minutes</b></li>
-            <li><i class="ri-shield-check-line" aria-hidden="true"></i>Encrypted communications</li>
-            <li><i class="ri-roadster-line" aria-hidden="true"></i>Executive fleet availability</li>
+            <li><i class="ri-time-line"></i>Average reply time: <b>about ten to fifteen minutes</b></li>
+            <li><i class="ri-shield-check-line"></i>Encrypted communications</li>
+            <li><i class="ri-roadster-line"></i>Executive fleet availability</li>
           </ul>
           <div class="contact-chips">
             <a class="chip" href="tel:+18259739800"><i class="ri-phone-line"></i><span>825.973.9800</span></a>
             <a class="chip" href="mailto:info@executivedriving.ca"><i class="ri-mail-line"></i><span>info@executivedriving.ca</span></a>
           </div>
         </div>
-        <div class="concierge-card glass" id="contact-form" data-reveal style="--delay:.15s" role="form">
-          <div class="card-sheen" aria-hidden="true"></div>
+        <div class="concierge-card glass" id="contact-form" data-reveal style="--delay:.15s">
+          <div class="card-sheen"></div>
           <h3 class="card-title"><i class="ri-quill-pen-line"></i> Client Care Request</h3>
           <form id="client-form" class="lux-form" novalidate>
             <div class="field-group">
@@ -249,13 +200,13 @@
           </form>
         </div>
       </div>
-      <div class="concierge-ambient" aria-hidden="true"></div>
+      <div class="concierge-ambient"></div>
     </section>
 
     <!-- Partners -->
-    <section id="partners" class="partners partners-marquee" aria-labelledby="partners-title">
+    <section id="partners" class="partners partners-marquee">
       <div class="container">
-        <h2 id="partners-title">Our Growing Network of Trusted Partners</h2>
+        <h2>Our Growing Network of Trusted Partners</h2>
         <div class="marquee" aria-hidden="true">
           <div class="marquee__track">
             <div class="partner" tabindex="0" data-name="TARA Energy Services" data-desc="Compression, processing and energy solutions across Western Canada."><img src="images/logo1.jpeg" alt="TARA Energy Services logo"></div>
@@ -308,29 +259,39 @@
       <div class="container footer-copy"><p>© 2025 Executive Driving. All Rights Reserved.</p></div>
     </footer>
 
-    <!-- ═══════════════════════════════════
-         MOBILE SLIDE-OUT MENU OVERLAY
-    ═══════════════════════════════════ -->
+    <!-- Mobile overlay menu -->
     <div id="menu-overlay" class="menu-overlay" aria-hidden="true" role="dialog">
       <div class="menu-panel">
         <button class="menu-close" aria-label="Close menu">✕</button>
         <nav class="overlay-nav" role="menu">
-          <a href="index.html"         class="overlay-link active" role="menuitem">Home</a>
-          <a href="events.html"        class="overlay-link"        role="menuitem">Events</a>
+          <a href="index.html"         class="overlay-link"        role="menuitem">Home</a>
+          <a href="events.html"        class="overlay-link active" role="menuitem">Events</a>
           <a href="fleet.html"         class="overlay-link"        role="menuitem">Fleet</a>
           <a href="team.html"          class="overlay-link"        role="menuitem">Our Team</a>
           <a href="index.html#contact" class="overlay-link"        role="menuitem">Contact</a>
-
           <span class="overlay-nav-label">Policy</span>
           <a href="#" class="overlay-link sub-item js-open-terms"   role="menuitem"><i class="ri-file-text-line"></i>Terms &amp; Conditions</a>
           <a href="#" class="overlay-link sub-item js-open-privacy" role="menuitem"><i class="ri-shield-check-line"></i>Privacy Policy</a>
-
-          <a href="tel:+18259739800" class="overlay-link phone-pill" role="menuitem">
-            <i class="ri-phone-line"></i>825.973.9800
-          </a>
+          <a href="tel:+18259739800" class="overlay-link phone-pill" role="menuitem"><i class="ri-phone-line"></i>825.973.9800</a>
         </nav>
       </div>
     </div>
+
+    <!-- Terms Modal -->
+    <div id="terms-overlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-panel"><button class="modal-close">✕</button>
+        <div class="modal-content">
+          <h3>Executive Driving Services — Terms &amp; Conditions (Alberta)</h3>
+          <p><em>Last updated: 11/25/2025</em></p><hr>
+          <h4>1) Who we are &amp; Scope</h4><p>These Terms govern all executive/private SUV transportation and concierge services. By placing a booking, you agree to these Terms.</p>
+          <h4>2) Cancellations</h4><ul><li>Free cancel ≥ 24 hours; 50% charge 2–24 hours; 100% charge &lt; 2 hours or no-show</li><li>Special Events: Free until 72 hours prior; 100% charge within 72 hours.</li></ul>
+          <h4>3) Non-Refundable Deposit</h4><p>A 50% deposit is required to secure bookings. This deposit is <strong>non-refundable at all times</strong>.</p>
+          <h4>4) Passenger Conduct</h4><ul><li>Seatbelts mandatory. No smoking/vaping. No open liquor or cannabis.</li></ul>
+          <h4>5) Contact</h4><p><strong>Executive Driving Services</strong><br>Phone: 825.973.9800<br>Email: info@executivedriving.ca</p>
+        </div>
+      </div>
+    </div>
+
 
     <!-- Terms Modal -->
     <div id="terms-overlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
@@ -424,91 +385,73 @@
         </div>
       </div>
     </div>
-
-<!-- Booking Modal -->
-<div id="booking-overlay" class="booking-overlay centered" aria-hidden="true">
-  <div class="booking-modal center" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
-    <button class="booking-close" type="button" aria-label="Close" data-book-close>✕</button>
-    <header class="booking-header"><h2 id="bookingTitle">Reserve Your Ride</h2></header>
-    <form id="booking-form" class="booking-form" novalidate>
-      <div class="booking-grid two">
-        <label class="field"><span>Full Name</span><input name="name" type="text" autocomplete="name" required placeholder="John Smith"><small class="err" data-for="name"></small></label>
-        <label class="field"><span>Phone</span><input name="phone" type="tel" autocomplete="tel" required placeholder="(825) 973 9800"><small class="err" data-for="phone"></small></label>
+ <div id="booking-overlay" class="booking-overlay centered" aria-hidden="true">
+      <div class="booking-modal center" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
+        <button class="booking-close" type="button" aria-label="Close" data-book-close>✕</button>
+        <header class="booking-header"><h2 id="bookingTitle">Reserve Your Ride</h2></header>
+        <form id="booking-form" class="booking-form" novalidate>
+          <div class="booking-grid two">
+            <label class="field"><span>Full Name</span><input name="name" type="text" autocomplete="name" required placeholder="John Smith"><small class="err" data-for="name"></small></label>
+            <label class="field"><span>Phone</span><input name="phone" type="tel" autocomplete="tel" required placeholder="(825) 973 9800"><small class="err" data-for="phone"></small></label>
+          </div>
+          <label class="field"><span>Email</span><input name="email" type="email" autocomplete="email" required placeholder="you@example.com"><small class="err" data-for="email"></small></label>
+          <label class="field"><span>Pickup Location</span><input id="pickup" name="pickup" type="text" required placeholder="1400 John St, Edmonton"><small class="err" data-for="pickup"></small></label>
+          <label class="field"><span>Drop Off Location</span><input id="dropoff" name="dropoff" type="text" required placeholder="YEG Terminal"><small class="err" data-for="dropoff"></small></label>
+          <div class="booking-grid two">
+            <label class="field"><span>Date</span><input id="bookDate" name="date" type="date" required><small class="err" data-for="date"></small></label>
+            <label class="field"><span>Time</span><input id="bookTime" name="time" type="time" required><small class="err" data-for="time"></small></label>
+          </div>
+          <label class="field"><span>Passengers</span><input name="passengers" type="number" min="1" max="7" step="1" required placeholder="1"><small class="err" data-for="passengers"></small></label>
+          <div class="field checkbox-field">
+            <label class="checkbox-label"><input type="checkbox" name="returnTrip" id="returnTrip"><span class="checkbox-custom"></span><span><strong>Book return trip</strong></span></label>
+          </div>
+          <label class="field"><span>Notes <span style="opacity:.6">(optional)</span></span><textarea name="notes" id="booking-notes" rows="4" placeholder="Special requests, notes..."></textarea></label>
+          <div class="booking-actions">
+            <button type="submit" class="btn-rr book">Submit Reservation</button>
+            <p class="booking-note"><i class="ri-lock-2-line"></i> Your details are handled under our Privacy Policy.</p>
+          </div>
+        </form>
       </div>
-      <label class="field"><span>Email</span><input name="email" type="email" autocomplete="email" required placeholder="you@example.com"><small class="err" data-for="email"></small></label>
-      <label class="field"><span>Pickup Location</span><input id="pickup" name="pickup" type="text" required placeholder="1400 John St, Edmonton"><small class="err" data-for="pickup"></small></label>
-      <label class="field"><span>Drop Off Location</span><input id="dropoff" name="dropoff" type="text" required placeholder="YEG Terminal"><small class="err" data-for="dropoff"></small></label>
-      <div class="booking-grid two">
-        <label class="field"><span>Date</span><input id="bookDate" name="date" type="date" required><small class="err" data-for="date"></small></label>
-        <label class="field"><span>Time</span><input id="bookTime" name="time" type="time" required><small class="err" data-for="time"></small></label>
-      </div>
-      <label class="field"><span>Passengers</span><input name="passengers" type="number" min="1" max="7" step="1" required placeholder="1"><small class="err" data-for="passengers"></small></label>
-      <label class="field"><span>Notes <span style="opacity:.6">(optional)</span></span><textarea name="notes" rows="4" placeholder="Special requests, notes..."></textarea></label>
-      <div class="booking-actions">
-        <button type="submit" class="btn-rr book">Submit Reservation</button>
-        <p class="booking-note"><i class="ri-lock-2-line"></i> Your details are handled under our Privacy Policy.</p>
-      </div>
-    </form>
-  </div>
-</div>
-
+    </div>
 
     <!-- Thank You -->
     <div id="thanks-overlay" aria-hidden="true">
-      <div class="ty-panel" role="dialog" aria-modal="true" aria-labelledby="thanks-title">
-        <button class="modal-close" aria-label="Close">✕</button>
+      <div class="ty-panel" role="dialog">
+        <button class="modal-close">✕</button>
         <div class="modal-content">
-          <div class="ty-check" aria-hidden="true">
-            <svg viewBox="0 0 120 120">
-              <defs>
-                <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#f0d989"/><stop offset="50%" stop-color="#d4af37"/><stop offset="100%" stop-color="#b99629"/>
-                </linearGradient>
-                <filter id="tickGlow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="4" result="blur"/>
-                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                </filter>
-              </defs>
-              <circle cx="60" cy="60" r="52" fill="none" stroke="url(#goldGrad)" stroke-width="3" opacity=".9"/>
-              <circle class="ty-ring" cx="60" cy="60" r="52" fill="none" stroke="url(#goldGrad)" stroke-width="6" stroke-linecap="round"/>
-              <path class="ty-mark" d="M36 62 L54 78 L86 44" fill="none" stroke="url(#goldGrad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#tickGlow)"/>
-            </svg>
-          </div>
-          <h3 id="thanks-title">Thank you</h3>
-          <p class="lead">We've received your request and sent a confirmation to <strong id="t-email"></strong></p>
-          <p class="lead"><i class="fa-solid fa-clock"></i> Our dispatcher will contact you shortly to confirm final details.</p>
+          <div class="ty-check"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="#c9a227" stroke-width="3"/><path d="M36 62 L54 78 L86 44" fill="none" stroke="#c9a227" stroke-width="8" stroke-linecap="round"/></svg></div>
+          <h3>Thank You!</h3>
+          <p class="lead">We'll contact you shortly at <strong id="t-email"></strong></p>
         </div>
       </div>
     </div>
+
 
     <!-- NAVI -->
     <button class="xd-chat__toggle" type="button">Ask NAVI?</button>
     <div class="xd-chat" hidden>
       <header class="xd-chat__hdr">
-        <div class="xd-chat__brand">
-          <img class="xd-chat__avatar" src="images/batman.png" alt="NAVI — Executive Driving Concierge">
-          <div><strong>NAVI — Executive Driving Concierge</strong></div>
-        </div>
-        <button class="xd-chat__close" aria-label="Close">✕</button>
+        <div class="xd-chat__brand"><img class="xd-chat__avatar" src="images/batman.png" alt="NAVI"><div><strong>NAVI — Executive Driving Concierge</strong></div></div>
+        <button class="xd-chat__close">✕</button>
       </header>
       <main class="xd-chat__body" id="xdChatBody" role="log" aria-live="polite"></main>
       <footer class="xd-chat__ftr">
         <input id="xdChatInput" class="xd-chat__input" type="text" placeholder="Type your message…">
-        <button id="xdChatSend" class="xd-chat__send" type="button" aria-label="Send">➤</button>
+        <button id="xdChatSend" class="xd-chat__send" type="button">➤</button>
       </footer>
     </div>
 
-  </div><!-- /#page -->
+
 
   <script type="module" defer src="js/script.js"></script>
+  <script type="module" defer src="js/event.js"></script>
   <script>
     window.initAutocomplete = function () {
       var tries = 0;
       (function boot(){
         if (typeof window.__xdInitAutocomplete === 'function') {
-          try { window.__xdInitAutocomplete(); } catch(e) { console.warn('Autocomplete init error', e); }
+          try { window.__xdInitAutocomplete(); } catch(e) {}
         } else if (tries++ < 60) { setTimeout(boot, 50); }
-        else { console.warn('Autocomplete init timeout'); }
       })();
     };
   </script>

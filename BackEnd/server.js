@@ -1,4 +1,7 @@
 // server.js
+import dotenv from "dotenv";
+dotenv.config();
+
 import "dotenv/config";
 console.log("BOOKING_EMAIL_TO:", process.env.BOOKING_EMAIL_TO);
 console.log("BOOKING_EMAIL_FROM:", process.env.BOOKING_EMAIL_FROM);
@@ -81,6 +84,29 @@ function learnQnA(userText, answerText) {
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: true, methods: ["POST", "GET", "OPTIONS"] }));
+import fetch from "node-fetch";
+
+app.get("/api/tm-image", async (req, res) => {
+  try {
+    const url = req.query.url;
+    if (!url) return res.sendStatus(400);
+
+    const r = await fetch(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0",
+        "Accept": "image/*"
+      }
+    });
+
+    if (!r.ok) return res.sendStatus(404);
+
+    res.set("Content-Type", r.headers.get("content-type"));
+    r.body.pipe(res);
+  } catch (err) {
+    console.error("TM image proxy error:", err);
+    res.sendStatus(500);
+  }
+});
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -654,11 +680,25 @@ transporter.verify()
 const BOOK_TO = process.env.BOOKING_EMAIL_TO;
 const BOOK_FROM = process.env.BOOKING_EMAIL_FROM || process.env.SMTP_USER;
 
-/* ---------- Branded Booking Email ---------- */
-function renderBookingEmail({ name, phone, email, pickup, dropoff, date, time, passengers, luggage, notes, escalationNote }) {
+// ============================================
+// FIND AND REPLACE THIS FUNCTION IN YOUR server.js
+// Around line 600 - the renderBookingEmail function
+// ============================================
+
+function renderBookingEmail({ name, phone, email, pickup, dropoff, date, time, passengers, luggage, notes, escalationNote, returnTrip }) {
   const esc = (s = "-") =>
     String(s).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
   const br = (s = "") => esc(s).replace(/\n/g, "<br>");
+
+  // Build return trip row HTML - only show if returnTrip is true
+  const returnTripRow = returnTrip ? `
+    <tr style="background: #fff9e6;">
+      <td style="padding:8px 6px;"><b>🔄 Return Trip:</b></td>
+      <td style="padding:8px 6px; color:#d4af37; font-weight:700;">
+        ✓ YES - Customer wants return trip booked
+      </td>
+    </tr>
+  ` : '';
 
   return `
   <div style="font-family:Inter,Arial,sans-serif; max-width:640px; margin:0 auto; border:1px solid #eee; border-radius:12px; overflow:hidden; box-shadow:0 4px 14px rgba(0,0,0,.12)">
@@ -677,19 +717,21 @@ function renderBookingEmail({ name, phone, email, pickup, dropoff, date, time, p
         <tr><td style="padding:6px 0;"><b>Time:</b></td><td>${esc(time)}</td></tr>
         <tr><td style="padding:6px 0;"><b>Passengers:</b></td><td>${esc(passengers)}</td></tr>
         <tr><td style="padding:6px 0;"><b>Luggage:</b></td><td>${luggage === true ? "Yes" : luggage === false ? "No" : "-"}</td></tr>
+        ${returnTripRow}
       </table>
+
       ${notes ? `
-  <p style="
-  margin:24px 0 0; /* increased top margin */
-  padding-top:6px; /* extra gap */
-  white-space: normal !important;
-  word-break: break-word !important;
-  overflow-wrap: break-word !important;
-  line-height: 1.6;
-">
-    <b>Notes:</b><br>${br(notes)}
-  </p>
-` : ""}
+        <p style="
+          margin:24px 0 0;
+          padding-top:6px;
+          white-space: normal !important;
+          word-break: break-word !important;
+          overflow-wrap: break-word !important;
+          line-height: 1.6;
+        ">
+          <b>Notes:</b><br>${br(notes)}
+        </p>
+      ` : ""}
 
       ${escalationNote ? `<p style="margin:16px 0 0; color:#7a5;"><b>Agent Escalation:</b> ${br(escalationNote)}</p>` : ""}
       <hr style="margin:24px 0; border:none; border-top:1px solid #eee">
@@ -825,7 +867,7 @@ app.post("/book", async (req, res) => {
     }
 
     // --- Existing booking branch (your old code stays the same) ---
-    const { name, phone, email, pickup, dropoff, date, time, passengers, notes } = req.body || {};
+    const { name, phone, email, pickup, dropoff, date, time, passengers, notes, returnTrip } = req.body || {};
     const required = ["name", "phone", "email", "pickup", "dropoff", "date", "time", "passengers"];
     const missing = required.filter((k) => !req.body?.[k]);
     if (missing.length) return res.status(400).json({ ok: false, error: `Missing: ${missing.join(", ")}` });
@@ -847,7 +889,8 @@ app.post("/book", async (req, res) => {
         time,
         passengers,
         luggage: null,
-        notes
+        notes,
+        returnTrip
       }),
       attachments: [{ filename: "logo-email.png", path: LOGO_PATH, cid: "logo" }],
     });
@@ -1402,51 +1445,157 @@ app.post("/kb/reset", (_req, res) => {
   }
 });
 
-/* ---------- Express error handler (last) ---------- */
-app.use((err, _req, res, _next) => {
-  console.error("Express error handler:", err);
-  if (!res.headersSent) {
-    res.status(500).json({ reply: "Whoops,there was a hiccup on my side. Let’s continue your booking—what’s the pickup and destination?" });
+/* ---------- Ticketmaster events (Edmonton + GP + all) ---------- */
+app.get("/api/events/ticketmaster", async (req, res) => {
+  try {
+    const key = process.env.TICKETMASTER_KEY;
+    if (!key) {
+      return res.status(500).json({ error: "TICKETMASTER_KEY not set" });
+    }
+
+    const cityParam = (req.query.city || "Edmonton").toLowerCase();
+
+    const CITY_MAP = {
+      edmonton: "Edmonton",
+      gp: "Grande Prairie",
+      "grande prairie": "Grande Prairie"
+    };
+
+    const cities =
+      cityParam === "all"
+        ? ["Edmonton", "Grande Prairie"]
+        : [CITY_MAP[cityParam] || "Edmonton"];
+
+    let allEvents = [];
+
+    for (const city of cities) {
+      const url =
+        `https://app.ticketmaster.com/discovery/v2/events.json` +
+        `?apikey=${key}` +
+        `&city=${encodeURIComponent(city)}` +
+        `&size=20`;
+
+      const r = await fetch(url);
+      const data = await r.json();
+
+      console.log("Ticketmaster raw:", city, data.page?.totalElements);
+
+      const events = (data._embedded?.events || []).map(ev => ({
+        id: ev.id,
+        name: ev.name,
+        date: ev.dates?.start?.localDate,
+        time: ev.dates?.start?.localTime,
+        venue: ev._embedded?.venues?.[0]?.name,
+        address: ev._embedded?.venues?.[0]?.address?.line1,
+        city: ev._embedded?.venues?.[0]?.city?.name,
+        images: ev.images || []
+      }));
+
+      allEvents.push(...events);
+    }
+
+    res.json({
+      ok: true,
+      cities,
+      count: allEvents.length,
+      events: allEvents
+    });
+  } catch (err) {
+    console.error("Ticketmaster error:", err);
+    res.status(500).json({ error: "Ticketmaster failed" });
   }
 });
-import fetch from "node-fetch";
+app.get("/api/events/nightlife", async (req, res) => {
+  console.log("GOOGLE_PLACES_KEY:", process.env.GOOGLE_PLACES_KEY ? "SET" : "MISSING");
+  const city = (req.query.city || "edmonton").toLowerCase();
 
-/* ---------- Eventbrite test route ---------- */
-app.get("/api/events/test", async (_req, res) => {
+  const cityCoords = {
+    edmonton: { lat: 53.5461, lng: -113.4938 },
+    gp: { lat: 55.1707, lng: -118.7947 },
+    "grande prairie": { lat: 55.1707, lng: -118.7947 },
+  };
+
+  const { lat, lng } = cityCoords[city] || cityCoords.edmonton;
+
+  const url = "https://places.googleapis.com/v1/places:searchNearby";
+
   try {
-    if (!process.env.EVENTBRITE_TOKEN) {
-      return res.status(500).json({ error: "EVENTBRITE_TOKEN not set" });
+    const r = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": process.env.GOOGLE_PLACES_KEY,
+        "X-Goog-FieldMask":
+          "places.displayName,places.formattedAddress,places.location,places.types,places.rating,places.id",
+      },
+      body: JSON.stringify({
+  locationRestriction: {
+    circle: {
+      center: {
+        latitude: lat,
+        longitude: lng
+      },
+      radius: 8000
     }
-const r = await fetch(
-  "https://www.eventbriteapi.com/v3/events/search/?" +
-    "location.latitude=53.5461&" +
-    "location.longitude=-113.4938&" +
-    "location.within=50km&" +
-    "expand=venue&" +
-    "status=live&" +
-    "start_date.range_start=" + new Date().toISOString(),
-  {
-    headers: {
-      Authorization: `Bearer ${process.env.EVENTBRITE_TOKEN}`,
-    },
-  }
-);
+  },
+  includedTypes: ["bar"],
+  rankPreference: "POPULARITY",
+  maxResultCount: 20
+})
 
+    });
 
     const data = await r.json();
 
-    // Just return raw data for now
-    res.json({
-      ok: true,
-      count: data.events?.length || 0,
-      sample: data.events?.slice(0, 3) || []
-    });
+    console.log("GOOGLE PLACES RAW:", data);
+
+    const events = (data.places || []).map(p => ({
+      id: p.id,
+      name: p.displayName?.text || "Unnamed venue",
+      venue: p.formattedAddress,
+      city,
+      date: null,
+      time: null,
+      type: "nightlife",
+    }));
+
+    res.json({ events });
   } catch (err) {
-    console.error("Eventbrite test error:", err);
-    res.status(500).json({ error: "Eventbrite test failed" });
+    console.error("Nightlife error:", err);
+    res.status(500).json({ error: "Failed to fetch nightlife venues" });
   }
 });
 
+// ===== NOTIFY ME SUBSCRIPTION ENDPOINT =====
+app.post('/api/notify/subscribe', async (req, res) => {
+  try {
+    const { email, categories, city } = req.body;
+    
+    console.log('📧 New notification subscription:', {
+      email,
+      categories,
+      city,
+      timestamp: new Date()
+    });
+
+    // For now, just log it to console
+    // Later you can save to database
+    console.log('✅ Subscription saved! Email:', email);
+
+    // Send success response
+    res.json({ 
+      success: true,
+      message: 'Subscription successful'
+    });
+
+  } catch (error) {
+    console.error('❌ Subscription error:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to subscribe' 
+    });
+  }
+});
 /* ---------- Start ---------- */
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`🚖 Concierge running on http://localhost:${PORT}`));

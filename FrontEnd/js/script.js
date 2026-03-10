@@ -1,4 +1,5 @@
-import { postJSON, API_CHAT, API_BOOK } from './api.js';
+import { postJSON, API_CHAT, API_BOOK, API_BASE } from './api.js';
+
 
 
 console.log('script.js loaded v8');
@@ -88,6 +89,11 @@ const unlockScroll = () => {
   });
 })();
 
+// ============================================
+// FIND AND REPLACE THIS SECTION IN YOUR script.js
+// It's the booking form submit handler (around line 30-80)
+// ============================================
+
 /* ---------- Booking form submit -> email via /book ---------- */
 (() => {
   const form = document.getElementById('booking-form');
@@ -96,7 +102,8 @@ const unlockScroll = () => {
   const overlay = document.getElementById('booking-overlay');
 
   const get = (name) => form.querySelector(`[name="${name}"]`);
-    const submitBtn = form.querySelector('[type="submit"]');
+  const submitBtn = form.querySelector('[type="submit"]');
+  
   const setLoading = (on) => {
     if (!submitBtn) return;
     submitBtn.classList.toggle('is-loading', !!on);
@@ -104,9 +111,27 @@ const unlockScroll = () => {
     submitBtn.setAttribute('aria-busy', on ? 'true' : 'false');
   };
 
-
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Get returnTrip checkbox - try multiple ways to ensure we get it
+    const returnTripCheckbox = form.querySelector('input[name="returnTrip"]') || 
+                                document.getElementById('returnTrip');
+    const returnTripValue = returnTripCheckbox ? returnTripCheckbox.checked : false;
+
+    // DEBUG: Log to console to verify
+    console.log('🔄 Return Trip Checkbox:', returnTripCheckbox);
+    console.log('🔄 Return Trip Value:', returnTripValue);
+
+    // Get "Notify me about similar events" checkbox (events page only)
+const notifyCheckbox =
+  form.querySelector('input[name="notifyMe"]') ||
+  document.getElementById('notifyMe');
+
+const notifyMeValue = notifyCheckbox ? notifyCheckbox.checked : false;
+
+console.log('🔔 Notify Me:', notifyMeValue);
+
 
     const payload = {
       name: get('name')?.value.trim(),
@@ -117,16 +142,38 @@ const unlockScroll = () => {
       date: get('date')?.value,
       time: get('time')?.value,
       passengers: get('passengers')?.value,
-      notes: get('notes')?.value || ''
+     notes: (get('notes')?.value || '') + (returnTripValue ? '\n\n Customer wants a RETURN TRIP — please follow up to confirm return time.' : ''),
+      returnTrip: returnTripValue,
+      notifyMe: notifyMeValue   
     };
 
-    for (const [k, v] of Object.entries(payload)) {
-      if (['notes'].includes(k)) continue;
-      if (!v) { alert('Please fill all required fields.'); return; }
-    }
-  setLoading(true);
-try {
+    // DEBUG: Log full payload
+    console.log('📦 Booking Payload:', payload);
+    console.log('📦 returnTrip in payload:', payload.returnTrip);
+
+   for (const [k, v] of Object.entries(payload)) {
+  if (['notes', 'returnTrip', 'notifyMe'].includes(k)) continue;
+  if (!v) { alert('Please fill all required fields.'); return; }
+}
+
+    setLoading(true);
+    
+    try {
       const data = await postJSON(API_BOOK, payload);
+      // 🔔 Notify-me subscription
+if (payload.notifyMe === true) {
+  try {
+    await postJSON(`${API_BASE}/api/notify/subscribe`, {
+      email: payload.email,
+      categories: ["concert", "sports", "nightlife"],
+      city: payload.pickup || "all"
+    });
+    console.log("🔔 Notify subscription sent");
+  } catch (err) {
+    console.warn("Notify subscription failed:", err.message);
+  }
+}
+
 
       if (data.ok) {
         // ✅ close booking modal + open the Thank You overlay with details
@@ -137,7 +184,7 @@ try {
         if (window.__XD__?.openThanks) {
           window.__XD__.openThanks(payload);
         } else {
-          alert('Thanks! Your request was sent. We’ll confirm shortly.');
+          alert('Thanks! Your request was sent. We will confirm shortly.');
         }
       } else {
         alert('Sorry could not send just now. Please call 825-973-9800 or email info@executivedriving.ca.');
@@ -146,7 +193,7 @@ try {
       alert(e.message || 'Network error. Please try again or contact us directly.');
     }
     finally {
-      setLoading(false); // ⬅️ ALWAYS hide spinner
+      setLoading(false);
     }
   });
 })();
@@ -228,7 +275,15 @@ try {
   }
 })();
 
-/* ---------- Terms / Privacy modals ---------- */
+/* ---------- Terms / Privacy modals (FIXED) ----------
+   OLD version was incorrectly re-opening #menu-overlay on both open AND close.
+   This version:
+     - Closes the mobile menu if it happens to be open
+     - Opens only the correct modal overlay (terms or privacy)
+     - Desktop: works from the Policy dropdown in the nav
+     - Mobile: works from the slide-out menu
+     - Neither path touches the other overlay
+-------------------------------------------------------- */
 (() => {
   const { $, $$, on, lockScroll, unlockScroll } = window.__XD__;
 
@@ -241,28 +296,28 @@ try {
 
     const openModal = (e) => {
       e?.preventDefault();
+
+      // Close the mobile menu if it's currently open (mobile flow)
+      const menu = $('#menu-overlay');
+      if (menu && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        menu.setAttribute('aria-hidden', 'true');
+        document.querySelector('.rr-burger-btn')?.setAttribute('aria-expanded', 'false');
+      }
+
+      // Open the correct modal
       modalOverlay.classList.add('open');
       modalOverlay.setAttribute('aria-hidden', 'false');
-      const menu = $('#menu-overlay');
-      if (menu) {
-        menu.classList.add('open');
-        menu.setAttribute('aria-hidden', 'false');
-      }
       lockScroll();
-      const focusable = modalOverlay.querySelector('a,button,[tabindex]:not([tabindex="-1"])');
+
+      const focusable = modalOverlay.querySelector('a, button, [tabindex]:not([tabindex="-1"])');
       focusable?.focus({ preventScroll: true });
     };
 
     const closeModal = () => {
       modalOverlay.classList.remove('open');
       modalOverlay.setAttribute('aria-hidden', 'true');
-      const menu = $('#menu-overlay');
-      if (menu) {
-        menu.classList.add('open');
-        menu.setAttribute('aria-hidden', 'false');
-      } else {
-        unlockScroll();
-      }
+      unlockScroll();
     };
 
     openers.forEach(btn => on(btn, 'click', openModal));
@@ -273,7 +328,7 @@ try {
     });
   };
 
-  wire('.js-open-terms', 'terms-overlay');
+  wire('.js-open-terms',   'terms-overlay');
   wire('.js-open-privacy', 'privacy-overlay');
 })();
 
@@ -341,60 +396,6 @@ try {
   });
 })();
 
-/* ---------- Apple-style logo intro ---------- */
-(() => {
-  const { $, on, lockScroll, unlockScroll } = window.__XD__;
-  const body = document.body;
-  const intro = $('#intro');
-  if (!intro) return;
-
-  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  const INTRO_MIN = reduceMotion ? 0 : 1000;
-  const INTRO_FADE = 1000;
-  let done = false;
-
-  const finish = () => {
-    if (done) return;
-    done = true;
-    intro.classList.add('intro-out');
-    setTimeout(() => {
-      intro.remove();
-      body.classList.remove('intro-active');
-      body.classList.add('intro-done');
-      unlockScroll();
-    }, reduceMotion ? 0 : INTRO_FADE);
-  };
-
-  body.classList.add('intro-active');
-  lockScroll();
-
-  const skip = (e) => {
-    if (!e || e.type === 'click') return finish();
-    const ok = ['Escape', 'Enter', ' '].includes(e.key);
-    if (ok) finish();
-  };
-
-  on(intro, 'click', skip);
-  on(document, 'keydown', skip);
-
-  const logo = intro.querySelector('.intro-logo');
-  const startTimer = () => setTimeout(finish, INTRO_MIN);
-
-  if (reduceMotion) {
-    finish();
-  } else if (logo && !logo.complete) {
-    const go = () => startTimer();
-    logo.addEventListener('load', go, { once: true });
-    logo.addEventListener('error', go, { once: true });
-    setTimeout(startTimer, 600);
-  } else {
-    startTimer();
-  }
-
-  on(window, 'load', () => {
-    if (!reduceMotion) setTimeout(() => intro.classList.add('gleam'), Math.max(0, INTRO_MIN - 200));
-  });
-})();
 
 /* ---------- Booking modal ---------- */
 (() => {
@@ -887,7 +888,8 @@ document.addEventListener("DOMContentLoaded", () => {
         phone: form.phone.value,
         email: form.email.value,
         date: form.date.value,
-        details: form.details.value
+        details: form.details.value,
+        ReturnTrip:form.returnTrip.checked
       };
 
       try {
@@ -912,7 +914,8 @@ document.addEventListener("DOMContentLoaded", () => {
     date: form.date.value,
     time: '',
     passengers: '—',
-    notes: form.details.value
+    notes: form.details.value,
+    
   };
   window.__XD__?.openThanks(payload2);
   form.reset();

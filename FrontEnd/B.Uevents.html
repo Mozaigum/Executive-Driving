@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
+
+  <title>Executive Driving</title>
+
+  <!-- Google Tag Manager -->
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W7JXP7VP');</script>
+
+  <!-- End Google Tag Manager -->
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=fix2">
+  <link rel="stylesheet" href="css/event.css?v=5">
+
+  <!-- App config -->
+  <meta name="api-base" content="https://executive-driving-backend-b79y.onrender.com">
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W7JXP7VP"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <div id="intro" class="intro" aria-hidden="true">
+    <div class="intro-center">
+      <img src="images/logo.WebP" alt="Executive Driving" class="intro-logo" />
+    </div>
+  </div>
+
+  <div id="page">
+    <header id="site-header" class="at-top">
+      <div class="top-bar">
+        <button class="menu-toggle rr-burger-btn" aria-controls="menu-overlay" aria-expanded="false">
+          <span class="rr-burger" aria-hidden="true">
+            <span class="bar bar-1"></span>
+            <span class="bar bar-2"></span>
+            <span class="bar bar-3"></span>
+          </span>
+          <span class="rr-label">
+            <span class="label-open">Menu</span>
+            <span class="label-close">Close</span>
+          </span>
+        </button>
+
+        <a href="/index.html" class="logo-link" aria-label="Executive Driving - Home">
+          <img src="images/logo.WebP" alt="Executive Driving" class="logo-img" />
+        </a>
+        <a href="tel:+18259739800" class="top-cta phone-link" aria-label="Call Executive Driving">
+          <i class="ri-phone-line phone-icon" aria-hidden="true"></i>
+          825.973.9800
+        </a>
+      </div>
+    </header>
+<section class="events-section events-page">
+  <div class="container events-layout">
+    
+    <!-- UPDATED LUXURY HEADER -->
+    <div class="filter-header">
+        <h3>
+            <span class="regular-text">Discover Events And Let </span>
+            <span class="highlight-text">Us Do The Driving!</span>
+        </h3>
+        <p class="subtitle">Experience luxury transportation to Alberta's premier events</p>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="events-content-grid">
+      
+     
+<button class="mobile-filter-btn" id="openFilters">
+  <i class="ri-filter-3-line"></i> Filters
+</button>
+
+      <!-- Left Sidebar - MODERN DROPDOWN EDITION -->
+      <aside class="events-sidebar">
+        
+        <!-- Search -->
+        <div class="sidebar-section search-section">
+          <h3 class="sidebar-title">
+            <i class="ri-search-line"></i>
+            Search Events
+          </h3>
+          
+          <div class="search-wrapper">
+            <input 
+              type="text" 
+              id="event-search" 
+              class="search-input" 
+              placeholder="Event name or venue..."
+              autocomplete="off"
+            >
+            <i class="ri-search-2-line search-icon"></i>
+          </div>
+        </div>
+
+        <!-- Date Picker Dropdown -->
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">
+            <i class="ri-calendar-line"></i>
+            When
+          </h3>
+          <div class="dropdown-wrapper">
+            <button class="dropdown-toggle" id="dateDropdownToggle">
+              <span class="dropdown-label">Select Date</span>
+              <i class="ri-arrow-down-s-line dropdown-arrow"></i>
+            </button>
+            <div class="dropdown-menu" id="dateDropdownMenu">
+              <div class="date-picker-container">
+                <input type="date" id="eventDatePicker" class="date-picker-input" />
+                <div class="quick-dates">
+                  <button class="quick-date-btn" data-range="all">All Dates</button>
+                  <button class="quick-date-btn" data-range="today">Today</button>
+                  <button class="quick-date-btn" data-range="thisWeek">This Week</button>
+                  <button class="quick-date-btn" data-range="thisMonth">This Month</button>
+                  <button class="quick-date-btn" data-range="nextMonth">Next Month</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- City Dropdown -->
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">
+            <i class="ri-map-pin-line"></i>
+            Location
+          </h3>
+          <div class="dropdown-wrapper">
+            <button class="dropdown-toggle" id="cityDropdownToggle">
+              <span class="dropdown-label">All Cities</span>
+              <i class="ri-arrow-down-s-line dropdown-arrow"></i>
+            </button>
+            <div class="dropdown-menu" id="cityDropdownMenu">
+              <button class="dropdown-item active" data-city="all">
+                <i class="ri-building-line"></i>
+                All Cities
+              </button>
+              <button class="dropdown-item" data-city="edmonton">
+                <i class="ri-map-pin-2-line"></i>
+                Edmonton
+              </button>
+              <button class="dropdown-item" data-city="grande prairie">
+                <i class="ri-map-pin-3-line"></i>
+                Grande Prairie
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Type Dropdown -->
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">
+            <i class="ri-calendar-event-line"></i>
+            Event Type
+          </h3>
+          <div class="dropdown-wrapper">
+            <button class="dropdown-toggle" id="typeDropdownToggle">
+              <span class="dropdown-label">All Types</span>
+              <i class="ri-arrow-down-s-line dropdown-arrow"></i>
+            </button>
+            <div class="dropdown-menu" id="typeDropdownMenu">
+              <label class="dropdown-checkbox-item">
+                <input type="checkbox" data-category="concert">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Music & Concerts</span>
+                <span class="checkbox-count">0</span>
+              </label>
+              <label class="dropdown-checkbox-item">
+                <input type="checkbox" data-category="sports">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Sports</span>
+                <span class="checkbox-count">0</span>
+              </label>
+              <label class="dropdown-checkbox-item">
+                <input type="checkbox" data-category="nightlife">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Nightlife</span>
+                <span class="checkbox-count">0</span>
+              </label>
+              <label class="dropdown-checkbox-item">
+                <input type="checkbox" data-category="arts">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Arts & Theatre</span>
+                <span class="checkbox-count">0</span>
+              </label>
+              <label class="dropdown-checkbox-item">
+                <input type="checkbox" data-category="family">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Family</span>
+                <span class="checkbox-count">0</span>
+              </label>
+            </div>
+          </div>
+          
+          <button id="clear-filters" class="clear-filters">
+            <i class="ri-refresh-line"></i>
+            Clear Filters
+          </button>
+        </div>
+
+      </aside>
+      <!-- Events List -->
+      <div id="events-list" class="events-list"></div>
+
+    </div>
+  </div>
+</section>
+
+    <section id="contact" class="concierge" aria-labelledby="concierge-title">
+      <div class="concierge-wrap">
+        <!-- LEFT: Info -->
+        <div class="concierge-info" data-reveal style="--delay:.05s">
+          <h2 id="concierge-title" class="concierge-title">
+            Dedicated <span>Client Care</span>
+          </h2>
+
+          <p class="concierge-lead">
+            Discreet support any time. We coordinate flights, routes, and
+            special requests with quiet precision then confirm in minutes.
+          </p>
+
+          <ul class="concierge-bullets">
+            <li><i class="ri-time-line" aria-hidden="true"></i>Average reply time: <b>about ten to fifteen minutes</b></li>
+            <li><i class="ri-shield-check-line" aria-hidden="true"></i>Encrypted communications</li>
+            <li><i class="ri-roadster-line" aria-hidden="true"></i>Executive fleet availability</li>
+          </ul>
+
+          <div class="contact-chips">
+            <a class="chip" href="tel:+18259739800" aria-label="Call 825.973.9800">
+              <i class="ri-phone-line" aria-hidden="true"></i><span>825.973.9800</span>
+            </a>
+            <a class="chip" href="mailto:info@executivedriving.ca" aria-label="Email info@executivedriving.ca">
+              <i class="ri-mail-line" aria-hidden="true"></i><span>info@executivedriving.ca</span>
+            </a>
+          </div>
+
+          <div class="concierge-cta"></div>
+        </div>
+
+        <!-- RIGHT: Request card -->
+        <div class="concierge-card glass" id="contact-form" data-reveal style="--delay:.15s" role="form" aria-label="Concierge Request">
+          <div class="card-sheen" aria-hidden="true"></div>
+          <h3 class="card-title"><i class="ri-quill-pen-line" aria-hidden="true"></i> Client Care Request</h3>
+
+          <form id="client-form" class="lux-form" novalidate>
+            <div class="field-group">
+              <label class="lux-field">
+                <span>Name</span>
+                <input type="text" name="name" placeholder="Jane Doe" required>
+              </label>
+              <label class="lux-field">
+                <span>Phone</span>
+                <input type="tel" name="phone" placeholder="+1 (___) ___ ____" required>
+              </label>
+            </div>
+
+            <div class="field-group">
+              <label class="lux-field">
+                <span>Email</span>
+                <input type="email" name="email" placeholder="you@company.com" required>
+              </label>
+              <label class="lux-field">
+                <span>Service Date</span>
+                <input type="date" name="date" required>
+              </label>
+            </div>
+
+            <label class="lux-field">
+              <span>Request</span>
+              <textarea name="details" rows="4" placeholder="Pickup address, flight number, stops, notes…"></textarea>
+            </label>
+
+            <button type="submit" class="btn-rr btn-block">Submit</button>
+            <p class="micro-note">
+              <i class="ri-lock-2-line" aria-hidden="true"></i> Your details are handled under our Privacy Policy.
+            </p>
+          </form>
+        </div>
+      </div>
+      <div class="concierge-ambient" aria-hidden="true"></div>
+    </section>
+
+    <!-- Partners Marquee -->
+    <section id="partners" class="partners partners-marquee" aria-labelledby="partners-title">
+      <div class="container">
+        <h2 id="partners-title">Our Growing Network of Trusted Partners</h2>
+
+        <div class="marquee" aria-hidden="true">
+          <div class="marquee__track">
+            <div class="partner" tabindex="0" data-name="TARA Energy Services" data-desc="Compression, processing and energy solutions across Western Canada.">
+              <img src="images/logo1.jpeg" alt="TARA Energy Services logo">
+            </div>
+            <div class="partner" tabindex="0" data-name="Browns Socialhouse" data-desc="Restaurant &amp; bar — casual dining and group events.">
+              <img src="images/logo2.jpeg" alt="Browns Socialhouse logo">
+            </div>
+            <div class="partner" tabindex="0" data-name="Explore Edmonton" data-desc="Tourism &amp; events — welcoming travelers and delegates.">
+              <img src="images/logo3.jpeg" alt="Explore Edmonton logo">
+            </div>
+            <div class="partner" tabindex="0" data-name="Edward's Factory Outlet" data-desc="Local retail partner for special promotions and gifting.">
+              <img src="images/logo4.jpeg" alt="Edward's Factory Outlet logo">
+            </div>
+            <div class="partner" tabindex="0" data-name="GP Chamber of Commerce" data-desc="Business community &amp; events support.">
+              <img src="images/logo5.jpeg" alt="Grande Prairie &amp; District Chamber of Commerce logo">
+            </div>
+            <div class="partner" tabindex="0" data-name="Y Drive Canada" data-desc="Local rideshare logistics &amp; event shuttles.">
+              <img src="images/logo6.jpeg" alt="Y Drive Canada logo">
+            </div>
+            <!-- Duplicate set for seamless loop -->
+            <div class="partner" tabindex="0" data-name="TARA Energy Services" data-desc="Compression, processing and energy solutions across Western Canada.">
+              <img src="images/logo1.jpeg" alt="TARA Energy Services logo">
+            </div>
+            <div class="partner" tabindex="0" data-name="Browns Socialhouse" data-desc="Restaurant &amp; bar — casual dining and group events.">
+              <img src="images/logo2.jpeg" alt="Browns Socialhouse logo">
+            </div>
+            <div class="partner" tabindex="0" data-name="Explore Edmonton" data-desc="Tourism &amp; events — welcoming travelers and delegates.">
+              <img src="images/logo3.jpeg" alt="Explore Edmonton logo">
+            </div>
+            <div class="partner" tabindex="0" data-name="Edward's Factory Outlet" data-desc="Local retail partner for special promotions and gifting.">
+              <img src="images/logo4.jpeg" alt="Edward's Factory Outlet logo">
+            </div>
+            <div class="partner" tabindex="0" data-name="GP Chamber of Commerce" data-desc="Business community &amp; events support.">
+              <img src="images/logo5.jpeg" alt="Grande Prairie &amp; District Chamber of Commerce logo">
+            </div>
+            <div class="partner" tabindex="0" data-name="Y Drive Canada" data-desc="Local rideshare logistics &amp; event shuttles.">
+              <img src="images/logo6.jpeg" alt="Y Drive Canada logo">
+            </div>
+          </div>
+        </div>
+
+        <div class="partner-infobar" aria-live="polite" aria-atomic="true">
+          <strong>Our Trusted Partners</strong><span>— hover over a logo to learn more.</span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <img src="./images/logo.WebP" alt="Executive Driving" class="footer-logo">
+          <p class="footer-tag">Private Chauffeur • Edmonton &amp; Grande Prairie</p>
+        </div>
+
+        <div class="footer-connect">
+          <h4 class="footer-h">Connect</h4>
+          <ul class="footer-contact">
+            <li>
+              <a href="tel:+18259739800">
+                <i class="ri-phone-line footer-icon" aria-hidden="true"></i>
+                825.973.9800
+              </a>
+            </li>
+            <li>
+              <a href="mailto:info@executivedriving.ca">
+                <i class="ri-mail-line  footer-icon mail-icon"></i>
+                info@executivedriving.ca
+              </a>
+            </li>
+          </ul>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/ExecutiveDrivingGP" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
+              <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+            </a>
+            <a href="https://www.instagram.com/executivedrivingab/" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
+              <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="container footer-pay">
+        <h5 class="footer-pay-h">Payment Methods</h5>
+        <ul class="pay-logos" aria-label="Accepted cards">
+          <li><img src="images/visa.jpeg" alt="Visa" loading="lazy" decoding="async"></li>
+          <li><img src="images/mastercard.jpeg" alt="Mastercard" loading="lazy" decoding="async"></li>
+          <li><img src="images/amex.jpeg" alt="American Express" loading="lazy" decoding="async"></li>
+          <li><img src="images/intract.jpeg" alt="Interac/e-Transfer" loading="lazy" decoding="async"></li>
+        </ul>
+      </div>
+
+      <div class="container footer-copy">
+        <p>© 2025 Executive Driving. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Overlay Menu -->
+    <div id="menu-overlay" class="menu-overlay" aria-hidden="true" role="dialog">
+      <div class="menu-panel">
+        <button class="menu-close" aria-label="Close menu">✕</button>
+       <nav class="overlay-nav" role="menu">
+  <a href="index.html#our-story-owner" class="overlay-link" role="menuitem">
+    OUR STORY
+  </a>
+
+  <a href="index.html#fleet" class="overlay-link" role="menuitem">
+    THE COLLECTION
+  </a>
+
+  <a href="#" class="overlay-link js-open-terms" role="menuitem">
+    TERMS AND CONDITIONS
+  </a>
+
+  <a href="#" class="overlay-link js-open-privacy" role="menuitem">
+    PRIVACY POLICY
+  </a>
+
+  <a href="index.html#contact" class="overlay-link" role="menuitem">
+    CUSTOMER CARE
+  </a>
+
+  <a href="tel:+18259739800" class="overlay-link phone-pill" role="menuitem">
+    <i class="ri-phone-line"></i> 825.973.9800
+  </a>
+</nav>
+
+      </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="terms-overlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-panel" role="document">
+        <button class="modal-close" aria-label="Close Terms">✕</button>
+        <div class="modal-content">
+         <h3>Executive Driving Services — Terms & Conditions (Alberta)</h3>
+<p><em>Last updated: 11/25/2025 </em></p>
+
+<hr>
+
+<h4>1) Who we are & Scope</h4>
+<p>
+These Terms & Conditions ("Terms") govern all executive/private SUV transportation and concierge 
+services provided by Executive Driving Services ("EDS", "we", "us", "our"). By placing a booking or 
+using our services, you agree to these Terms.
+</p>
+
+<h4>2) Bookings, Changes & Substitutions</h4>
+<ul>
+  <li><strong>Accuracy:</strong> You must provide correct pickup times, locations, passenger count, luggage info, and any special requirements (child seats, access gates, etc.).</li>
+  <li><strong>Verification:</strong> A pre-authorization may be placed before dispatch.</li>
+  <li><strong>Vehicle Substitution:</strong> We may substitute a comparable or higher-class vehicle if required for safety or operational reasons, at no extra cost.</li>
+  <li><strong>Delays Outside Our Control:</strong> Weather, traffic, road closures, and law-enforcement stops may affect ETA. We are not liable for indirect losses such as missed flights.</li>
+</ul>
+
+<h4>3) Rates, Waiting Time & Extras</h4>
+<ul>
+  <li>Quoted rates include vehicle, chauffeur, and standard distance/time.</li>
+  <li><strong>Waiting Time:</strong> 15-minute grace period, then billed in 15-minute increments.</li>
+  <li><strong>Tolls/Parking:</strong> Charged at cost.</li>
+  <li>After-hours/peak surcharges may apply.</li>
+  <li><strong>Overtime:</strong> Services exceeding booked duration are billed at the hourly rate.</li>
+</ul>
+
+<h4>4) Cancellations & No-Shows</h4>
+<p>Unless your confirmation states otherwise:</p>
+<ul>
+  <li><strong>Sedan/SUV:</strong><br>
+    • Free cancel/change ≥ 24 hours<br>
+    • 50% charge 2–24 hours<br>
+    • 100% charge < 2 hours or no-show
+  </li>
+  <li><strong>Special Events / Long-Distance:</strong> Free until 72 hours prior; 100% charge within 72 hours.</li>
+  <li><strong>No-show:</strong> Driver waits full grace period and cannot reach you.</li>
+</ul>
+
+<h4>5) Passenger Conduct & Safety</h4>
+<ul>
+  <li><strong>Seatbelts:</strong> Mandatory for all passengers. Alberta laws apply.</li>
+  <li><strong>Child Seats:</strong> Available upon request; compliance is the client's responsibility.</li>
+  <li><strong>No Smoking/Vaping:</strong> Strictly prohibited.</li>
+  <li><strong>Alcohol & Cannabis:</strong> No open liquor or cannabis consumption in vehicles.</li>
+  <li><strong>Pets:</strong> Service animals allowed; pets must be pre-declared.</li>
+  <li><strong>Right to Refuse:</strong> Service may be refused for unsafe or unlawful conduct.</li>
+</ul>
+
+<h4>6) Cleaning, Damage & Downtime</h4>
+<ul>
+  <li>Standard detailing: $95–$150</li>
+  <li>Spill/stain extraction: $150–$300</li>
+  <li>Biohazard cleanup: $300–$600 + downtime</li>
+  <li>Smoke/vape odour remediation: $250–$500</li>
+  <li>Damage: actual parts + labour + downtime</li>
+</ul>
+
+<h4>7) Payment, Overdue Amounts & Chargebacks</h4>
+<ul>
+  <li>Accepted methods: credit cards, e-Transfer, invoicing (approved), cash.</li>
+  <li>Overdue balances accrue interest at 1.5%/month (18%/year) or lawful maximum.</li>
+  <li>Interac e-Transfers cannot be reversed once deposited.</li>
+</ul>
+
+<h4>7.1 "Friendly Fraud" / Unjust Chargebacks — 72-Hour Cure</h4>
+<ul>
+  <li>You agree to contact us first and allow 72 hours to resolve any billing issue.</li>
+  <li>If a chargeback is filed without contacting us, and the bank determines it was unjustified, we may invoice:
+    <ul>
+      <li>Processor dispute fees</li>
+      <li>$200 admin cost recovery</li>
+      <li>Any legal/collection fees actually incurred</li>
+    </ul>
+  </li>
+  <li>If repaid within 72 hours, all admin/collection fees are waived.</li>
+</ul>
+
+<h4>8) Lost Property</h4>
+<p>We are not responsible for items left behind but will assist retrieval where possible.</p>
+
+<h4>9) Limits of Liability</h4>
+<p>
+EDS's total liability is limited to the amount paid for the affected service. We are not liable for 
+indirect or consequential damages unless prohibited by law.
+</p>
+
+<h4>10) Dispute Resolution, Governing Law & Venue</h4>
+<p>
+These Terms follow the laws of Alberta. Claims may be brought in Alberta Court of Justice. 
+Arbitration is optional and only by mutual agreement.
+</p>
+
+<hr>
+
+<h4>11) Non-Refundable Deposit Policy</h4>
+<p>
+A 50% deposit is required to secure all bookings unless otherwise stated in writing. 
+This deposit is <strong>non-refundable at all times</strong>, regardless of cancellation reason, 
+operational changes, or client schedule adjustments.
+</p>
+
+<h4>12) Chargeback, Fraud & Legal Cost Recovery</h4>
+<p>
+Unjust, unfounded, or fraudulent chargebacks significantly impact small operators.  
+Accordingly, if a credit-card chargeback is initiated without valid grounds and the issuing bank 
+rules in our favour, the client agrees to be responsible for:
+</p>
+<ul>
+  <li>A <strong>$200 administrative chargeback fee</strong></li>
+  <li>All legal fees, filing fees, and collection costs actually incurred</li>
+  <li>Any additional processor dispute fees passed on to us</li>
+</ul>
+<p>
+These amounts are genuine cost recoveries, not penalties, and apply only when a dispute is 
+proven unjustified.
+</p>
+
+<hr>
+
+<h4>13) Changes to Terms</h4>
+<p>We may update Terms periodically; the version active at booking applies.</p>
+
+<h4>14) Contact</h4>
+<p>
+<strong>Executive Driving Services — Legal & Client Care</strong><br>
+Phone: 825.973.9800<br>
+Email: info@executivedriving.ca
+</p>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div id="privacy-overlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-panel" role="document">
+        <button class="modal-close" aria-label="Close Privacy">✕</button>
+        <div class="modal-content">
+          <!-- (content unchanged) -->
+          <h3>Executive Driving Services — Privacy Policy (Alberta PIPA)</h3>
+<p><em>Last updated: 11/25/2025 </em></p>
+
+<hr>
+
+<h4>1) About this Policy</h4>
+<p>
+We are committed to protecting your personal information in accordance with Alberta's 
+Personal Information Protection Act (PIPA). This Policy explains what we collect, why we 
+collect it, how we use and share it, where it is stored, and the choices available to you.
+</p>
+
+<h4>2) What We Collect</h4>
+<ul>
+  <li><strong>Identity & Contact:</strong> name, company, phone, email.</li>
+  <li><strong>Trip Data:</strong> pickup/drop-off locations, dates/times, routing, instructions.</li>
+  <li><strong>Communications:</strong> calls, emails, messages through apps or website.</li>
+  <li><strong>Payment Data:</strong> tokenized card details (via payment processor); e-Transfer confirmations. We do not store full card numbers.</li>
+  <li><strong>Device/App Telemetry:</strong> push tokens, crash logs, app diagnostics.</li>
+  <li><strong>Safety & Compliance:</strong> incident reports, lost-and-found records, driver notes.</li>
+</ul>
+
+<h4>3) Purposes</h4>
+<p>We collect and use personal information to:</p>
+<ul>
+  <li>Accept, manage, and complete bookings.</li>
+  <li>Dispatch drivers and provide concierge support.</li>
+  <li>Verify identity, prevent fraud, and manage payments/chargebacks.</li>
+  <li>Ensure safety and comply with seatbelt, child-seat, open-liquor, and cannabis laws.</li>
+  <li>Improve our services, website, and app performance.</li>
+  <li>Send transactional notices; with your consent, send marketing communications under CASL (unsubscribe anytime).</li>
+</ul>
+
+<h4>4) Consent & Your Choices</h4>
+<p>
+We rely on your express or implied consent under PIPA for most collection and use of your 
+personal information, along with other lawful grounds (fraud prevention, fee collection, 
+legal claims). You may withdraw consent at any time, subject to legal and contractual limits 
+with reasonable notice.
+</p>
+
+<h4>5) Sharing & Cross-Border Transfers</h4>
+<ul>
+  <li><strong>Payment processors:</strong> to handle payments and disputes.</li>
+  <li><strong>Technology vendors:</strong> hosting, email/SMS, booking systems — all under confidentiality agreements.</li>
+  <li><strong>Regulators & Law Enforcement:</strong> when legally required or to protect safety.</li>
+</ul>
+<p>
+Some service providers may store or process data outside Canada. This means it may be subject 
+to foreign laws. We use contractual, organizational, and technical safeguards appropriate to 
+the sensitivity of the information.
+</p>
+
+<h4>6) Security & Retention</h4>
+<p>
+We use administrative, technical, and physical safeguards appropriate to the sensitivity of 
+your data. We retain personal information only as long as necessary to provide services, 
+meet legal and accounting requirements, and resolve disputes. Afterwards, we securely delete 
+or de-identify the data.
+</p>
+
+<h4>7) Access, Correction & Complaints</h4>
+<p>
+You may request access to or correction of your personal information at any time. If you are 
+not satisfied with our response, you may contact the Office of the Information and Privacy 
+Commissioner (OIPC) of Alberta.
+</p>
+<p><strong>OIPC:</strong> 1-888-878-4044 — see "Request a Review / File a Complaint."</p>
+
+<h4>8) Breach Notification</h4>
+<p>
+If a privacy incident results in a real risk of significant harm, we will notify you and the 
+OIPC as required by PIPA.
+</p>
+
+<h4>9) Marketing Under CASL</h4>
+<p>
+We send commercial electronic messages (promotions, offers, updates) only with consent or 
+where legally permitted. All messages include an unsubscribe option. You may withdraw 
+consent at any time.
+</p>
+
+<h4>10) Contact (Privacy)</h4>
+<p>
+<strong>Executive Driving Services — Legal & Client Care</strong><br>
+Phone: 825.973.9800<br>
+Email: info@executivedriving.ca
+</p>
+
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="booking-overlay" class="booking-overlay centered" aria-hidden="true">
+      <div class="booking-modal center" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
+        <button class="booking-close" type="button" aria-label="Close booking form" data-book-close>✕</button>
+        <header class="booking-header">
+          <h2 id="bookingTitle">Reserve Your Ride</h2>
+        </header>
+
+        <form id="booking-form" class="booking-form" novalidate>
+          <div class="booking-grid two">
+            <label class="field">
+              <span>Full Name</span>
+              <input name="name" type="text" autocomplete="name" required placeholder="John Smith" />
+              <small class="err" data-for="name"></small>
+            </label>
+            <label class="field">
+              <span>Phone</span>
+              <input name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="(825) 973 9800" />
+              <small class="err" data-for="phone"></small>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Email</span>
+            <input name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
+            <small class="err" data-for="email"></small>
+          </label>
+
+          <label class="field">
+            <span>Pickup Location</span>
+            <input id="pickup" name="pickup" type="text" required placeholder="for example, 1400 John St, Edmonton" />
+            <small class="err" data-for="pickup"></small>
+          </label>
+
+          <label class="field">
+            <span>Drop Off Location</span>
+            <input id="dropoff" name="dropoff" type="text" required placeholder="for example, YEG Terminal" />
+            <small class="err" data-for="dropoff"></small>
+          </label>
+
+          <div class="booking-grid two">
+            <label class="field">
+              <span>Date</span>
+              <input id="bookDate" name="date" type="date" required />
+              <small class="err" data-for="date"></small>
+            </label>
+            <label class="field">
+              <span>Time</span>
+              <input id="bookTime" name="time" type="time" required />
+              <small class="err" data-for="time"></small>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Passengers</span>
+            <input name="passengers" type="number" min="1" max="7" step="1" required placeholder="1" />
+            <small class="err" data-for="passengers"></small>
+          </label>
+
+          <!-- Return Trip Checkbox -->
+          <div class="field checkbox-field">
+            <label class="checkbox-label">
+              <input type="checkbox" name="returnTrip" id="returnTrip">
+              <span class="checkbox-custom"></span>
+              <span>
+                <strong>Book return trip</strong>
+                <small>please mention the time you'd like to get picked up in notes </small>
+              </span>
+            </label>
+          </div>
+
+          <!-- NEW: Notify Me Checkbox -->
+          <div class="field checkbox-field">
+            <label class="checkbox-label">
+              <input type="checkbox" name="notifyMe" id="notifyMe">
+              <span class="checkbox-custom"></span>
+              <span>
+                <strong>Notify me about similar events</strong>
+                <small>Get email alerts when new events are added</small>
+              </span>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Notes <span style="opacity: 0.6;">(optional)</span></span>
+            <textarea name="notes" rows="4" placeholder="Special requests, notes..."></textarea>
+          </label>
+
+          <div class="booking-actions">
+            <button type="submit" class="btn-rr book">Submit Reservation</button>
+            <p class="booking-note">
+              <i class="ri-lock-2-line" aria-hidden="true"></i> Your details are handled under our Privacy Policy.
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Thank You / Booking Received -->
+    <div id="thanks-overlay" aria-hidden="true">
+      <div class="ty-panel" role="dialog" aria-modal="true" aria-labelledby="thanks-title">
+        <button class="modal-close" aria-label="Close">✕</button>
+        <div class="modal-content">
+          <div class="ty-check" aria-hidden="true">
+            <svg viewBox="0 0 120 120" role="img" aria-label="Success">
+              <defs>
+                <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#f0d989" />
+                  <stop offset="50%" stop-color="#d4af37" />
+                  <stop offset="100%" stop-color="#b99629" />
+                </linearGradient>
+                <filter id="tickGlow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <circle cx="60" cy="60" r="52" fill="none" stroke="url(#goldGrad)" stroke-width="3" opacity=".9" />
+              <circle class="ty-ring" cx="60" cy="60" r="52" fill="none" stroke="url(#goldGrad)" stroke-width="6" stroke-linecap="round" />
+              <path class="ty-mark" d="M36 62 L54 78 L86 44" fill="none" stroke="url(#goldGrad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#tickGlow)" />
+            </svg>
+          </div>
+          <h3 id="thanks-title">Thank you</h3>
+          <p class="lead">
+            We've received your request and sent a confirmation to
+            <strong id="t-email"></strong>
+          </p>
+          <p class="lead"><i class="fa-solid fa-clock" aria-hidden="true"></i> Our dispatcher will contact you shortly to confirm final details.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ NAVI widget is outside overlays -->
+    <button class="xd-chat__toggle" type="button">Ask NAVI?</button>
+    <div class="xd-chat" hidden>
+      <header class="xd-chat__hdr">
+        <div class="xd-chat__brand">
+          <img class="xd-chat__avatar" src="images/batman.png" alt="NAVI — Executive Driving Concierge" />
+          <div><strong>NAVI — Executive Driving Concierge</strong></div>
+        </div>
+        <button class="xd-chat__close" aria-label="Close">✕</button>
+      </header>
+      <main class="xd-chat__body" id="xdChatBody" role="log" aria-live="polite"></main>
+      <footer class="xd-chat__ftr">
+        <input id="xdChatInput" class="xd-chat__input" type="text" placeholder="Type your message…" />
+        <button id="xdChatSend" class="xd-chat__send" type="button" aria-label="Send">➤</button>
+      </footer>
+    </div>
+  </div> <!-- /#page -->
+
+  <!-- Scripts -->
+  <script type="module" defer src="js/script.js"></script>
+<script type="module" defer src="js/event.js"></script>
+
+  <!-- One single callback for Places Autocomplete -->
+  <script>
+    // Define once. Retries until your script defines window.__xdInitAutocomplete
+    window.initAutocomplete = function () {
+      var tries = 0;
+      (function boot(){
+        if (typeof window.__xdInitAutocomplete === 'function') {
+          try { window.__xdInitAutocomplete(); } catch(e) { console.warn('Autocomplete init error', e); }
+        } else if (tries++ < 60) {
+          setTimeout(boot, 50);
+        } else {
+          console.warn('Autocomplete init timeout: __xdInitAutocomplete not found');
+        }
+      })();
+    };
+  </script>
+
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAitl8PFwdBCzyO_1WgSkzuzfwijfthw1w&libraries=places&callback=initAutocomplete"></script>
+   
+</body>
+</html>

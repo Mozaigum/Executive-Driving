@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Our Fleet | Executive Driving - Edmonton & Grande Prairie</title>
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W7JXP7VP');</script>
+  <!-- End Google Tag Manager -->
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=fix2">
+
+  <meta name="api-base" content="https://executive-driving-backend-b79y.onrender.com">
+  
+  <style>
+    /* ========================================
+       FLEET PAGE CUSTOM STYLES
+       ======================================== */
+    
+    :root {
+      --gold: #c9a227;
+      --gold-light: #e8d48a;
+      --gold-dark: #9c7c1a;
+      --black: #0a0a0a;
+      --charcoal: #1a1a1a;
+      --white: #ffffff;
+      --gray: #888888;
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body.fleet-page {
+      background: var(--black);
+      color: var(--white);
+    }
+    
+    body.inner-page #page { opacity: 1; }
+    
+    /* Header dark override */
+    .fleet-page #site-header {
+      background: var(--black) !important;
+    }
+    
+    /* ========================================
+       PAGE HERO
+       ======================================== */
+    
+    .page-hero {
+      position: relative;
+      padding: 160px 40px 100px;
+      background: var(--black);
+      text-align: center;
+      overflow: hidden;
+    }
+    
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 25px;
+      font-weight: 500;
+      opacity: 0;
+      animation: fadeDown 0.8s ease 0.2s forwards;
+    }
+    
+    .hero-label::before,
+    .hero-label::after {
+      content: '';
+      width: 50px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+    
+    .hero-label::after {
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+    
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(48px, 8vw, 80px);
+      font-weight: 400;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.4s forwards;
+    }
+    
+    .page-hero p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      color: var(--gray);
+      font-weight: 300;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.6s forwards;
+    }
+    
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* ========================================
+       FLEET INTRO
+       ======================================== */
+    
+    .fleet-intro {
+      padding: 80px 40px;
+      text-align: center;
+      background: var(--black);
+      position: relative;
+    }
+    
+    .intro-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 400;
+      margin-bottom: 20px;
+      color: var(--white);
+    }
+    
+    .intro-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      color: var(--gray);
+      font-weight: 300;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    
+    /* ========================================
+       VEHICLE SHOWCASE
+       ======================================== */
+    
+    .vehicles-showcase {
+      padding: 100px 0;
+      background: var(--black);
+    }
+    
+    /* Single Vehicle Card */
+    .vehicle-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .vehicle-card:nth-child(odd) {
+      direction: rtl;
+    }
+    
+    .vehicle-card:nth-child(odd) > * {
+      direction: ltr;
+    }
+    
+    @media (max-width: 900px) {
+      .vehicle-card,
+      .vehicle-card:nth-child(odd) {
+        grid-template-columns: 1fr;
+        direction: ltr;
+      }
+    }
+    
+    /* Image Side */
+    .vehicle-image {
+      position: relative;
+      overflow: hidden;
+      min-height: 400px;
+    }
+    
+    .vehicle-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .vehicle-card:hover .vehicle-image img {
+      transform: scale(1.05);
+    }
+    
+    /* Image overlay effects */
+    .vehicle-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(201, 162, 39, 0.1) 0%,
+        transparent 50%,
+        rgba(0, 0, 0, 0.3) 100%
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Corner frames on image */
+    .image-frame {
+      position: absolute;
+      z-index: 3;
+      pointer-events: none;
+    }
+    
+    .frame-tl {
+      top: 20px;
+      left: 20px;
+      width: 60px;
+      height: 60px;
+      border-top: 2px solid var(--gold);
+      border-left: 2px solid var(--gold);
+      opacity: 0;
+      transform: translate(-10px, -10px);
+      transition: all 0.5s ease;
+    }
+    
+    .frame-br {
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-bottom: 2px solid var(--gold);
+      border-right: 2px solid var(--gold);
+      opacity: 0;
+      transform: translate(10px, 10px);
+      transition: all 0.5s ease;
+    }
+    
+    .vehicle-card:hover .frame-tl,
+    .vehicle-card:hover .frame-br {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+    
+    /* Badge */
+    .vehicle-badge {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      z-index: 4;
+      background: var(--gold);
+      color: var(--black);
+      padding: 10px 20px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    
+    .vehicle-card:nth-child(odd) .vehicle-badge {
+      right: auto;
+      left: 30px;
+    }
+    
+    @media (max-width: 900px) {
+      .vehicle-card:nth-child(odd) .vehicle-badge {
+        right: 30px;
+        left: auto;
+      }
+    }
+    
+    /* Info Side */
+    .vehicle-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 80px;
+      background: var(--black);
+      position: relative;
+    }
+    
+    @media (max-width: 900px) {
+      .vehicle-info {
+        padding: 50px 30px;
+      }
+    }
+    
+    /* Vehicle number */
+    .vehicle-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 100px;
+      font-weight: 400;
+      color: rgba(201, 162, 39, 0.08);
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      line-height: 1;
+      pointer-events: none;
+    }
+    
+    .vehicle-card:nth-child(odd) .vehicle-number {
+      right: auto;
+      left: 40px;
+    }
+    
+    @media (max-width: 900px) {
+      .vehicle-card:nth-child(odd) .vehicle-number {
+        right: 40px;
+        left: auto;
+      }
+    }
+    
+    .vehicle-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+    
+    .vehicle-type::before {
+      content: '';
+      width: 30px;
+      height: 1px;
+      background: var(--gold);
+    }
+    
+    .vehicle-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 5vw, 48px);
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 8px;
+      letter-spacing: -1px;
+    }
+    
+    .vehicle-variant {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      color: var(--gold-light);
+      font-weight: 400;
+      margin-bottom: 25px;
+      letter-spacing: 1px;
+    }
+    
+    .vehicle-desc {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      color: var(--gray);
+      font-weight: 300;
+      line-height: 1.8;
+      margin-bottom: 35px;
+      max-width: 450px;
+    }
+    
+    /* Specs */
+    .vehicle-specs {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    
+    .spec-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .spec-icon {
+      width: 45px;
+      height: 45px;
+      border: 1px solid rgba(201, 162, 39, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    
+    .spec-item:hover .spec-icon {
+      background: rgba(201, 162, 39, 0.1);
+      border-color: var(--gold);
+    }
+    
+    .spec-icon i {
+      font-size: 18px;
+      color: var(--gold);
+    }
+    
+    .spec-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: var(--white);
+      font-weight: 500;
+    }
+    
+    .spec-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      color: var(--gray);
+      font-weight: 300;
+    }
+    
+    /* Book button */
+    .btn-book-vehicle {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 40px;
+      background: var(--gold);
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 2px solid var(--gold);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      width: fit-content;
+    }
+    
+    .btn-book-vehicle::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .btn-book-vehicle:hover {
+      background: transparent;
+      color: var(--gold);
+      transform: translateX(5px);
+    }
+    
+    .btn-book-vehicle:hover::before {
+      left: 100%;
+    }
+    
+    .btn-book-vehicle i {
+      font-size: 16px;
+      transition: transform 0.3s ease;
+    }
+    
+    .btn-book-vehicle:hover i {
+      transform: translateX(5px);
+    }
+    
+    /* ========================================
+       AMENITIES STRIP
+       ======================================== */
+    
+    .amenities-strip {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+      padding: 40px;
+      background: var(--black);
+      flex-wrap: wrap;
+    }
+    
+    .amenity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      color: var(--gray);
+      font-weight: 400;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    
+    .amenity i {
+      font-size: 18px;
+      color: var(--gold);
+    }
+    
+    /* ========================================
+       FEATURES SECTION - LUXURY STYLE
+       ======================================== */
+    
+    .features-section {
+      position: relative;
+      padding: 120px 40px;
+      background: var(--black);
+      overflow: hidden;
+    }
+    
+    /* Section header */
+    .features-header {
+      text-align: center;
+      margin-bottom: 80px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .features-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    
+    .features-label::before,
+    .features-label::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.5;
+    }
+    
+    .features-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 400;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--white) 0%, var(--gold-light) 50%, var(--white) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .features-subtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      color: var(--gray);
+      font-weight: 300;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    
+    /* Features grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    
+    @media (max-width: 1024px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Feature card */
+    .feature-card {
+      position: relative;
+      padding: 50px 35px;
+      text-align: center;
+      border: 1px solid rgba(201, 162, 39, 0.1);
+      background: var(--black);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      cursor: default;
+    }
+    
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(201, 162, 39, 0.05) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: -100%;
+      width: 300%;
+      height: 300%;
+      background: radial-gradient(circle, rgba(201, 162, 39, 0.1) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    
+    .feature-card:hover {
+      background: rgba(201, 162, 39, 0.03);
+      border-color: rgba(201, 162, 39, 0.25);
+      transform: translateY(-5px);
+    }
+    
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+    
+    .feature-card:hover::after {
+      opacity: 1;
+      animation: glow-move 2s ease infinite;
+    }
+    
+    @keyframes glow-move {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(10%, 10%); }
+      100% { transform: translate(0, 0); }
+    }
+    
+    /* Icon container */
+    .feature-icon {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .feature-icon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--gold);
+      opacity: 0.3;
+      transform: rotate(45deg);
+      transition: all 0.5s ease;
+    }
+    
+    .feature-icon::after {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px solid var(--gold);
+      opacity: 0.15;
+      transform: rotate(45deg);
+      transition: all 0.5s ease;
+    }
+    
+    .feature-card:hover .feature-icon::before {
+      transform: rotate(225deg);
+      opacity: 0.5;
+    }
+    
+    .feature-card:hover .feature-icon::after {
+      transform: rotate(135deg);
+      opacity: 0.3;
+    }
+    
+    .feature-icon i {
+      font-size: 32px;
+      color: var(--gold);
+      position: relative;
+      z-index: 1;
+      transition: all 0.5s ease;
+    }
+    
+    .feature-card:hover .feature-icon i {
+      transform: scale(1.15);
+      filter: drop-shadow(0 0 15px rgba(201, 162, 39, 0.5));
+    }
+    
+    /* Text content */
+    .feature-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease;
+    }
+    
+    .feature-card:hover .feature-card-title {
+      color: var(--gold-light);
+    }
+    
+    .feature-desc {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: var(--gray);
+      font-weight: 300;
+      line-height: 1.6;
+      transition: color 0.3s ease;
+    }
+    
+    .feature-card:hover .feature-desc {
+      color: #aaa;
+    }
+    
+    /* Corner accents */
+    .feature-card .corner {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+    
+    .feature-card .corner::before,
+    .feature-card .corner::after {
+      content: '';
+      position: absolute;
+      background: var(--gold);
+    }
+    
+    .feature-card .corner-tl {
+      top: 0;
+      left: 0;
+    }
+    .feature-card .corner-tl::before { width: 1px; height: 100%; left: 0; top: 0; }
+    .feature-card .corner-tl::after { width: 100%; height: 1px; left: 0; top: 0; }
+    
+    .feature-card .corner-br {
+      bottom: 0;
+      right: 0;
+    }
+    .feature-card .corner-br::before { width: 1px; height: 100%; right: 0; bottom: 0; }
+    .feature-card .corner-br::after { width: 100%; height: 1px; right: 0; bottom: 0; }
+    
+    .feature-card:hover .corner {
+      opacity: 0.6;
+    }
+    
+    /* ========================================
+       TRUST STATS SECTION
+       ======================================== */
+    
+    .trust-section {
+      position: relative;
+      padding: 80px 40px;
+      background: var(--black);
+      overflow: hidden;
+    }
+    
+    .trust-grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 80px;
+      max-width: 1000px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+    
+    @media (max-width: 768px) {
+      .trust-grid {
+        gap: 40px;
+      }
+    }
+    
+    .trust-item {
+      text-align: center;
+      position: relative;
+      padding: 0 30px;
+    }
+    
+    .trust-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(180deg, transparent, rgba(201, 162, 39, 0.3), transparent);
+    }
+    
+    @media (max-width: 768px) {
+      .trust-item:not(:last-child)::after {
+        display: none;
+      }
+    }
+    
+    .trust-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 400;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 8px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .trust-number::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.5;
+    }
+    
+    .trust-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray);
+      font-weight: 500;
+      margin-top: 15px;
+    }
+    
+    /* ========================================
+       CTA SECTION
+       ======================================== */
+    
+    .cta-section {
+      position: relative;
+      padding: 100px 40px;
+      background: var(--black);
+      text-align: center;
+      overflow: hidden;
+    }
+    
+    .cta-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(40px, 10vw, 10px);
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 15px;
+    }
+    
+    .cta-subtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      color: var(--gray);
+      font-weight: 300;
+      margin-bottom: 40px;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 40px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 0;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-cta-gold {
+      background: var(--gold);
+      color: var(--black);
+      border: 2px solid var(--gold);
+    }
+    
+    .btn-cta-gold::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .btn-cta-gold:hover {
+      background: var(--gold-dark);
+      border-color: var(--gold-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 40px rgba(201, 162, 39, 0.3);
+    }
+    
+    .btn-cta-gold:hover::before {
+      left: 100%;
+    }
+    
+    .btn-cta-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    
+    .btn-cta-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-3px);
+    }
+    
+    .btn-cta i {
+      font-size: 16px;
+    }
+    
+    /* ========================================
+       SCROLL ANIMATIONS
+       ======================================== */
+    
+    .vehicle-card {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .vehicle-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .feature-card {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    
+    .feature-card.visible {
+      animation: fadeUp 0.8s ease forwards;
+    }
+    
+    .feature-card:nth-child(1).visible { animation-delay: 0.1s; }
+    .feature-card:nth-child(2).visible { animation-delay: 0.2s; }
+    .feature-card:nth-child(3).visible { animation-delay: 0.3s; }
+    .feature-card:nth-child(4).visible { animation-delay: 0.4s; }
+    .feature-card:nth-child(5).visible { animation-delay: 0.5s; }
+    .feature-card:nth-child(6).visible { animation-delay: 0.6s; }
+    .feature-card:nth-child(7).visible { animation-delay: 0.7s; }
+    .feature-card:nth-child(8).visible { animation-delay: 0.8s; }
+    
+    .trust-item {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    .trust-item.visible {
+      animation: fadeUp 0.6s ease forwards;
+    }
+    
+    .trust-item:nth-child(1).visible { animation-delay: 0.1s; }
+    .trust-item:nth-child(2).visible { animation-delay: 0.2s; }
+    .trust-item:nth-child(3).visible { animation-delay: 0.3s; }
+    .trust-item:nth-child(4).visible { animation-delay: 0.4s; }
+    
+    /* ========================================
+       FOOTER OVERRIDE
+       ======================================== */
+    
+    .fleet-page .site-footer {
+      background: var(--black);
+    }
+  </style>
+</head>
+
+<body class="inner-page intro-done fleet-page">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W7JXP7VP"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <div id="page">
+    
+    <!-- HEADER -->
+    <header id="site-header">
+      <div class="top-bar">
+        <button class="menu-toggle rr-burger-btn" aria-controls="menu-overlay" aria-expanded="false">
+          <span class="rr-burger" aria-hidden="true">
+            <span class="bar bar-1"></span>
+            <span class="bar bar-2"></span>
+            <span class="bar bar-3"></span>
+          </span>
+          <span class="rr-label">
+            <span class="label-open">Menu</span>
+            <span class="label-close">Close</span>
+          </span>
+        </button>
+        <a href="index.html" class="logo-link">
+          <img src="images/logo.WebP" alt="Executive Driving" class="logo-img" />
+        </a>
+        <a href="tel:+18259739800" class="top-cta phone-link">
+          <i class="ri-phone-line phone-icon"></i> 825.973.9800
+        </a>
+      </div>
+    </header>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <p class="hero-label">Executive Driving</p>
+      <h1>Our Fleet</h1>
+      <p>Premium Lincoln Navigator SUVs meticulously maintained for your comfort and safety</p>
+    </section>
+    
+    <!-- INTRO -->
+    <section class="fleet-intro">
+      <h2 class="intro-title">Experience Luxury Transportation</h2>
+      <p class="intro-text">Executive Driving operates an exclusive fleet of Lincoln Navigator L SUVs — one of the most luxurious and spacious vehicles in its class. Whether you need airport transfers, corporate transportation, or special event service, our vehicles are maintained to the highest standards.</p>
+    </section>
+    
+    <!-- VEHICLE SHOWCASE -->
+    <section class="vehicles-showcase">
+      
+      <!-- BLACK NAVIGATOR -->
+      <article class="vehicle-card">
+        <div class="vehicle-image">
+          <img src="images/fleet1.jpeg" alt="Lincoln Navigator L - Black">
+          <span class="image-frame frame-tl"></span>
+          <span class="image-frame frame-br"></span>
+          <span class="vehicle-badge">Available Now</span>
+        </div>
+        <div class="vehicle-info">
+          <span class="vehicle-number">01</span>
+          <p class="vehicle-type">Premium SUV</p>
+          <h2 class="vehicle-name">Lincoln Navigator L</h2>
+          <p class="vehicle-variant">Pristine Black</p>
+          <p class="vehicle-desc">Our black Lincoln Navigator embodies understated elegance — perfect for corporate transfers, airport service, and executive transportation. The extended wheelbase delivers exceptional legroom and comfort for up to 7 passengers.</p>
+          
+          <div class="vehicle-specs">
+            <div class="spec-item">
+              <div class="spec-icon"><i class="ri-group-line"></i></div>
+              <div>
+                <div class="spec-text">7 Passengers</div>
+                <div class="spec-label">Maximum capacity</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon"><i class="ri-suitcase-line"></i></div>
+              <div>
+                <div class="spec-text">4 Large Bags</div>
+                <div class="spec-label">Luggage space</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon"><i class="ri-wifi-line"></i></div>
+              <div>
+                <div class="spec-text">WiFi Included</div>
+                <div class="spec-label">Stay connected</div>
+              </div>
+            </div>
+          </div>
+          
+          <a href="#" class="btn-book-vehicle" data-book-open>
+            Reserve This Vehicle
+            <i class="ri-arrow-right-line"></i>
+          </a>
+        </div>
+      </article>
+      
+      <!-- AMENITIES STRIP -->
+      <div class="amenities-strip">
+        <span class="amenity"><i class="ri-shield-check-line"></i> Fully Insured</span>
+        <span class="amenity"><i class="ri-goblet-line"></i> Complimentary Water</span>
+        <span class="amenity"><i class="ri-smartphone-charge-line"></i> USB Charging</span>
+        <span class="amenity"><i class="ri-temp-cold-line"></i> Climate Control</span>
+        <span class="amenity"><i class="ri-user-star-line"></i> Professional Chauffeur</span>
+      </div>
+      
+      <!-- WHITE NAVIGATOR -->
+      <article class="vehicle-card">
+        <div class="vehicle-image">
+          <img src="images/fleet6.jpeg" alt="Lincoln Navigator L - White">
+          <span class="image-frame frame-tl"></span>
+          <span class="image-frame frame-br"></span>
+          <span class="vehicle-badge">Popular Choice</span>
+        </div>
+        <div class="vehicle-info">
+          <span class="vehicle-number">02</span>
+          <p class="vehicle-type">Premium SUV</p>
+          <h2 class="vehicle-name">Lincoln Navigator L</h2>
+          <p class="vehicle-variant">Pearl White</p>
+          <p class="vehicle-desc">Make a statement with our stunning white Lincoln Navigator. Ideal for weddings, special celebrations, and clients who prefer a distinctive look. Same premium amenities, same professional service — with head-turning presence.</p>
+          
+          <div class="vehicle-specs">
+            <div class="spec-item">
+              <div class="spec-icon"><i class="ri-group-line"></i></div>
+              <div>
+                <div class="spec-text">7 Passengers</div>
+                <div class="spec-label">Maximum capacity</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon"><i class="ri-suitcase-line"></i></div>
+              <div>
+                <div class="spec-text">4 Large Bags</div>
+                <div class="spec-label">Luggage space</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon"><i class="ri-wifi-line"></i></div>
+              <div>
+                <div class="spec-text">WiFi Included</div>
+                <div class="spec-label">Stay connected</div>
+              </div>
+            </div>
+          </div>
+          
+          <a href="#" class="btn-book-vehicle" data-book-open>
+            Reserve This Vehicle
+            <i class="ri-arrow-right-line"></i>
+          </a>
+        </div>
+      </article>
+      
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="features-section">
+      <div class="features-header">
+        <p class="features-label">The Experience</p>
+        <h2 class="features-title">Included With Every Ride</h2>
+        <p class="features-subtitle">Exceptional amenities and professional service as standard — because luxury shouldn't be an upgrade.</p>
+      </div>
+      
+      <div class="features-grid">
+        
+        <div class="feature-card">
+          <span class="corner corner-tl"></span>
+          <span class="corner corner-br"></span>
+          <div class="feature-icon">
+            <i class="ri-goblet-line"></i>
+          </div>
+          <h3 class="feature-card-title">Complimentary Beverages</h3>
+          <p class="feature-desc">Premium bottled water provided on every journey</p>
+        </div>
+        
+        <div class="feature-card">
+          <span class="corner corner-tl"></span>
+          <span class="corner corner-br"></span>
+          <div class="feature-icon">
+            <i class="ri-wifi-line"></i>
+          </div>
+          <h3 class="feature-card-title">Onboard WiFi</h3>
+          <p class="feature-desc">Stay connected throughout your ride</p>
+        </div>
+        
+        <div class="feature-card">
+          <span class="corner corner-tl"></span>
+          <span class="corner corner-br"></span>
+          <div class="feature-icon">
+            <i class="ri-smartphone-charge-line"></i>
+          </div>
+          <h3 class="feature-card-title">Device Charging</h3>
+          <p class="feature-desc">Multiple USB ports for all devices</p>
+        </div>
+        
+        <div class="feature-card">
+          <span class="corner corner-tl"></span>
+          <span class="corner corner-br"></span>
+          <div class="feature-icon">
+            <i class="ri-flight-takeoff-line"></i>
+          </div>
+          <h3 class="feature-card-title">Flight Tracking</h3>
+          <p class="feature-desc">Real-time monitoring for airport pickups</p>
+        </div>
+        
+        <div class="feature-card">
+          <span class="corner corner-tl"></span>
+          <span class="corner corner-br"></span>
+          <div class="feature-icon">
+            <i class="ri-temp-cold-line"></i>
+          </div>
+          <h3 class="feature-card-title">Climate Control</h3>
+          <p class="feature-desc">Individual temperature settings</p>
+        </div>
+        
+        <div class="feature-card">
+          <span class="corner corner-tl"></span>
+          <span class="corner corner-br"></span>
+          <div class="feature-icon">
+            <i class="ri-shield-check-line"></i>
+          </div>
+          <h3 class="feature-card-title">Fully Insured</h3>
+          <p class="feature-desc">Complete commercial coverage</p>
+        </div>
+        
+        <div class="feature-card">
+          <span class="corner corner-tl"></span>
+          <span class="corner corner-br"></span>
+          <div class="feature-icon">
+            <i class="ri-user-star-line"></i>
+          </div>
+          <h3 class="feature-card-title">Professional Chauffeurs</h3>
+          <p class="feature-desc">Licensed, vetted, and courteous</p>
+        </div>
+        
+        <div class="feature-card">
+          <span class="corner corner-tl"></span>
+          <span class="corner corner-br"></span>
+          <div class="feature-icon">
+            <i class="ri-24-hours-line"></i>
+          </div>
+          <h3 class="feature-card-title">24/7 Availability</h3>
+          <p class="feature-desc">Service whenever you need it</p>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- TRUST STATS -->
+    <section class="trust-section">
+      <div class="trust-grid">
+        <div class="trust-item">
+          <div class="trust-number">8+</div>
+          <div class="trust-label">Years of Excellence</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-number">24/7</div>
+          <div class="trust-label">Always Available</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-number">100%</div>
+          <div class="trust-label">Client Satisfaction</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-number">AB</div>
+          <div class="trust-label">Locally Owned</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- CTA SECTION -->
+    <section class="cta-section">
+      <div class="cta-content">
+        <h2 class="cta-title">Ready to Experience the Difference?</h2>
+        <p class="cta-subtitle">Reserve your Lincoln Navigator today — online booking or direct call</p>
+        <div class="cta-buttons">
+          <a href="#" class="btn-cta btn-cta-gold" data-book-open>
+            <i class="ri-calendar-check-line"></i>
+            Book Online
+          </a>
+          <a href="tel:+18259739800" class="btn-cta btn-cta-outline">
+            <i class="ri-phone-line"></i>
+            825.973.9800
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <img src="./images/logo.WebP" alt="Executive Driving" class="footer-logo">
+          <p class="footer-tag">Private Chauffeur Service<br>Edmonton & Grande Prairie, Alberta</p>
+        </div>
+        <div class="footer-connect">
+          <h4 class="footer-h">Contact</h4>
+          <ul class="footer-contact">
+            <li><a href="tel:+18259739800"><i class="ri-phone-line footer-icon"></i> 825.973.9800</a></li>
+            <li><a href="mailto:info@executivedriving.ca"><i class="ri-mail-line footer-icon"></i> info@executivedriving.ca</a></li>
+          </ul>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/ExecutiveDrivingGP" target="_blank" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/executivedrivingab/" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="container footer-pay">
+        <h5 class="footer-pay-h">Payment Methods</h5>
+        <ul class="pay-logos">
+          <li><img src="images/visa.jpeg" alt="Visa" loading="lazy"></li>
+          <li><img src="images/mastercard.jpeg" alt="Mastercard" loading="lazy"></li>
+          <li><img src="images/amex.jpeg" alt="Amex" loading="lazy"></li>
+          <li><img src="images/intract.jpeg" alt="Interac" loading="lazy"></li>
+        </ul>
+      </div>
+      <div class="container footer-copy"><p>© 2025 Executive Driving. All Rights Reserved.</p></div>
+    </footer>
+
+    <!-- OVERLAYS -->
+    <div id="menu-overlay" class="menu-overlay" aria-hidden="true">
+      <div class="menu-panel">
+        <button class="menu-close">✕</button>
+        <nav class="overlay-nav">
+          <a href="index.html" class="overlay-link">HOME</a>
+          <a href="fleet.html" class="overlay-link">THE COLLECTION</a>
+          <a href="team.html" class="overlay-link">OUR STORY</a>
+          <a href="events.html" class="overlay-link">EVENTS</a>
+          <a href="contact.html" class="overlay-link">CUSTOMER CARE</a>
+          <a href="#" class="overlay-link js-open-terms">TERMS AND CONDITIONS</a>
+          <a href="#" class="overlay-link js-open-privacy">PRIVACY POLICY</a>
+          <a href="tel:+18259739800" class="overlay-link phone-pill">
+            <i class="ri-phone-line"></i>
+            825.973.9800
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="terms-overlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-panel" role="document">
+        <button class="modal-close" aria-label="Close Terms">✕</button>
+        <div class="modal-content">
+          <h3>Executive Driving Services — Terms & Conditions (Alberta)</h3>
+          <p><em>Last updated: 11/25/2025</em></p>
+          <hr>
+          <h4>1) Who we are & Scope</h4>
+          <p>These Terms & Conditions ("Terms") govern all executive/private SUV transportation and concierge services provided by Executive Driving Services ("EDS", "we", "us", "our"). By placing a booking or using our services, you agree to these Terms.</p>
+          <h4>2) Bookings, Changes & Substitutions</h4>
+          <ul>
+            <li><strong>Accuracy:</strong> You must provide correct pickup times, locations, passenger count, luggage info, and any special requirements.</li>
+            <li><strong>Verification:</strong> A pre-authorization may be placed before dispatch.</li>
+            <li><strong>Vehicle Substitution:</strong> We may substitute a comparable or higher-class vehicle if required for safety or operational reasons.</li>
+            <li><strong>Delays Outside Our Control:</strong> Weather, traffic, road closures may affect ETA. We are not liable for indirect losses.</li>
+          </ul>
+          <h4>3) Rates, Waiting Time & Extras</h4>
+          <ul>
+            <li>Quoted rates include vehicle, chauffeur, and standard distance/time.</li>
+            <li><strong>Waiting Time:</strong> 15-minute grace period, then billed in 15-minute increments.</li>
+            <li><strong>Tolls/Parking:</strong> Charged at cost.</li>
+          </ul>
+          <h4>4) Cancellations & No-Shows</h4>
+          <ul>
+            <li><strong>Sedan/SUV:</strong> Free cancel ≥ 24 hours; 50% charge 2–24 hours; 100% charge < 2 hours or no-show</li>
+            <li><strong>Special Events:</strong> Free until 72 hours prior; 100% charge within 72 hours.</li>
+          </ul>
+          <h4>5) Passenger Conduct & Safety</h4>
+          <ul>
+            <li>Seatbelts mandatory. No smoking/vaping. No open liquor or cannabis.</li>
+            <li>Service animals allowed; pets must be pre-declared.</li>
+          </ul>
+          <h4>6) Contact</h4>
+          <p><strong>Executive Driving Services</strong><br>Phone: 825.973.9800<br>Email: info@executivedriving.ca</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div id="privacy-overlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-panel" role="document">
+        <button class="modal-close" aria-label="Close Privacy">✕</button>
+        <div class="modal-content">
+          <h3>Executive Driving Services — Privacy Policy (Alberta PIPA)</h3>
+          <p><em>Last updated: 11/25/2025</em></p>
+          <hr>
+          <h4>1) About this Policy</h4>
+          <p>We are committed to protecting your personal information in accordance with Alberta's Personal Information Protection Act (PIPA).</p>
+          <h4>2) What We Collect</h4>
+          <ul>
+            <li><strong>Identity & Contact:</strong> name, company, phone, email.</li>
+            <li><strong>Trip Data:</strong> pickup/drop-off locations, dates/times, routing.</li>
+            <li><strong>Payment Data:</strong> tokenized card details via payment processor.</li>
+          </ul>
+          <h4>3) Contact (Privacy)</h4>
+          <p><strong>Executive Driving Services</strong><br>Phone: 825.973.9800<br>Email: info@executivedriving.ca</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="booking-overlay" class="booking-overlay centered" aria-hidden="true">
+      <div class="booking-modal center" role="dialog">
+        <button class="booking-close" data-book-close>✕</button>
+        <header class="booking-header"><h2>Book Your Ride</h2></header>
+        <form id="booking-form" class="booking-form" novalidate>
+          <div class="booking-grid two">
+            <label class="field"><span>Name</span><input name="name" type="text" required placeholder="Your full name"></label>
+            <label class="field"><span>Phone</span><input name="phone" type="tel" required placeholder="Phone number"></label>
+          </div>
+          <label class="field"><span>Email</span><input name="email" type="email" required placeholder="Email address"></label>
+          <label class="field"><span>Pickup Address</span><input id="pickup" name="pickup" type="text" required placeholder="Where should we pick you up?"></label>
+          <label class="field"><span>Drop-off Address</span><input id="dropoff" name="dropoff" type="text" required placeholder="Where are you going?"></label>
+          <div class="booking-grid two">
+            <label class="field"><span>Date</span><input name="date" type="date" required></label>
+            <label class="field"><span>Time</span><input name="time" type="time" required></label>
+          </div>
+          <label class="field"><span>Passengers</span><input name="passengers" type="number" min="1" max="7" required placeholder="Number of passengers"></label>
+          <label class="field"><span>Special Requests</span><textarea name="notes" rows="3" placeholder="Any special requests or notes..."></textarea></label>
+          <div class="booking-actions">
+            <button type="submit" class="btn-rr book">Submit Request</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="thanks-overlay" aria-hidden="true">
+      <div class="ty-panel" role="dialog">
+        <button class="modal-close">✕</button>
+        <div class="modal-content">
+          <div class="ty-check">
+            <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="#c9a227" stroke-width="3"/><path d="M36 62 L54 78 L86 44" fill="none" stroke="#c9a227" stroke-width="8" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Thank You!</h3>
+          <p class="lead">We've received your request and will contact you shortly at <strong id="t-email"></strong></p>
+        </div>
+      </div>
+    </div>
+
+    <button class="xd-chat__toggle" type="button">Ask NAVI?</button>
+    <div class="xd-chat" hidden>
+      <header class="xd-chat__hdr">
+        <div class="xd-chat__brand">
+          <img class="xd-chat__avatar" src="images/batman.png" alt="NAVI">
+          <div><strong>NAVI</strong></div>
+        </div>
+        <button class="xd-chat__close">✕</button>
+      </header>
+      <main class="xd-chat__body" id="xdChatBody"></main>
+      <footer class="xd-chat__ftr">
+        <input id="xdChatInput" class="xd-chat__input" type="text" placeholder="Type your message…">
+        <button id="xdChatSend" class="xd-chat__send">➤</button>
+      </footer>
+    </div>
+
+  </div>
+
+  <script type="module" defer src="js/script.js"></script>
+  <script>
+    // Scroll animation observer
+    document.addEventListener('DOMContentLoaded', function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.2 });
+      
+      document.querySelectorAll('.vehicle-card, .feature-card, .trust-item').forEach(el => {
+        observer.observe(el);
+      });
+    });
+  </script>
+  <script>
+    (function() {
+      let mapsLoaded = false;
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('[data-book-open]') && !mapsLoaded) {
+          mapsLoaded = true;
+          const script = document.createElement('script');
+          script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAitl8PFwdBCzyO_1WgSkzuzfwijfthw1w&libraries=places&callback=initAutocomplete';
+          script.async = true;
+          document.head.appendChild(script);
+        }
+      });
+      window.initAutocomplete = function() {
+        if (window.google?.maps?.places) {
+          const pickup = document.getElementById('pickup');
+          const dropoff = document.getElementById('dropoff');
+          if (pickup) new google.maps.places.Autocomplete(pickup, { componentRestrictions: { country: 'ca' } });
+          if (dropoff) new google.maps.places.Autocomplete(dropoff, { componentRestrictions: { country: 'ca' } });
+        }
+      };
+    })();
+  </script>
+</body>
+</html>

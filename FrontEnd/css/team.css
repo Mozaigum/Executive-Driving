@@ -1,0 +1,381 @@
+#page {
+  opacity: 1 !important;
+}
+
+/* ===============================
+   SECTION – FULL WHITE
+================================ */
+
+section.modern-team-section {
+  position: relative;
+  padding: 0 40px 120px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(201,169,74,.18) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 20% 50%, rgba(201,169,74,.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(201,169,74,.08) 0%, transparent 60%),
+    #080808;
+  overflow: hidden;
+}
+
+.modern-team-section > .container {
+  max-width: none;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===============================
+   HEADER – SLEEK CENTERED LUXURY
+================================ */
+
+.team-header {
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto 28px;
+  padding: 60px 40px 32px;
+  position: relative;
+}
+
+/* tiny gold label below title */
+.team-header::after {
+  content: "E X E C U T I V E \2003\2003 D R I V I N G";
+  display: block;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 9px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.55em;
+  color: #c9a94a;
+  white-space: nowrap;
+  margin-top: 18px;
+}
+
+.team-header h1 {
+  font-family: "Josefin Sans", sans-serif !important;
+  font-size: clamp(40px, 5.5vw, 62px) !important;
+  font-weight: 100 !important;
+  color: #f0f0f0;
+  margin: 0;
+  letter-spacing: .22em;
+  line-height: 1.0;
+  text-transform: uppercase;
+  text-shadow: none;
+  padding-bottom: 0;
+  position: relative;
+}
+
+/* gold line under h1 – removed */
+.team-header h1::after { display: none; }
+
+.team-header-rule { display: none; }
+
+.team-subtitle { display: none; }
+
+/* ===============================
+   GRID + BIG WHITE PANEL
+================================ */
+
+.team-cards {
+  position: relative;
+  display: grid;
+   grid-template-columns: repeat(3, minmax(320px, 1fr));
+
+  --team-gap: clamp(25px, 3vw, 60px);
+  gap: var(--team-gap);
+
+  max-width: 1400px;
+  width: min(92%, 1400px);
+  margin: 0 auto;
+  padding: 60px 60px;
+  z-index: 1;
+}
+
+/* BIG white rounded box */
+.team-cards::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  border-radius: 60px;
+  box-shadow:
+    0 50px 120px rgba(0,0,0,.5),
+    0 0 0 1px rgba(201,169,74,.2),
+    0 0 60px rgba(201,169,74,.08);
+  z-index: -1;
+}
+
+/* GOLD DIVIDERS on white panel */
+@media (min-width: 1024px) {
+  .team-cards::after {
+    content: "";
+    position: absolute;
+    top: 60px;
+    bottom: 60px;
+    left: 60px;
+    right: 60px;
+    pointer-events: none;
+    z-index: 0;
+
+    background:
+      linear-gradient(to bottom, transparent 0%, rgba(201,169,74,.35) 18%, rgba(201,169,74,.75) 50%, rgba(201,169,74,.35) 82%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, rgba(201,169,74,.35) 18%, rgba(201,169,74,.75) 50%, rgba(201,169,74,.35) 82%, transparent 100%);
+
+    background-size: 2px 100%, 2px 100%;
+
+    background-position:
+      calc((100% - (2 * var(--team-gap))) / 3 + (var(--team-gap) / 2)) 0,
+      calc(2 * ((100% - (2 * var(--team-gap))) / 3) + (3 * var(--team-gap) / 2)) 0;
+
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 0 6px rgba(201,169,74,0.25));
+  }
+}
+
+/* ===============================
+   CARD – SMOOTH HOVER
+================================ */
+
+.person-card {
+  background: #1a1a1a;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+  box-shadow: 0 8px 30px rgba(0,0,0,.3);
+  animation: none !important;
+}
+
+.person-card:hover {
+  transform: translateY(-10px);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,.5),
+    0 0 0 1px rgba(201,169,74,.35);
+}
+
+/* white top line on hover (stands out against gold panel) */
+.person-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.person-card:hover::before {
+  opacity: 1;
+}
+
+/* ===============================
+   PHOTO
+================================ */
+
+.person-photo {
+  position: relative;
+  width: 100%;
+ aspect-ratio: 4 / 3;
+  height: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: linear-gradient(135deg, #222 0%, #2a2a2a 100%);
+  border-radius: 24px 24px 0 0;
+  overflow: hidden;
+}
+
+.person-card:nth-child(2) .person-photo { background: linear-gradient(135deg, #1e1e1e 0%, #282828 100%); }
+.person-card:nth-child(3) .person-photo { background: linear-gradient(135deg, #202020 0%, #2c2c2c 100%); }
+
+.person-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  clip-path: ellipse(100% 100% at 50% 0%);
+  transition: transform 0.5s ease;
+  display: block;
+}
+
+.person-card:hover .person-photo img {
+  transform: scale(1.06);
+  filter: brightness(1.04);
+}
+
+/* gold wave */
+.person-photo::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(180deg, transparent 0%, rgba(201,169,74,.22) 100%);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+/* ===============================
+   DETAILS
+================================ */
+
+.person-details {
+  padding: 28px 24px 32px;
+  text-align: center;
+  background: #1a1a1a;
+  border-radius: 0 0 24px 24px;
+  position: relative;
+}
+
+.person-details h3 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(22px, 2.2vw, 26px);
+  font-weight: 700;
+  color: #f0f0f0;
+  margin: 12px 0 8px;
+  letter-spacing: -.01em;
+}
+
+.description {
+  font-size: clamp(13.5px, 1.25vw, 14.5px);
+  line-height: 1.75;
+  color: #aaaaaa;
+  margin: 0 0 18px;
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #2a2a2a;
+  border: 1.5px solid #3a3a3a;
+  color: #e0e0e0;
+  text-decoration: none;
+  transition: .3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.person-details::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c9a94a, transparent);
+}
+
+
+
+.role {
+  font-size: clamp(10.5px, 1.05vw, 12px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: #c9a94a;
+  margin: 0 0 14px;
+  display: block;
+}
+
+
+
+/* ===============================
+   SOCIAL
+================================ */
+
+.social-icons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+
+
+.social-icons a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(201,169,74,0.1) 50%, transparent 100%);
+  opacity: 0;
+  transition: .3s ease;
+}
+
+.social-icons a:hover {
+  background: #c9a94a;
+  border-color: #c9a94a;
+  color: #fff;
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 8px 20px rgba(201,169,74,0.3);
+}
+
+.social-icons a:hover::before { opacity: 1; }
+
+.social-icons i {
+  font-size: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .team-cards { max-width: 1300px; padding: 50px; }
+  .person-photo { height: 280px; }
+  .person-details { padding: 24px 20px 28px; }
+}
+
+@media (min-width: 1600px) {
+  .team-cards {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 1023px) {
+  .team-cards { grid-template-columns: repeat(2, 1fr); gap: 30px; padding: 40px; }
+  .person-card:nth-child(3) { grid-column: 1 / -1; max-width: 420px; margin: 0 auto; }
+  .person-photo { height: 300px; }
+}
+
+@media (max-width: 768px) {
+  section.modern-team-section { padding: 0 20px 80px; }
+  .team-header { padding: 70px 20px 60px; }
+  .team-cards {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 420px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px 20px;
+  }
+  /* reset tablet 2-col override so all 3 cards are full-width */
+  .person-card:nth-child(3) {
+    grid-column: auto;
+    max-width: none;
+    margin: 0;
+  }
+  .person-photo {
+    aspect-ratio: unset;
+    height: 270px;
+  }
+  .person-photo img {
+    object-position: center 15%;
+  }
+  .person-details { padding: 24px 20px 28px; }
+}
+
+@media (max-width: 480px) {
+  .team-cards { padding: 20px 16px; }
+  .person-photo { height: 240px; }
+  .person-photo img { object-position: center 10%; }
+  .person-details { padding: 20px 16px 24px; }
+}

@@ -1,4 +1,9 @@
-const API_BASE = "https://executive-driving-backend-b79y.onrender.com";
+export const API_BASE =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
+    ? "http://localhost:3001"
+    : "https://executive-driving-backend-b79y.onrender.com";
+
 export const API_CHAT = `${API_BASE}/chat`;        // matches app.post("/chat", ...)
 export const API_BOOK = `${API_BASE}/book`;
    // change to /book if your backend uses /book
