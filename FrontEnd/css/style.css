@@ -2818,7 +2818,7 @@ section:not(.events-section) {
 
   /* Hero section scaling */
   .hero-section {
-    min-height: 90vh;
+    min-height: 100vh;
     /* stop cutting video on small screens */
   }
 
