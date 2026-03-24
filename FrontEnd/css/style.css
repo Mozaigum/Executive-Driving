@@ -3672,3 +3672,32 @@ a:hover .footer-icon {
   color: #888;
   font-size: 12px;
 }
+/* ── Alcohol service option ── */
+.alcohol-field {
+  margin-top: 4px;
+}
+
+.alcohol-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.alcohol-label .checkbox-custom {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.alcohol-sub {
+  display: block;
+  font-size: 12px;
+  opacity: 0.6;
+  font-weight: 400;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+.pac-container {
+  z-index: 999999 !important;
+  position: fixed !important;
+}

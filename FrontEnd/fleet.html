@@ -106,7 +106,7 @@
           <p class="vehicle-type">Premium SUV</p>
           <h2 class="vehicle-name">Lincoln Navigator L</h2>
           <p class="vehicle-variant">White/Black</p>
-          <p class="vehicle-desc">Our black Label Lincoln Navigator embodies understated elegance, perfect for corporate transfers, airport service, and executive transportation. The extended wheelbase delivers exceptional legroom and comfort for up to 7 passengers.</p>
+          <p class="vehicle-desc">Our black Label Lincoln Navigator embodies understated elegance, perfect for corporate transfers, airport service, and executive transportation. The extended wheelbase delivers exceptional legroom and comfort for up to 6 passengers.</p>
           <div class="vehicle-specs">
             <div class="spec-item"><div class="spec-icon"><i class="ri-group-line"></i></div><div><div class="spec-text">6 Passengers</div><div class="spec-label">Maximum capacity</div></div></div>
             <div class="spec-item"><div class="spec-icon"><i class="ri-suitcase-line"></i></div><div><div class="spec-text">4 Large Bags</div><div class="spec-label">Luggage space</div></div></div>
@@ -373,6 +373,17 @@
             <label class="field"><span>Time</span><input id="bookTime" name="time" type="time" required><small class="err" data-for="time"></small></label>
           </div>
           <label class="field"><span>Passengers</span><input name="passengers" type="number" min="1" max="7" step="1" required placeholder="1"><small class="err" data-for="passengers"></small></label>
+         <!-- Alcohol Service Option -->
+<div class="field alcohol-field">
+  <label class="checkbox-label alcohol-label">
+    <input type="checkbox" name="alcoholService" id="alcoholService">
+    <span class="checkbox-custom"></span>
+    <span>
+      <strong>Add alcohol service</strong>
+      <span class="alcohol-sub"> mention your preferences in notes below</span>
+    </span>
+  </label>
+</div>
           <div class="field checkbox-field">
             <label class="checkbox-label"><input type="checkbox" name="returnTrip" id="returnTrip"><span class="checkbox-custom"></span><span><strong>Book return trip</strong></span></label>
           </div>

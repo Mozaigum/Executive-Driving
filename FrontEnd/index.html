@@ -442,7 +442,22 @@
         <label class="field"><span>Date</span><input id="bookDate" name="date" type="date" required><small class="err" data-for="date"></small></label>
         <label class="field"><span>Time</span><input id="bookTime" name="time" type="time" required><small class="err" data-for="time"></small></label>
       </div>
+      
       <label class="field"><span>Passengers</span><input name="passengers" type="number" min="1" max="7" step="1" required placeholder="1"><small class="err" data-for="passengers"></small></label>
+    <div class="field checkbox-field">
+  <label class="checkbox-label"><input type="checkbox" name="returnTrip" id="returnTrip"><span class="checkbox-custom"></span><span><strong>Book return trip</strong></span></label>
+</div>
+      <!-- Alcohol Service Option -->
+<div class="field alcohol-field">
+  <label class="checkbox-label alcohol-label">
+    <input type="checkbox" name="alcoholService" id="alcoholService">
+    <span class="checkbox-custom"></span>
+    <span>
+      <strong>Add alcohol service</strong>
+      <span class="alcohol-sub">mention your preferences in notes below</span>
+    </span>
+  </label>
+</div>
       <label class="field"><span>Notes <span style="opacity:.6">(optional)</span></span><textarea name="notes" rows="4" placeholder="Special requests, notes..."></textarea></label>
       <div class="booking-actions">
         <button type="submit" class="btn-rr book">Submit Reservation</button>

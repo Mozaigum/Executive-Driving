@@ -131,28 +131,35 @@ const notifyCheckbox =
 const notifyMeValue = notifyCheckbox ? notifyCheckbox.checked : false;
 
 console.log('🔔 Notify Me:', notifyMeValue);
+const AlcoholCheckbox = form.querySelector('input[name="alcoholService"]');
+const alcoholValue = AlcoholCheckbox ? AlcoholCheckbox.checked : false;
 
+const payload = {
+  name: get('name')?.value.trim(),
+  phone: get('phone')?.value.trim(),
+  email: get('email')?.value.trim(),
+  pickup: get('pickup')?.value.trim(),
+  dropoff: get('dropoff')?.value.trim(),
+  date: get('date')?.value,
+  time: get('time')?.value,
+  passengers: get('passengers')?.value,
 
-    const payload = {
-      name: get('name')?.value.trim(),
-      phone: get('phone')?.value.trim(),
-      email: get('email')?.value.trim(),
-      pickup: get('pickup')?.value.trim(),
-      dropoff: get('dropoff')?.value.trim(),
-      date: get('date')?.value,
-      time: get('time')?.value,
-      passengers: get('passengers')?.value,
-     notes: (get('notes')?.value || '') + (returnTripValue ? '\n\n Customer wants a RETURN TRIP — please follow up to confirm return time.' : ''),
-      returnTrip: returnTripValue,
-      notifyMe: notifyMeValue   
-    };
+  alcoholService: alcoholValue,   // ✅ FIXED NAME
+
+  notes: (get('notes')?.value || '') 
+    + (returnTripValue ? '\n\n Customer wants a RETURN TRIP — please follow up...' : '')
+    + (alcoholValue ? '\n\n Customer requested ALCOHOL SERVICE.' : ''), // ✅ FIXED
+
+  returnTrip: returnTripValue,
+  notifyMe: notifyMeValue   
+};
 
     // DEBUG: Log full payload
     console.log('📦 Booking Payload:', payload);
     console.log('📦 returnTrip in payload:', payload.returnTrip);
 
    for (const [k, v] of Object.entries(payload)) {
-  if (['notes', 'returnTrip', 'notifyMe'].includes(k)) continue;
+  if (['notes', 'returnTrip', 'notifyMe','alcoholService'].includes(k)) continue;
   if (!v) { alert('Please fill all required fields.'); return; }
 }
 
@@ -774,10 +781,12 @@ function gluePacTo(input) {
   const place = () => {
     const pac = document.querySelector('.pac-container');
     if (!pac) return;
+    pac.style.zIndex = '999999';
+    pac.style.position = 'fixed';
     const r = input.getBoundingClientRect();
-    pac.style.setProperty('--pac-width', r.width + 'px'); // match input width
-    pac.style.left = Math.round(r.left + window.scrollX) + 'px';
-    pac.style.top = Math.round(r.bottom + window.scrollY) + 'px';
+    pac.style.width = r.width + 'px';
+    pac.style.left = Math.round(r.left) + 'px';
+    pac.style.top = Math.round(r.bottom) + 'px';
   };
 
   input.addEventListener('focus', () => requestAnimationFrame(place));
@@ -787,7 +796,6 @@ function gluePacTo(input) {
   window.addEventListener('scroll', place, { passive: true });
   document.addEventListener('scroll', place, { passive: true, capture: true });
 
-  // If Google re-creates the container, re-place it
   new MutationObserver(() => {
     const pac = document.querySelector('.pac-container');
     if (pac && document.activeElement === input) place();
