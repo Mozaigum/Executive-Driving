@@ -3701,3 +3701,9 @@ a:hover .footer-icon {
   z-index: 999999 !important;
   position: fixed !important;
 }
+/* Prevent zoom on input focus on mobile */
+#booking-form input,
+#booking-form textarea,
+#booking-form select {
+  font-size: 16px !important;
+}
