@@ -148,7 +148,7 @@ const payload = {
 
   notes: (get('notes')?.value || '') 
     + (returnTripValue ? '\n\n Customer wants a RETURN TRIP — please follow up...' : '')
-    + (alcoholValue ? '\n\n Customer requested ALCOHOL SERVICE.' : ''), // ✅ FIXED
+    + (alcoholValue ? '\n\n Customer requested LIQUOR SERVICE.' : ''), // ✅ FIXED
 
   returnTrip: returnTripValue,
   notifyMe: notifyMeValue   
