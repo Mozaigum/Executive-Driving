@@ -685,7 +685,7 @@ const BOOK_FROM = process.env.BOOKING_EMAIL_FROM || process.env.SMTP_USER;
 // Around line 600 - the renderBookingEmail function
 // ============================================
 
-function renderBookingEmail({ name, phone, email, pickup, dropoff, date, time, passengers, luggage, notes, escalationNote, returnTrip }) {
+function renderBookingEmail({ name, phone, email, pickup, dropoff, date, time, passengers, luggage, notes, escalationNote, returnTrip, alcoholService }) {
   const esc = (s = "-") =>
     String(s).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
   const br = (s = "") => esc(s).replace(/\n/g, "<br>");
@@ -700,6 +700,14 @@ function renderBookingEmail({ name, phone, email, pickup, dropoff, date, time, p
     </tr>
   ` : '';
 
+const alcoholRow = alcoholService ? `
+  <tr style="background: #f0f9ff;">
+    <td style="padding:8px 6px;"><b> Alcohol Service:</b></td>
+    <td style="padding:8px 6px; color:#1a6b3a; font-weight:700;">
+      ✓ YES — Client requested alcohol service. Check notes for preferences.
+    </td>
+  </tr>
+` : '';
   return `
   <div style="font-family:Inter,Arial,sans-serif; max-width:640px; margin:0 auto; border:1px solid #eee; border-radius:12px; overflow:hidden; box-shadow:0 4px 14px rgba(0,0,0,.12)">
     <div style="background:#0a0b0d; padding:20px; text-align:center;">
@@ -718,6 +726,7 @@ function renderBookingEmail({ name, phone, email, pickup, dropoff, date, time, p
         <tr><td style="padding:6px 0;"><b>Passengers:</b></td><td>${esc(passengers)}</td></tr>
         <tr><td style="padding:6px 0;"><b>Luggage:</b></td><td>${luggage === true ? "Yes" : luggage === false ? "No" : "-"}</td></tr>
         ${returnTripRow}
+        ${alcoholRow}
       </table>
 
       ${notes ? `
@@ -867,7 +876,10 @@ app.post("/book", async (req, res) => {
     }
 
     // --- Existing booking branch (your old code stays the same) ---
-    const { name, phone, email, pickup, dropoff, date, time, passengers, notes, returnTrip } = req.body || {};
+    const { name, phone, email, pickup, dropoff, date, time, passengers, notes, returnTrip,alcoholService,AlcoholService } = req.body || {};
+    const finalAlcohol = alcoholService ?? AlcoholService ?? false;
+    console.log(' FULL BODY:', req.body);   // ← ADD THIS
+console.log(' finalAlcohol:', finalAlcohol);  // ← ADD THIS
     const required = ["name", "phone", "email", "pickup", "dropoff", "date", "time", "passengers"];
     const missing = required.filter((k) => !req.body?.[k]);
     if (missing.length) return res.status(400).json({ ok: false, error: `Missing: ${missing.join(", ")}` });
@@ -890,7 +902,8 @@ app.post("/book", async (req, res) => {
         passengers,
         luggage: null,
         notes,
-        returnTrip
+        returnTrip,
+        alcoholService: finalAlcohol 
       }),
       attachments: [{ filename: "logo-email.png", path: LOGO_PATH, cid: "logo" }],
     });
