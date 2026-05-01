@@ -418,6 +418,12 @@ function renderEventCard(e) {
     category === "family" ? "Family" : "";
 
   const trending = isTrending(eventId);
+  const bookingParams = new URLSearchParams({
+    event: e.name || "",
+    venue: e.venue || "",
+    date: d ? d.toLocaleDateString("en-CA") : "",
+    eventTime: timeDisplay || ""
+  });
   
   let socialProof = "";
   if (trending) {
@@ -459,7 +465,7 @@ function renderEventCard(e) {
 
       <div class="event-right">
         <a class="book-btn"
-          href="#"
+          href="booking.html?${bookingParams.toString()}"
           data-event="${e.name}"
           data-venue="${e.venue}"
           data-date="${d ? d.toLocaleDateString("en-CA") : "TBA"}"
@@ -812,29 +818,15 @@ document.addEventListener("click", (e) => {
   const btn = e.target.closest(".book-btn");
   if (!btn) return;
 
-  e.preventDefault();
-
-  const dropoffInput = document.querySelector('#booking-form input[name="dropoff"]');
-  if (dropoffInput && btn.dataset.venue) {
-    dropoffInput.value = btn.dataset.venue;
-  }
-
-  const dateInput = document.querySelector('#booking-form input[name="date"]');
-  if (dateInput && btn.dataset.date && btn.dataset.date !== "TBA") {
-    dateInput.value = btn.dataset.date;
-  }
-
-  const notesText = `Event: ${btn.dataset.event}
-Venue: ${btn.dataset.venue}
-Event Start Time: ${btn.dataset.time}`;
-
-  const notesField = document.querySelector('#booking-form textarea[name="notes"]');
-  if (notesField) notesField.value = notesText;
-
-  const overlay = document.getElementById("booking-overlay");
-  if (overlay) {
-    overlay.classList.add("open");
-    overlay.setAttribute("aria-hidden", "false");
+  if (!btn.getAttribute("href") || btn.getAttribute("href") === "#") {
+    e.preventDefault();
+    const params = new URLSearchParams({
+      event: btn.dataset.event || "",
+      venue: btn.dataset.venue || "",
+      date: btn.dataset.date !== "TBA" ? (btn.dataset.date || "") : "",
+      eventTime: btn.dataset.time || ""
+    });
+    window.location.href = `booking.html?${params.toString()}`;
   }
 });
 

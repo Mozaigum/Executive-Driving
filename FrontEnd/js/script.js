@@ -1,4 +1,4 @@
-import { postJSON, API_CHAT, API_BOOK, API_BASE } from './api.js';
+import { postJSON, API_BOOK, API_BASE } from './api.js';
 
 
 
@@ -404,239 +404,24 @@ if (payload.notifyMe === true) {
 })();
 
 
-/* ---------- Booking modal ---------- */
+/* ---------- Booking links ---------- */
 (() => {
-  const { $, $$, on, lockScroll, unlockScroll } = window.__XD__;
-  const overlay = $('#booking-overlay');
-  if (!overlay) return;
-
-  const modal = overlay.querySelector('.booking-modal');
-  const openers = $$('[data-book-open]');
-  const closeBtn = overlay.querySelector('[data-book-close]');
-  const menu = $('#menu-overlay');
-  const burger = document.querySelector('.rr-burger-btn');
-
-  const setState = (open) => {
-  overlay.classList.toggle('open', open);
-  overlay.setAttribute('aria-hidden', String(!open));
-  if (open) {
-    lockScroll(); // ✅ freeze background while modal is open
-  } else {
-    if (!menu?.classList.contains('open')) unlockScroll(); // ✅ restore if menu isn’t open
-  }
-};
-
-
-  const open = (e) => {
-    e?.preventDefault();
-    if (menu?.classList.contains('open')) {
-      menu.classList.remove('open');
-      menu.setAttribute('aria-hidden', 'true');
-      burger?.setAttribute('aria-expanded', 'false');
+  const { $$, on } = window.__XD__;
+  $$('[data-book-open]').forEach((link) => {
+    if (!link.getAttribute('href') || link.getAttribute('href') === '#') {
+      link.setAttribute('href', 'booking.html');
     }
-    setState(true);
-  };
-
-  const close = () => setState(false);
-
-  openers.forEach(btn => on(btn, 'click', open));
-  on(closeBtn, 'click', close);
-  on(overlay, 'click', (e) => { if (!modal.contains(e.target)) close(); });
-  on(document, 'keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('open')) close(); });
-})();
-
-/* ---------- Concierge chat---------- */
-(() => {
-  const chatEl = document.querySelector('.xd-chat');
-  const toggle = document.querySelector('.xd-chat__toggle');
-  const closeBtn = document.querySelector('.xd-chat__close');
-  const bodyEl = document.getElementById('xdChatBody');
-  const inputEl = document.getElementById('xdChatInput');
-  const sendBtn = document.getElementById('xdChatSend');
-
-  if (!chatEl || !toggle || !closeBtn || !bodyEl || !inputEl || !sendBtn) return;
-
-
-  const MAX_TURNS = 20;
-  const convo = [];
-
-  const AVATAR_AI = './images/batman.png';
-  const AVATAR_USER = './images/userdp.png';
-
-
-  const escapeHTML = (s = '') =>
-    s.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
-
-  const bubble = (text, who = 'user') => {
-    const esc = escapeHTML(String(text));
-    const withBreaks = esc.replace(/\n/g, '<br>');
-    const linkified = withBreaks.replace(
-      /\bhttps?:\/\/[^\s<]+/g,
-      (m) => `<a href="${m}" target="_blank" rel="noopener noreferrer">${m}</a>`
-    );
-
-    const row = document.createElement('div');
-    row.className = `xd-chat__row xd-chat__row--${who}`;
-    row.innerHTML = `
-        <img class="xd-chat__avatar" src="${who === 'user' ? AVATAR_USER : AVATAR_AI}" alt="">
-        <div class="xd-chat__msg">${linkified}</div>
-      `;
-    bodyEl.appendChild(row);
-    bodyEl.scrollTop = bodyEl.scrollHeight;
-  };
-
-  const typing = (() => {
-    let el = null;
-    return {
-      show() {
-        if (el) return;
-        el = document.createElement('div');
-        el.className = 'xd-chat__row xd-chat__row--ai';
-        el.innerHTML = `
-            <img class="xd-chat__avatar" src="${AVATAR_AI}" alt="">
-            <div class="xd-chat__msg xd-chat__typing"><span></span><span></span><span></span></div>
-          `;
-        bodyEl.appendChild(el);
-        bodyEl.scrollTop = bodyEl.scrollHeight;
-      },
-      hide() {
-        if (!el) return;
-        el.remove();
-        el = null;
+    on(link, 'click', () => {
+      const menu = document.getElementById('menu-overlay');
+      if (menu?.classList.contains('open')) {
+        menu.classList.remove('open');
+        menu.setAttribute('aria-hidden', 'true');
+        document.querySelector('.rr-burger-btn')?.setAttribute('aria-expanded', 'false');
       }
-    };
-  })();
-
-  // --- Friendly airport-aware rephraser ---
-  const isAirportish = (s = '') => /\bairport\b/i.test(s) || /\bY[A-Z]{2}\b/.test(s) || /\b(t\d|terminal)\b/i.test(s);
-
-  function adjustReply(raw, lastUserMessage = '') {
-    const txt = String(raw).trim();
-    const last = String(lastUserMessage).trim();
-
-    // If server asks for "exact address" but user typed an airport (name or IATA), soften it.
-    if (/❌\s*Could you share the \*\*exact (pickup|drop-off) address/i.test(txt) && isAirportish(last)) {
-      if (/drop-off/i.test(txt)) {
-        // They gave an airport as drop-off
-        return `Got it ${last.replace(/\*+/g, '')} . What date do you need the service?`;
-      }
-      if (/pickup/i.test(txt)) {
-        // They gave an airport as pickup
-        return `Got it pickup at ${last.replace(/\*+/g, '')} . Where are we dropping you off?`;
-      }
-    }
-
-    // If server generic-asks "Where are we dropping you off?" right after an airport pickup, keep natural flow.
-    if (/Thanks\.\s*Where are we dropping you off\?/i.test(txt) && isAirportish(last)) {
-      return txt; // already good
-    }
-
-    return txt; // default untouched
-  }
-
-  const GREET_KEY = 'xd_greeted';
-  const greet = () => {
-    bubble("Hi, I’m NAVI. Welcome to Executive Driving how can I help you today?", "ai");
-  };
-
-
-  const openChat = () => {
-    chatEl.hidden = false;   // make it renderable first
-
-    // let the browser paint 1 frame, THEN add .open
-    requestAnimationFrame(() => {
-      chatEl.classList.add('open');   // now transition runs
     });
-
-    inputEl.placeholder = "Book Your Chauffeur • FAQs";
-    inputEl.focus();
-    greet();
-  };
-
-
-  const closeChat = () => {
-    chatEl.classList.remove('open');  // triggers smooth close
-    setTimeout(() => {
-      chatEl.hidden = true;           // only hide after animation finishes
-    }, 350); // match your CSS transition time
-  };
-
-
-
-
-  let sending = false;
-
-  async function send() {
-    if (sending) return;
-
-    const text = inputEl.value.trim();
-    if (!text) return;
-
-    const lastUserMessage = text; // keep for airport-aware rephrase
-    sending = true;
-
-    inputEl.value = '';
-    bubble(text, 'user');
-
-    convo.push({ role: 'user', content: text });
-    if (convo.length > MAX_TURNS) convo.splice(0, convo.length - MAX_TURNS);
-
-    typing.show();
-    sendBtn.disabled = true;
-    try {
-      const data = await postJSON(API_CHAT, { messages: convo });
-
-
-
-      const rawReply = (data && typeof data.reply === 'string') ? data.reply : 'Sorry, I didn’t catch that.';
-      const reply = adjustReply(rawReply, lastUserMessage);
-
-      typing.hide();
-      sendBtn.disabled = false;
-      sending = false;
-
-      convo.push({ role: 'assistant', content: reply });
-      bubble(reply, 'ai');
-      // Respect server "done" flag: lock the chat so it doesn't keep looping
-      // Respect server "done" flag: don’t lock chat, just continue
-      if (data.done) {
-        return; // let backend reply stand, keep chat open
-      }
-
-
-
-      if (convo.length > MAX_TURNS) convo.splice(0, convo.length - MAX_TURNS);
-    } catch {
-      typing.hide();
-      sendBtn.disabled = false;
-      sending = false;
-      bubble('Connection error. Please try again.', 'ai');
-    }
-  }
-
-  // --- Event wiring ---
-  toggle.addEventListener('click', openChat);
-  closeBtn.addEventListener('click', closeChat);
-
-  document.addEventListener('keydown', (e) => {
-    if (!chatEl.hidden && e.key === 'Escape') closeChat();
   });
-
-  inputEl.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault(); // stop reload
-      send();
-    }
-  });
-
-  sendBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    send();
-  });
-  sendBtn.setAttribute('type', 'button');
-  toggle.setAttribute('type', 'button');
-
 })();
+
 // Partners: update the shared infobar with company name + short description
 (() => {
   const section = document.querySelector('.partners-marquee');

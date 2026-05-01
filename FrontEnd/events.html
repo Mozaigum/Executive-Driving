@@ -369,47 +369,7 @@
         </div>
       </div>
     </div>
- <div id="booking-overlay" class="booking-overlay centered" aria-hidden="true">
-      <div class="booking-modal center" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
-        <button class="booking-close" type="button" aria-label="Close" data-book-close>✕</button>
-        <header class="booking-header"><h2 id="bookingTitle">Reserve Your Ride</h2></header>
-        <form id="booking-form" class="booking-form" novalidate>
-          <div class="booking-grid two">
-            <label class="field"><span>Full Name</span><input name="name" type="text" autocomplete="name" required placeholder="John Smith"><small class="err" data-for="name"></small></label>
-            <label class="field"><span>Phone</span><input name="phone" type="tel" autocomplete="tel" required placeholder="(825) 973 9800"><small class="err" data-for="phone"></small></label>
-          </div>
-          <label class="field"><span>Email</span><input name="email" type="email" autocomplete="email" required placeholder="you@example.com"><small class="err" data-for="email"></small></label>
-          <label class="field"><span>Pickup Location</span><input id="pickup" name="pickup" type="text" required placeholder="1400 John St, Edmonton"><small class="err" data-for="pickup"></small></label>
-          <label class="field"><span>Drop Off Location</span><input id="dropoff" name="dropoff" type="text" required placeholder="YEG Terminal"><small class="err" data-for="dropoff"></small></label>
-          <div class="booking-grid two">
-            <label class="field"><span>Date</span><input id="bookDate" name="date" type="date" required><small class="err" data-for="date"></small></label>
-            <label class="field"><span>Time</span><input id="bookTime" name="time" type="time" required><small class="err" data-for="time"></small></label>
-          </div>
-          <label class="field"><span>Passengers</span><input name="passengers" type="number" min="1" max="7" step="1" required placeholder="select the number of passengers"><small class="err" data-for="passengers"></small></label>
-          <!-- Alcohol Service Option -->
-<div class="field alcohol-field">
-  <label class="checkbox-label alcohol-label">
-    <input type="checkbox" name="alcoholService" id="alcoholService">
-    <span class="checkbox-custom"></span>
-    <span>
-      <strong>Add liquor service</strong>
-      <span class="alcohol-sub"> mention your preferences in notes below</span>
-    </span>
-  </label>
-</div>
-          <div class="field checkbox-field">
-            <label class="checkbox-label"><input type="checkbox" name="returnTrip" id="returnTrip"><span class="checkbox-custom"></span><span><strong>Book return trip</strong></span></label>
-          </div>
-          <label class="field"><span>Notes <span style="opacity:.6">(optional)</span></span><textarea name="notes" id="booking-notes" rows="4" placeholder="Special requests, notes..."></textarea></label>
-          <div class="booking-actions">
-            <button type="submit" class="btn-rr book">Submit Reservation</button>
-            <p class="booking-note"><i class="ri-lock-2-line"></i> Your details are handled under our Privacy Policy.</p>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Thank You -->
+ <!-- Thank You -->
     <div id="thanks-overlay" aria-hidden="true">
       <div class="ty-panel" role="dialog">
         <button class="modal-close">✕</button>
@@ -420,25 +380,7 @@
         </div>
       </div>
     </div>
-
-
-    <!-- NAVI -->
-    <button class="xd-chat__toggle" type="button">Ask NAVI?</button>
-    <div class="xd-chat" hidden>
-      <header class="xd-chat__hdr">
-        <div class="xd-chat__brand"><img class="xd-chat__avatar" src="images/batman.png" alt="NAVI"><div><strong>NAVI — Executive Driving Concierge</strong></div></div>
-        <button class="xd-chat__close">✕</button>
-      </header>
-      <main class="xd-chat__body" id="xdChatBody" role="log" aria-live="polite"></main>
-      <footer class="xd-chat__ftr">
-        <input id="xdChatInput" class="xd-chat__input" type="text" placeholder="Type your message…">
-        <button id="xdChatSend" class="xd-chat__send" type="button">➤</button>
-      </footer>
-    </div>
-
-
-
-  <script type="module" defer src="js/script.js"></script>
+<script type="module" defer src="js/script.js"></script>
   <script type="module" defer src="js/event.js"></script>
   <script>
     window.initAutocomplete = function () {
