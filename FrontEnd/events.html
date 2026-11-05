@@ -31,7 +31,8 @@
     /* Events page: page is visible immediately (no intro splash) */
     body.intro-done #page { opacity: 1; }
   </style>
-  <link rel="stylesheet" href="css/mobile-navigation.css?v=7">
+  <link rel="stylesheet" href="css/mobile-navigation.css?v=8">
+  <script src="js/site-icons.js?v=1" defer></script>
   <script src="js/mobile-navigation.js?v=3" defer></script>
   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64">
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
@@ -220,7 +221,7 @@
           <h2 id="concierge-title" class="concierge-title">Dedicated <span>Client Care</span></h2>
           <p class="concierge-lead">Discreet support any time. We coordinate flights, routes, and special requests with quiet precision,  then confirm in minutes.</p>
           <ul class="concierge-bullets">
-            <li><i class="ri-time-line"></i>Average reply time: <b>about ten to fifteen minutes</b></li>
+            <li><i class="ri-time-line" aria-hidden="true"></i><span class="reply-time-copy">Average reply time: <strong>10–15 minutes</strong></span></li>
             <li><i class="ri-shield-check-line"></i>Encrypted communications</li>
             <li><i class="ri-roadster-line"></i>Executive fleet availability</li>
           </ul>
@@ -438,7 +439,7 @@
     </div>
   <script defer src="js/places-fields.js?v=3"></script>
   <script defer src="js/field-pickers.js?v=2"></script>
-<script type="module" defer src="js/script.js?v=controls5"></script>
+  <script type="module" defer src="js/script.js?v=mobile-fixes10"></script>
   <script type="module" defer src="js/event.js?v=13"></script>
   <script defer src="js/custom-event.js?v=2"></script>
   <script defer src="js/event-name-search.js?v=2"></script>

@@ -347,29 +347,7 @@ if (payload.notifyMe === true) {
 })();
 
 
-/* ---------- Hero sizing + safe autoplay ---------- */
-(() => {
-  const { $, on } = window.__XD__;
-  const hero = $('.hero-section');
-  const video = $('.hero-video');
-  if (!hero) return;
-
-  const setH = () => {
-    const h = window.innerHeight;
-    hero.style.minHeight = `${h}px`;
-    hero.style.height = `${h}px`;
-  };
-
-  setH();
-  on(window, 'resize', setH, { passive: true });
-  on(window, 'orientationchange', setH);
-
-  if (video) {
-    video.muted = true;
-    video.playsInline = true;
-    video.play().catch(() => { });
-  }
-})();
+/* Hero dimensions follow CSS viewport units without resize-driven jumps. */
 
 /* ---------- Terms / Privacy modals (FIXED) ----------
    OLD version was incorrectly re-opening #menu-overlay on both open AND close.

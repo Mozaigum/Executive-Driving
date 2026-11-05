@@ -1,4 +1,18 @@
 .mobile-bottom-nav { display: none; }
+.site-svg-icon { display: inline-flex !important; align-items: center; justify-content: center; font-style: normal; vertical-align: middle; }
+.site-svg-icon::before, .site-svg-icon::after { content: none !important; }
+.site-svg-icon svg { display: block; width: 1em; height: 1em; flex-shrink: 0; }
+.review-star-icon { display: inline-block; width: 1em; height: 1em; vertical-align: -.1em; }
+@media (max-width: 960px) {
+  html { height: auto !important; min-height: 100%; overflow-x: clip !important; overflow-y: auto !important; }
+  body { height: auto !important; min-height: 100%; overflow-x: clip !important; overflow-y: visible !important; }
+  body.modal-open, body.no-scroll { overflow: hidden !important; }
+  #page { height: auto !important; overflow: visible !important; }
+  #contact .concierge-bullets li { display: flex !important; align-items: flex-start; gap: 12px; }
+  #contact .concierge-bullets li > i { flex: 0 0 20px; margin-top: 2px; }
+  #contact .concierge-bullets .reply-time-copy { min-width: 0; text-align: left; font-size: 13px; line-height: 1.65; }
+  #contact .reply-time-copy strong { font: inherit; font-weight: 500; }
+}
 body.booking-page #booking-form .btn-rr.book:hover,
 body.booking-page #booking-form .btn-rr.book:focus-visible { background: #eee9df !important; border-color: #ded8cc !important; color: #11110f !important; }
 .vehicle-availability-notice { display: grid; grid-template-columns: 20px minmax(0,1fr); gap: 12px; padding: 18px; margin: 0 0 4px; background: #f2efe8; border-left: 2px solid #a58955; color: #383a32; }
