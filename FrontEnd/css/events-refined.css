@@ -770,5 +770,35 @@ body.filters-open { overflow: auto; }
   .custom-event-panel .custom-event-form > .custom-event-venue { grid-column: auto; }
 }
 @media (max-width: 680px) {
-  .custom-event-panel .custom-event-form { grid-template-columns: 1fr; gap: 20px; }
+  .custom-event-panel#customEventPanel {
+    width: calc(100% - 32px);
+    max-width: calc(100% - 32px);
+    min-width: 0;
+    padding: 18px 12px;
+    box-sizing: border-box;
+  }
+  #customEventPanel .custom-event-heading { gap: 12px; margin-bottom: 18px; padding-bottom: 14px; }
+  #customEventPanel .custom-event-heading h2 { font-size: 22px; line-height: 1.2; }
+  #customEventPanel .custom-event-heading p { font-size: 12px; line-height: 1.6; }
+  .custom-event-panel#customEventPanel .custom-event-form {
+    width: 100%; min-width: 0; max-width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-rows: auto;
+    gap: 16px;
+  }
+  #customEventPanel .custom-event-form > label,
+  #customEventPanel .custom-event-form > .custom-event-name,
+  #customEventPanel .custom-event-form > .custom-event-venue { grid-column: 1; width: 100%; min-width: 0; max-width: 100%; gap: 6px; }
+  #customEventPanel .field-picker,
+  #customEventPanel .place-input-anchor,
+  #customEventPanel .event-name-search { width: 100%; min-width: 0; max-width: 100%; }
+  #customEventPanel .custom-event-form input {
+    display: block; width: 100%; min-width: 0; min-inline-size: 0; max-width: 100%;
+    height: 46px; min-height: 46px; padding: 10px 12px; border-radius: 2px;
+    box-sizing: border-box; font-size: 16px; line-height: 24px;
+  }
+  #customEventPanel input[type="date"], #customEventPanel input[type="time"] { -webkit-appearance: none; appearance: none; text-align: left; }
+  #customEventPanel input::-webkit-date-and-time-value { min-width: 0; text-align: left; }
+  #customEventPanel .custom-event-form > button { width: 100%; min-width: 0; min-height: 46px; margin-top: 2px; }
 }
