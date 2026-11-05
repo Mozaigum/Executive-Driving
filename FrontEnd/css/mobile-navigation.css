@@ -30,7 +30,7 @@ html.about-route::view-transition-new(root) { animation: about-in .3s cubic-bezi
 @keyframes about-in { from { transform: translateX(-100%); } to { transform: none; } }
 @keyframes about-out { to { transform: translateX(15%); opacity: .5; } }
 .service-select { position: relative; width: 100%; }
-.service-select .service-select-native { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; padding: 0; border: 0; }
+.service-select .service-select-native { display: none !important; visibility: hidden !important; pointer-events: none !important; }
 .service-select-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 48px; padding: 12px 28px 12px 0; border: 0; border-bottom: 1px solid #b8b4ab; border-radius: 0; background: transparent; color: #282922; font: 400 16px/1.5 'Inter', Arial, sans-serif; text-align: left; cursor: pointer; }
 .service-select-trigger::after { content: ''; width: 7px; height: 7px; border-right: 1.5px solid #75654b; border-bottom: 1.5px solid #75654b; transform: rotate(45deg); margin: -4px 4px 0 14px; }
 .service-select-trigger:focus-visible { outline: 2px solid #997b46; outline-offset: 3px; }

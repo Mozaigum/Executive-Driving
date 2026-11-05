@@ -25,10 +25,10 @@
   <link rel="stylesheet" href="css/page-heroes.css?v=4">
 
   <meta name="api-base" content="https://executive-driving-backend-b79y.onrender.com">
-  <link rel="stylesheet" href="css/mobile-navigation.css?v=9">
+  <link rel="stylesheet" href="css/mobile-navigation.css?v=10">
   <script src="js/site-icons.js?v=1" defer></script>
   <script src="js/mobile-navigation.js?v=3" defer></script>
-  <script src="js/service-select.js?v=1" defer></script>
+  <script src="js/service-select.js?v=2" defer></script>
   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64">
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -118,7 +118,7 @@
             <i class="ri-information-line" aria-hidden="true"></i>
             <div><strong>Vehicle preference: <span id="requestedVehicleName"></span></strong><p>Your preferred vehicle is subject to availability and is not guaranteed. If it is unavailable, we may offer a comparable vehicle. We’ll confirm the vehicle with your quote before you proceed.</p></div>
           </aside>
-          <label class="field"><span>Service</span><select name="serviceType" id="serviceType" required><option value="">Choose a service</option><option value="Airport transfer">Airport transfer</option><option value="Corporate travel">Corporate travel</option><option value="Hourly / as-directed">Hourly / as-directed</option><option value="Event or occasion">Event or occasion</option><option value="Group transportation">Group transportation</option></select></label>
+          <div class="field"><span id="serviceTypeLabel">Service</span><select name="serviceType" id="serviceType" aria-labelledby="serviceTypeLabel" required><option value="">Choose a service</option><option value="Airport transfer">Airport transfer</option><option value="Corporate travel">Corporate travel</option><option value="Hourly / as-directed">Hourly / as-directed</option><option value="Event or occasion">Event or occasion</option><option value="Group transportation">Group transportation</option></select></div>
           <div class="booking-grid two">
             <label class="field"><span>Full Name</span><input name="name" type="text" autocomplete="name" required placeholder="John Smith"><small class="err" data-for="name"></small></label>
             <label class="field"><span>Phone</span><input name="phone" type="tel" autocomplete="tel" required placeholder="(825) 973 9800"><small class="err" data-for="phone"></small></label>

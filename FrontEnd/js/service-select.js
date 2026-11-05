@@ -13,6 +13,7 @@
   trigger.className = 'service-select-trigger';
   trigger.setAttribute('role', 'combobox');
   trigger.setAttribute('aria-label', 'Service');
+  trigger.setAttribute('aria-labelledby', 'serviceTypeLabel');
   trigger.setAttribute('aria-expanded', 'false');
   trigger.setAttribute('aria-controls', 'service-options');
   trigger.setAttribute('aria-haspopup', 'listbox');
@@ -31,7 +32,7 @@
     row.id = `service-option-${index}`;
     row.setAttribute('role', 'option');
     row.textContent = option.text;
-    row.addEventListener('click', () => choose(index));
+    row.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); choose(index); });
     list.append(row);
     return row;
   });
@@ -49,7 +50,7 @@
   function close() { list.hidden = true; trigger.setAttribute('aria-expanded', 'false'); trigger.removeAttribute('aria-activedescendant'); }
   function open() { list.hidden = false; trigger.setAttribute('aria-expanded', 'true'); highlight(Math.max(0, options.findIndex(option => option.value === select.value))); }
   function choose(index) { select.value = options[index].value; select.dispatchEvent(new Event('input', { bubbles: true })); select.dispatchEvent(new Event('change', { bubbles: true })); close(); trigger.focus(); }
-  trigger.addEventListener('click', event => { event.preventDefault(); list.hidden ? open() : close(); });
+  trigger.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); list.hidden ? open() : close(); });
   trigger.addEventListener('keydown', event => {
     if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
       event.preventDefault();
@@ -64,5 +65,8 @@
   window.addEventListener('pageshow', sync);
   select.addEventListener('invalid', event => { event.preventDefault(); trigger.setAttribute('aria-invalid', 'true'); trigger.focus(); });
   select.form?.addEventListener('reset', () => setTimeout(sync, 0));
+  // The select retains submission and validation, without a native touch target.
+  select.hidden = true;
+  select.inert = true;
   sync();
 })();
