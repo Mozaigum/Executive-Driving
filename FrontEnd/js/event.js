@@ -4,6 +4,8 @@
 
 let ALL_EVENTS = [];
 let DISPLAYED_EVENTS = [];
+const EVENTS_PER_PAGE = 12;
+let currentEventPage = 1;
 
 let ACTIVE_FILTERS = {
   city: "all",
@@ -273,11 +275,12 @@ function updateFilterCounts() {
 
 // ===== RENDER EVENTS =====
 
-function renderEvents(append = false) {
+function renderEvents(resetPage = true) {
   if (document.body.classList.contains('filters-open')) return;
   const ACTIVE_FILTERS = APPLIED_FILTERS;
   const list = document.getElementById("events-list");
   if (!list) return;
+  if (resetPage) currentEventPage = 1;
 
   let filtered = ALL_EVENTS;
   
@@ -357,14 +360,41 @@ function renderEvents(append = false) {
 
   filtered = [...futureDatedEvents, ...nightlifeEvents];
 
-  console.log(`✅ Showing all ${filtered.length} events`);
-
   if (filtered.length === 0) {
     list.innerHTML = '<p class="events-empty" role="status">No events match these filters. Open Filters to try another date or location.</p>';
+    renderEventPagination(0);
     return;
   }
 
-  list.innerHTML = filtered.map(e => renderEventCard(e)).join("");
+  const pageCount = Math.ceil(filtered.length / EVENTS_PER_PAGE);
+  currentEventPage = Math.min(currentEventPage, pageCount);
+  const start = (currentEventPage - 1) * EVENTS_PER_PAGE;
+  list.innerHTML = filtered.slice(start, start + EVENTS_PER_PAGE).map(e => renderEventCard(e)).join("");
+  renderEventPagination(filtered.length);
+}
+
+function renderEventPagination(total) {
+  const nav = document.getElementById('eventPagination');
+  const summary = document.getElementById('eventPageSummary');
+  if (!nav || !summary) return;
+  const pageCount = Math.ceil(total / EVENTS_PER_PAGE);
+  summary.textContent = total ? `${(currentEventPage - 1) * EVENTS_PER_PAGE + 1}–${Math.min(currentEventPage * EVENTS_PER_PAGE, total)} of ${total} events` : '';
+  nav.hidden = pageCount <= 1;
+  if (pageCount <= 1) { nav.innerHTML = ''; return; }
+  const start = Math.max(1, Math.min(currentEventPage - 2, pageCount - 4));
+  const end = Math.min(pageCount, start + 4);
+  const button = (page, text, label, disabled = false) => `<button type="button" data-page="${page}" aria-label="${label}"${disabled ? ' disabled' : ''}${page === currentEventPage && /^\d+$/.test(text) ? ' aria-current="page"' : ''}>${text}</button>`;
+  let html = button(currentEventPage - 1, '‹', 'Previous page', currentEventPage === 1);
+  if (start > 1) html += button(1, '1', 'Page 1') + (start > 2 ? '<span aria-hidden="true">…</span>' : '');
+  for (let page = start; page <= end; page++) html += button(page, String(page), `Page ${page}`);
+  if (end < pageCount) html += (end < pageCount - 1 ? '<span aria-hidden="true">…</span>' : '') + button(pageCount, String(pageCount), `Page ${pageCount}`);
+  nav.innerHTML = html + button(currentEventPage + 1, '›', 'Next page', currentEventPage === pageCount);
+  nav.querySelectorAll('button').forEach(control => control.addEventListener('click', () => {
+    currentEventPage = Math.max(1, Math.min(pageCount, Number(control.dataset.page)));
+    renderEvents(false);
+    nav.querySelector('[aria-current="page"]')?.focus({ preventScroll: true });
+    document.getElementById('events-list')?.scrollIntoView({ block: 'start', behavior: 'auto' });
+  }));
 }
 
 function getEventImage(event, category) {
@@ -377,7 +407,7 @@ function getEventImage(event, category) {
     || images.find(image => image.ratio === '16_9')
     || images.sort((a, b) => (Number(b.width) || 0) - (Number(a.width) || 0))[0];
   const url = selected ? selected.url.trim().replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;') : fallback;
-  return { url, fallback, description: selected ? 'Event promotional image' : 'AI illustration of an event venue' };
+  return { url, fallback, description: selected ? 'Event promotional image' : 'Event venue illustration' };
 }
 
 // Remote promotional images can disappear after the feed has loaded.
@@ -386,7 +416,7 @@ document.addEventListener('error', event => {
   if (!img?.matches?.('.event-media img[data-fallback]')) return;
   const fallback = img.dataset.fallback;
   img.removeAttribute('data-fallback');
-  img.alt = 'AI illustration of an event venue';
+  img.alt = 'Event venue illustration';
   img.src = fallback;
 }, true);
 

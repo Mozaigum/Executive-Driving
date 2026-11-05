@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="css/premium.css?v=9">
   <link rel="stylesheet" href="css/mobile-menu.css?v=3">
   <link rel="stylesheet" href="css/form-controls.css?v=2">
-  <link rel="stylesheet" href="css/events-refined.css?v=23">
+  <link rel="stylesheet" href="css/events-refined.css?v=24">
   <link rel="stylesheet" href="css/page-heroes.css?v=4">
 
   <meta name="api-base" content="https://executive-driving-backend-b79y.onrender.com">
@@ -202,6 +202,10 @@
             </div>
           </aside>
           <div id="events-list" class="events-list"></div>
+          <div class="event-pagination-footer">
+            <p id="eventPageSummary" class="event-page-summary" role="status" aria-live="polite"></p>
+            <nav id="eventPagination" class="event-pagination" aria-label="Event pages" hidden></nav>
+          </div>
         </div>
       </div>
     </section>
@@ -432,7 +436,7 @@
   <script defer src="js/places-fields.js?v=3"></script>
   <script defer src="js/field-pickers.js?v=2"></script>
 <script type="module" defer src="js/script.js?v=controls5"></script>
-  <script type="module" defer src="js/event.js?v=12"></script>
+  <script type="module" defer src="js/event.js?v=13"></script>
   <script defer src="js/custom-event.js?v=2"></script>
   <script defer src="js/event-name-search.js?v=2"></script>
   <script>
