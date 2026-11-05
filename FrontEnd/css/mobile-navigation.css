@@ -55,6 +55,19 @@ html.about-route::view-transition-new(root) { animation: about-in .3s cubic-bezi
   #contact .card-title { font-size: 21px; line-height: 1.4; text-align: left; }
   #contact .field-group { display: grid; grid-template-columns: 1fr !important; gap: 20px; }
   #contact .lux-form { gap: 20px; }
+  #contact #client-form,
+  #contact #client-form .field-group,
+  #contact #client-form .lux-field,
+  #contact #client-form .lux-field > span,
+  #contact #client-form input,
+  #contact #client-form textarea,
+  #contact #client-form .micro-note { text-align: left !important; }
+  #contact #client-form .lux-field { align-items: stretch; width: 100%; min-width: 0; }
+  #contact #client-form input,
+  #contact #client-form textarea { width: 100%; min-width: 0; max-width: 100%; }
+  #contact #client-form input::-webkit-date-and-time-value { text-align: left !important; margin: 0; }
+  #contact #client-form input::-webkit-datetime-edit { text-align: left; padding: 0; }
+  #contact #client-form button[type="submit"] { justify-content: center; text-align: center !important; }
   #contact .lux-field textarea { min-height: 105px; height: 105px; }
   .booking-page-main { padding: 32px 18px 40px !important; }
   .booking-page-card { padding: 26px 20px !important; height: auto !important; min-height: 0 !important; }
