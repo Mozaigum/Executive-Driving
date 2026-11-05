@@ -682,7 +682,7 @@ body.filters-open { overflow: auto; }
 
 /* Matching expanded panels, distinguished by white and warm beige. */
 #events-list { scroll-margin-top: 125px; }
-.event-pagination-footer { width: 100%; padding: 30px 0 6px; display: grid; justify-items: center; gap: 16px; }
+.event-pagination-footer { width: 100%; padding: 20px 16px; display: grid; justify-items: center; gap: 12px; }
 .event-page-summary { margin: 0; color: #777166; font: 400 12px/1.5 "Inter", sans-serif; }
 .event-pagination { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
 .event-pagination[hidden] { display: none; }
