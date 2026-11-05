@@ -744,7 +744,16 @@ body.filters-open { overflow: auto; }
   margin: 0;
   align-self: start;
   justify-content: center;
+  text-align: center;
 }
+#customEventPanel .custom-event-heading,
+#customEventPanel .custom-event-form,
+#customEventPanel .custom-event-form label,
+#customEventPanel .custom-event-form label > span,
+#customEventPanel .custom-event-form input,
+#customEventPanel .custom-event-form small { text-align: left !important; }
+#customEventPanel input::-webkit-date-and-time-value { text-align: left !important; margin: 0; }
+#customEventPanel input::-webkit-datetime-edit { text-align: left; padding: 0; }
 @media (max-width: 680px) {
   .custom-event-panel#customEventPanel { padding: 20px; }
 }
