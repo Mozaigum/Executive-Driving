@@ -743,6 +743,7 @@ body.filters-open { overflow: auto; }
 .custom-event-panel#customEventPanel .custom-event-form > button {
   margin: 0;
   align-self: start;
+  justify-content: center;
 }
 @media (max-width: 680px) {
   .custom-event-panel#customEventPanel { padding: 20px; }

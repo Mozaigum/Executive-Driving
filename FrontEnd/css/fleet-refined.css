@@ -56,7 +56,7 @@ body.fleet-page { background: #f2efe8; color: #151512; }
 .fleet-page .spec-item { min-width: 0; padding: 0 !important; }
 .fleet-page .spec-text { color: #35322c; font: 500 12px/1.5 var(--ed-sans); }
 .fleet-page .spec-label { margin-top: 3px; color: #817b70; font: 400 10px/1.5 var(--ed-sans); }
-.fleet-quote-link { display: inline-flex; justify-content: space-between; align-items: center; gap: 28px; min-height: 44px; color: #191815; border-bottom: 1px solid #aa8b52; text-decoration: none; font: 600 12px/1.4 var(--ed-sans); }
+.fleet-quote-link { display: inline-flex; justify-content: center; align-items: center; gap: 28px; min-height: 44px; color: #191815; border-bottom: 1px solid #aa8b52; text-decoration: none; font: 600 12px/1.4 var(--ed-sans); }
 .fleet-quote-link span { font-size: 20px; font-weight: 400; }
 .fleet-page .slider-arrow { background: rgba(255,255,255,.95); border: 0; color: #222; border-radius: 50%; box-shadow: none; }
 .fleet-page .slider-arrow:hover { background: #fff; color: #997b46; }
