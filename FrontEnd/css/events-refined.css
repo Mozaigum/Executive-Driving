@@ -686,15 +686,15 @@ body.filters-open { overflow: auto; }
 .event-page-summary { margin: 0; color: #777166; font: 400 12px/1.5 "Inter", sans-serif; }
 .event-pagination { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
 .event-pagination[hidden] { display: none; }
-.event-pagination button { display: grid; place-items: center; min-width: 44px; min-height: 44px; padding: 8px; border: 1px solid #d9d3c8; border-radius: 2px; background: transparent; color: #37382f; font: 500 13px/1 "Inter", sans-serif; cursor: pointer; }
-.event-pagination button:hover { background: #e7e1d6; }
-.event-pagination button[aria-current="page"] { background: #181914; border-color: #181914; color: #f5f2eb; }
+.event-pagination button { display: grid; place-items: center; width: 44px; height: 44px; min-width: 44px; min-height: 44px; padding: 8px; border: 1px solid #c8b59a; border-radius: 50%; background: transparent; color: #86643e; font: 500 13px/1 "Inter", sans-serif; cursor: pointer; }
+.event-pagination button:hover { background: #e9dfd0; }
+.event-pagination button[aria-current="page"] { background: #86643e; border-color: #86643e; color: #fffaf1; }
 .event-pagination button:disabled { opacity: .3; cursor: default; }
 .event-pagination button:focus-visible { outline: 2px solid #997b46; outline-offset: 3px; }
 .event-pagination > span { padding: 0 2px; color: #777166; }
 @media (max-width: 480px) {
   .event-pagination { gap: 3px; }
-  .event-pagination button { min-width: 36px; min-height: 44px; padding: 6px; }
+  .event-pagination button { width: 40px; height: 40px; min-width: 40px; min-height: 40px; padding: 6px; }
 }
 .custom-event-panel {
   display: grid;
