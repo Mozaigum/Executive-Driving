@@ -5,7 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
-  <title>Executive Driving</title>
+  <title>Private Chauffeur Service | Executive Driving Alberta</title>
+  <meta name="description" content="Private airport, corporate and event chauffeur service in Edmonton and Grande Prairie. Request a quote from Executive Driving.">
 
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -19,8 +20,14 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=fix3">
   <link rel="stylesheet" href="css/nav.css?v=4">
+  <link rel="stylesheet" href="css/premium.css?v=9">
+  <link rel="stylesheet" href="css/mobile-menu.css?v=3">
+  <link rel="stylesheet" href="css/form-controls.css?v=2">
+  <link rel="stylesheet" href="css/home-refined.css?v=7">
 
   <meta name="api-base" content="https://executive-driving-backend-b79y.onrender.com">
+  <link rel="stylesheet" href="css/mobile-navigation.css?v=6">
+  <script src="js/mobile-navigation.js?v=3" defer></script>
 </head>
 
 <body>
@@ -29,7 +36,7 @@
   <div id="page">
 
     <!-- ═══════════════════════════════════════
-         HEADER — Horizontal nav (desktop)
+         HEADER,  Horizontal nav (desktop)
                   Burger slide-out (mobile)
     ═══════════════════════════════════════ -->
    <header id="site-header" class="at-top">
@@ -50,7 +57,7 @@
     </button>
 
     <!-- Logo -->
-    <a href="index.html" class="logo-link" aria-label="Executive Driving — Home">
+    <a href="index.html" class="logo-link" aria-label="Executive Driving,  Home">
       <img src="images/logo.WebP" alt="Executive Driving" class="logo-img">
     </a>
 <a href="tel:+18259739800" class="mobile-phone">
@@ -98,69 +105,81 @@
     <!-- ── end header ── -->
 
     <section id="hero" class="hero-section">
-      <video class="hero-video" autoplay muted loop playsinline poster="images/about-us.jpg" aria-hidden="true">
-        <source src="video/hero.mp4" type="video/mp4" />
-      </video>
-      <img src="images/heropicz.png" alt="Executive Driving — luxury SUV and private jet" class="hero-image-mobile">
+      <img src="images/ai/home-hero-hotel-wide-v2.jpg" alt="" aria-hidden="true" class="hero-still" fetchpriority="high" decoding="async">
       <div class="hero-overlay" aria-hidden="true"></div>
       <div class="hero-content">
-        <p class="hero-tag">Private Chauffeur • Edmonton &amp; Grande Prairie</p>
-        <h1>Crafted Journeys, Elevated Comfort.</h1>
-        <h2>On time, discreet, and super comfortable transfers for airport and executive travel.</h2>
-
-        <div class="features-row" role="list">
-          <div class="feature" role="listitem">
-            <p>Modern, New &amp;<br>Clean Fleet</p>
-          </div>
-          <div class="feature" role="listitem">
-            <p>Discreet, Professional &amp;<br>Trained Drivers</p>
-          </div>
-          <div class="feature" role="listitem">
-            <p>Client Satisfaction<br>Guaranteed</p>
-          </div>
+        <p class="hero-tag">Private chauffeur service · Alberta</p>
+        <h1>Travel,<br class="ed-mobile-break"> considered.</h1>
+        <h2>Airport, corporate and private transportation in Edmonton and Grande Prairie. Quietly arranged, professionally driven.</h2>
+        <div class="hero-actions">
+          <a class="ed-button" href="booking.html">Request a quote</a>
+          <a class="ed-button ed-button--quiet" href="fleet.html">View the fleet</a>
         </div>
+      </div>
+        <div class="hero-proof" aria-label="Service highlights">
+          <span>Available 24 hours</span>
+          <span>Commercially insured</span>
+          <span>Flight monitoring</span>
+          <span>Edmonton · Grande Prairie</span>
+        </div>
+      <svg class="hero-bottom-curve" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 0 Q500 170 1000 0 V100 H0Z"/></svg>
+    </section>
 
-        <a class="btn" href="booking.html" data-book-open>Book Now</a>
+    <section id="services" class="ed-service-index" aria-labelledby="service-index-title">
+      <div class="ed-section-intro">
+        <div>
+          <h2 id="service-index-title">The right arrangement for every journey.</h2>
+        </div>
+        <p>Airport arrivals, busy workdays and special occasions. We plan the right vehicle and pickup around your schedule, group and luggage.</p>
+      </div>
+      <div class="ed-services">
+        <a class="ed-service-row" href="booking.html?service=airport">
+          <span class="ed-service-image"><img src="images/ai/service-airport-morning.jpg" alt="AI illustration of an airport transfer in morning daylight" loading="lazy"></span>
+          <span class="ed-number">01</span><span class="ed-service-copy"><h3>Airport transfers</h3><p>Flight-aware pickup planning, luggage space and a chauffeur ready when you arrive.</p></span><i class="ri-arrow-right-line" aria-hidden="true"></i>
+        </a>
+        <a class="ed-service-row" href="booking.html?service=corporate">
+          <span class="ed-service-image"><img src="images/ai/white-lincoln.jpg" alt="AI illustration of a white executive SUV for corporate transportation" loading="lazy"></span>
+          <span class="ed-number">02</span><span class="ed-service-copy"><h3>Corporate travel</h3><p>Private transportation for executives, visiting clients and multi-stop schedules.</p></span><i class="ri-arrow-right-line" aria-hidden="true"></i>
+        </a>
+        <a class="ed-service-row" href="booking.html?service=hourly">
+          <span class="ed-service-image"><img src="images/ai/transit.jpg" alt="Executive passenger van for hourly service" loading="lazy"></span>
+          <span class="ed-number">03</span><span class="ed-service-copy"><h3>Hourly &amp; as-directed</h3><p>A chauffeur and vehicle at your disposal when the day needs room to change.</p></span><i class="ri-arrow-right-line" aria-hidden="true"></i>
+        </a>
+        <a class="ed-service-row" href="events.html">
+          <span class="ed-service-image"><img src="images/ai/service-evening-arrival.jpg" alt="AI illustration of an evening arrival at a theatre" loading="lazy"></span>
+          <span class="ed-number">04</span><span class="ed-service-copy"><h3>Events &amp; occasions</h3><p>Coordinated arrivals for weddings, dinners, concerts and special occasions.</p></span><i class="ri-arrow-right-line" aria-hidden="true"></i>
+        </a>
       </div>
     </section>
 
-    <section id="about-us" class="about-min">
-      <div class="about-min__content">
-        <h2 class="about-min__title" data-reveal style="--delay:.05s">A Quiet Standard in Executive Travel</h2>
-        <p class="about-min__lead" data-reveal style="--delay:.15s">
-          Executive Driving sets the benchmark for discreet, polished airport and executive transfers
-          across Edmonton and Grande Prairie. Every journey is curated with precision and subtle elegance.
-        </p>
-        <p class="about-min__lead" data-reveal style="--delay:.25s">
-          Our fleet is immaculately maintained, and our chauffeurs are trained to anticipate your needs
-          with seamless professionalism. We deliver more than transport we deliver assurance, comfort, and quiet prestige.
-        </p>
-        <div class="about-min__features" role="list">
-          <article class="about-min__item" data-reveal style="--delay:.35s" role="listitem">
-            <i class="ri-time-line about-min__icon" aria-hidden="true"></i>
-            <strong>Punctual, Always</strong>
-            <span class="about-min__muted">Proactive flight tracking. Timely, calm arrivals.</span>
-          </article>
-          <article class="about-min__item" data-reveal style="--delay:.45s" role="listitem">
-            <i class="ri-roadster-line about-min__icon" aria-hidden="true"></i>
-            <strong>Refined Comfort</strong>
-            <span class="about-min__muted">Quiet cabins, climate control, effortless ride.</span>
-          </article>
-          <article class="about-min__item" data-reveal style="--delay:.55s" role="listitem">
-            <i class="ri-shield-check-line about-min__icon" aria-hidden="true"></i>
-            <strong>Discreet Conduct</strong>
-            <span class="about-min__muted">Professional, confidential, attention off you.</span>
-          </article>
-          <article class="about-min__item" data-reveal style="--delay:.65s" role="listitem">
-            <i class="ri-calendar-2-line about-min__icon" aria-hidden="true"></i>
-            <strong>24/7 Concierge</strong>
-            <span class="about-min__muted">Flexible scheduling. Swift confirmations.</span>
-          </article>
+    <section class="ed-fleet-preview" aria-label="Featured fleet">
+      <div class="ed-fleet-inner">
+      <div class="ed-fleet-heading"><h2>Space for your plans.</h2><p>Private SUVs and spacious passenger vans, prepared for your journey.</p></div>
+      <div class="ed-fleet-grid">
+      <article class="ed-fleet-feature">
+        <div class="ed-fleet-image"><img src="images/fleet7.jpeg" alt="White Lincoln Navigator L at the airport" loading="lazy"></div>
+        <div class="ed-fleet-copy"><p class="ed-kicker">Signature SUV</p><h2>Lincoln Navigator L</h2><p>A quiet, spacious ride for airport arrivals and business travel.</p><div class="ed-specs"><div><strong>6</strong><span>Passengers</span></div><div><strong>4</strong><span>Large bags</span></div><div><strong>Wi-Fi</strong><span>Included</span></div></div><a class="ed-text-link" href="fleet.html">Explore the fleet</a></div>
+      </article>
+      <article class="ed-fleet-feature">
+        <div class="ed-fleet-image"><img src="images/ai/home-transit-detail.jpg" alt="AI illustration of the Ford Transit passenger entrance by a lakeside lodge" loading="lazy"></div>
+        <div class="ed-fleet-copy"><p class="ed-kicker">Group travel</p><h2>Ford Transit AWD</h2><p>Room to travel together, from wedding parties to corporate groups.</p><div class="ed-specs"><div><strong>14</strong><span>Passengers</span></div><div><strong>AWD</strong><span>All seasons</span></div><div><strong>Wi-Fi</strong><span>Included</span></div></div><a class="ed-text-link" href="booking.html?vehicle=transit">Request a quote</a></div>
+      </article>
+      </div></div>
+    </section>
+
+    <section class="ed-process" aria-labelledby="process-title">
+      <div class="ed-process-inner">
+        <div class="ed-process-head"><h2 id="process-title">A simple request.<br>A carefully planned ride.</h2><br>  <p class="ed-kicker">How it works</p></div>
+        <div class="ed-steps">
+          <article class="ed-step"><span class="ed-number">01</span><h3>Share the journey</h3><p>Tell us where, when and who is travelling.</p></article>
+          <article class="ed-step"><span class="ed-number">02</span><h3>Review your quote</h3><p>We confirm availability, vehicle and the complete rate in writing.</p></article>
+          <article class="ed-step"><span class="ed-number">03</span><h3>We prepare</h3><p>Your route, timing and special requests are checked before dispatch.</p></article>
+          <article class="ed-step"><span class="ed-number">04</span><h3>Your chauffeur arrives</h3><p>On time, prepared and reachable when the journey begins.</p></article>
         </div>
       </div>
     </section>
 <!-- Reviews -->
-<section class="reviews-section" aria-labelledby="reviews-title">
+<section class="reviews-section" aria-labelledby="reviews-title"><p class="ed-kicker"></p>
   <h2 id="reviews-title">What Our Clients Say</h2>
   <p class="reviews-subtitle">Real reviews from real passengers</p>
   <div class="reviews-stars-summary">
@@ -172,7 +191,7 @@
     <div class="review-card">
       <div class="review-card__quote">"</div>
       <div class="review-card__stars">★★★★★</div>
-      <p class="review-card__text">Professional &amp; incredible! Loved my driver Karlee — she is an absolute gem. Used this company for my ride home after my wedding. Me &amp; my hubby loved this service and will be back again.</p>
+      <p class="review-card__text">Professional &amp; incredible! Loved my driver Karlee,  she is an absolute gem. Used this company for my ride home after my wedding. Me &amp; my hubby loved this service and will be back again.</p>
       <div class="review-card__author">
         <div class="review-card__avatar">D</div>
         <div>
@@ -185,7 +204,7 @@
     <div class="review-card">
       <div class="review-card__quote">"</div>
       <div class="review-card__stars">★★★★★</div>
-      <p class="review-card__text">My wife and I used Executive for a night out at Dome Dining and it was perfect. Gez turned around immediately after a mix-up on our end, never made us feel bad, and got us there on time. The vehicle was so clean and comfortable — will forever recommend!</p>
+      <p class="review-card__text">My wife and I used Executive for a night out at Dome Dining and it was perfect. Gez turned around immediately after a mix-up on our end, never made us feel bad, and got us there on time. The vehicle was so clean and comfortable,  will forever recommend!</p>
       <div class="review-card__author">
         <div class="review-card__avatar">C</div>
         <div>
@@ -198,7 +217,7 @@
     <div class="review-card">
       <div class="review-card__quote">"</div>
       <div class="review-card__stars">★★★★★</div>
-      <p class="review-card__text">I have used Executive a few times and each time it has been a great experience. Always professional and on time — I'll continue to use them for all my driving needs. Highly recommend, 10 out of 10. Keep up the great work!</p>
+      <p class="review-card__text">I have used Executive a few times and each time it has been a great experience. Always professional and on time,  I'll continue to use them for all my driving needs. Highly recommend, 10 out of 10. Keep up the great work!</p>
       <div class="review-card__author">
         <div class="review-card__avatar">K</div>
         <div>
@@ -222,9 +241,9 @@
           <h2 id="concierge-title" class="concierge-title">Dedicated <span>Client Care</span></h2>
           <p class="concierge-lead">Discreet support any time. We coordinate flights, routes, and special requests with quiet precision, then confirm in minutes.</p>
           <ul class="concierge-bullets">
-            <li><i class="ri-time-line" aria-hidden="true"></i>Average reply time: <b>about ten to fifteen minutes</b></li>
-            <li><i class="ri-shield-check-line" aria-hidden="true"></i>Encrypted communications</li>
-            <li><i class="ri-roadster-line" aria-hidden="true"></i>Executive fleet availability</li>
+            <li><i class="ri-time-line" aria-hidden="true"></i>24-hour reservation support</li>
+            <li><i class="ri-flight-takeoff-line" aria-hidden="true"></i>Flight and route coordination</li>
+            <li><i class="ri-file-check-line" aria-hidden="true"></i>Written availability and rate confirmation</li>
           </ul>
           <div class="contact-chips">
             <a class="chip" href="tel:+18259739800"><i class="ri-phone-line"></i><span>825.973.9800</span></a>
@@ -259,20 +278,20 @@
         <div class="marquee" aria-hidden="true">
           <div class="marquee__track">
             <div class="partner" tabindex="0" data-name="TARA Energy Services" data-desc="Compression, processing and energy solutions across Western Canada."><img src="images/logo1.jpeg" alt="TARA Energy Services logo"></div>
-            <div class="partner" tabindex="0" data-name="Browns Socialhouse" data-desc="Restaurant &amp; bar — casual dining and group events."><img src="images/logo2.jpeg" alt="Browns Socialhouse logo"></div>
-            <div class="partner" tabindex="0" data-name="Explore Edmonton" data-desc="Tourism &amp; events — welcoming travelers and delegates."><img src="images/logo3.jpeg" alt="Explore Edmonton logo"></div>
+            <div class="partner" tabindex="0" data-name="Browns Socialhouse" data-desc="Restaurant &amp; bar,  casual dining and group events."><img src="images/logo2.jpeg" alt="Browns Socialhouse logo"></div>
+            <div class="partner" tabindex="0" data-name="Explore Edmonton" data-desc="Tourism &amp; events,  welcoming travelers and delegates."><img src="images/logo3.jpeg" alt="Explore Edmonton logo"></div>
             <div class="partner" tabindex="0" data-name="Edward's Factory Outlet" data-desc="Local retail partner for special promotions and gifting."><img src="images/logo4.jpeg" alt="Edward's Factory Outlet logo"></div>
             <div class="partner" tabindex="0" data-name="GP Chamber of Commerce" data-desc="Business community &amp; events support."><img src="images/logo5.jpeg" alt="GP Chamber of Commerce logo"></div>
             <div class="partner" tabindex="0" data-name="Y Drive Canada" data-desc="Local rideshare logistics &amp; event shuttles."><img src="images/logo6.jpeg" alt="Y Drive Canada logo"></div>
             <div class="partner" tabindex="0" data-name="TARA Energy Services" data-desc="Compression, processing and energy solutions across Western Canada."><img src="images/logo1.jpeg" alt="TARA Energy Services logo"></div>
-            <div class="partner" tabindex="0" data-name="Browns Socialhouse" data-desc="Restaurant &amp; bar — casual dining and group events."><img src="images/logo2.jpeg" alt="Browns Socialhouse logo"></div>
-            <div class="partner" tabindex="0" data-name="Explore Edmonton" data-desc="Tourism &amp; events — welcoming travelers and delegates."><img src="images/logo3.jpeg" alt="Explore Edmonton logo"></div>
+            <div class="partner" tabindex="0" data-name="Browns Socialhouse" data-desc="Restaurant &amp; bar,  casual dining and group events."><img src="images/logo2.jpeg" alt="Browns Socialhouse logo"></div>
+            <div class="partner" tabindex="0" data-name="Explore Edmonton" data-desc="Tourism &amp; events,  welcoming travelers and delegates."><img src="images/logo3.jpeg" alt="Explore Edmonton logo"></div>
             <div class="partner" tabindex="0" data-name="Edward's Factory Outlet" data-desc="Local retail partner for special promotions and gifting."><img src="images/logo4.jpeg" alt="Edward's Factory Outlet logo"></div>
             <div class="partner" tabindex="0" data-name="GP Chamber of Commerce" data-desc="Business community &amp; events support."><img src="images/logo5.jpeg" alt="GP Chamber of Commerce logo"></div>
             <div class="partner" tabindex="0" data-name="Y Drive Canada" data-desc="Local rideshare logistics &amp; event shuttles."><img src="images/logo6.jpeg" alt="Y Drive Canada logo"></div>
           </div>
         </div>
-        <div class="partner-infobar" aria-live="polite"><strong>Our Trusted Partners</strong><span>— hover over a logo to learn more.</span></div>
+        <div class="partner-infobar" aria-live="polite"><strong>Our Trusted Partners</strong><span>,  hover over a logo to learn more.</span></div>
       </div>
     </section>
 
@@ -280,7 +299,7 @@
     <footer class="site-footer">
       <div class="container footer-grid">
         <div class="footer-brand">
-          <img src="./images/logo.WebP" alt="Executive Driving" class="footer-logo">
+          <a class="footer-logo-link" href="index.html" aria-label="Executive Driving home"><img class="footer-logo" src="images/logo.WebP" alt="Executive Driving" width="220" height="140" loading="lazy"></a>
           <p class="footer-tag">Private Chauffeur • Edmonton &amp; Grande Prairie</p>
         </div>
         <div class="footer-connect">
@@ -305,30 +324,35 @@
           <li><img src="images/intract.jpeg" alt="Interac/e-Transfer" loading="lazy"></li>
         </ul>
       </div>
-      <div class="container footer-copy"><p>© 2025 Executive Driving. All Rights Reserved.</p></div>
+      <div class="container footer-copy">
+        <nav class="footer-policies" aria-label="Legal"><button type="button" class="js-open-terms">Terms &amp; Conditions</button><button type="button" class="js-open-privacy">Privacy Policy</button></nav>
+        <p>© 2026 Executive Driving. All Rights Reserved.</p>
+        <p class="footer-design-credit">Website by <span>Northern Studios</span> / <a href="mailto:Zee.northernStudios@gmail.com">Zee.northernStudios@gmail.com</a></p>
+      </div>
     </footer>
 
     <!-- ═══════════════════════════════════
          MOBILE SLIDE-OUT MENU OVERLAY
     ═══════════════════════════════════ -->
-    <div id="menu-overlay" class="menu-overlay" aria-hidden="true" role="dialog">
-      <div class="menu-panel">
-        <button class="menu-close" aria-label="Close menu">✕</button>
-        <nav class="overlay-nav" role="menu">
-          <a href="index.html"         class="overlay-link active" role="menuitem">Home</a>
-          <a href="events.html"        class="overlay-link"        role="menuitem">Events</a>
-          <a href="fleet.html"         class="overlay-link"        role="menuitem">Fleet</a>
-          <a href="team.html"          class="overlay-link"        role="menuitem">Our Team</a>
-          <a href="index.html#contact" class="overlay-link"        role="menuitem">Contact</a>
-
-          <span class="overlay-nav-label">Policy</span>
-          <a href="#" class="overlay-link sub-item js-open-terms"   role="menuitem"><i class="ri-file-text-line"></i>Terms &amp; Conditions</a>
-          <a href="#" class="overlay-link sub-item js-open-privacy" role="menuitem"><i class="ri-shield-check-line"></i>Privacy Policy</a>
-
-          <a href="tel:+18259739800" class="overlay-link phone-pill" role="menuitem">
-            <i class="ri-phone-line"></i>825.973.9800
-          </a>
+    <div id="menu-overlay" class="menu-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Main navigation" inert>
+      <div class="mobile-menu-sheet">
+        <div class="mobile-menu-top">
+          <a href="index.html" aria-label="Executive Driving home"><img src="images/logo.WebP" alt="Executive Driving" width="108" height="72"></a>
+          <button class="menu-close" aria-label="Close menu"><span>Close</span><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
+        </div>
+        <nav class="mobile-menu-pages" aria-label="Pages">
+          <p class="mobile-menu-caption">Explore</p>
+          <a class="mobile-menu-link is-current" href="index.html" aria-current="page"><span>Home</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="fleet.html"><span>Fleet</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="events.html"><span>Events</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="team.html"><span>Our team</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="index.html#contact"><span>Contact</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
         </nav>
+        <div class="mobile-menu-bottom">
+          <a class="mobile-menu-quote" href="booking.html">Request a quote <span aria-hidden="true">&nearr;</span></a>
+          <div class="mobile-menu-contact"><span>Let us take care of the drive.</span><a href="tel:+18259739800">825.973.9800</a></div>
+          <div class="mobile-menu-legal"><a href="#" class="js-open-terms">Terms &amp; Conditions</a><a href="#" class="js-open-privacy">Privacy Policy</a></div>
+        </div>
       </div>
     </div>
 
@@ -337,7 +361,7 @@
       <div class="modal-panel" role="document">
         <button class="modal-close" aria-label="Close Terms">✕</button>
         <div class="modal-content">
-          <h3>Executive Driving Services — Terms &amp; Conditions (Alberta)</h3>
+          <h3>Executive Driving Services,  Terms &amp; Conditions (Alberta)</h3>
           <p><em>Last updated: 11/25/2025</em></p>
           <hr>
           <h4>1) Who we are &amp; Scope</h4>
@@ -394,7 +418,7 @@
       <div class="modal-panel" role="document">
         <button class="modal-close" aria-label="Close Privacy">✕</button>
         <div class="modal-content">
-          <h3>Executive Driving Services — Privacy Policy (Alberta PIPA)</h3>
+          <h3>Executive Driving Services,  Privacy Policy (Alberta PIPA)</h3>
           <p><em>Last updated: 11/25/2025</em></p>
           <hr>
           <h4>1) About this Policy</h4>
@@ -454,7 +478,9 @@
     </div>
 </div><!-- /#page -->
 
-  <script type="module" defer src="js/script.js"></script>
+  <script defer src="js/places-fields.js?v=3"></script>
+  <script defer src="js/field-pickers.js?v=2"></script>
+  <script type="module" defer src="js/script.js?v=controls5"></script>
   <script>
     window.initAutocomplete = function () {
       var tries = 0;

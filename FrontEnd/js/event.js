@@ -1,5 +1,5 @@
 // ======================================
-// EVENTS PAGE — ENHANCED WITH MODERN DROPDOWNS
+// EVENTS PAGE,  ENHANCED WITH MODERN DROPDOWNS
 // ======================================
 
 let ALL_EVENTS = [];
@@ -13,8 +13,8 @@ let ACTIVE_FILTERS = {
   specificDate: null // NEW: for calendar picker
 };
 
-// Mock trending data
-let TRENDING_EVENTS = new Set();
+// Controls edit a draft; the event list changes only after Apply.
+let APPLIED_FILTERS = structuredClone(ACTIVE_FILTERS);
 
 // ===== HELPER FUNCTIONS =====
 
@@ -97,12 +97,6 @@ function getEventCategory(event) {
   }
   
   return "other";
-}
-
-// ===== SOCIAL PROOF FUNCTIONS =====
-
-function isTrending(eventId) {
-  return TRENDING_EVENTS.has(eventId) || Math.random() > 0.7;
 }
 
 // ===== CALENDAR EXPORT FUNCTION =====
@@ -193,9 +187,8 @@ function showToast(message) {
 // ===== API CONFIG =====
 
 const API_BASE =
-  location.hostname === "localhost" || location.hostname === "127.0.0.1"
-    ? "http://localhost:3001"
-    : "https://executive-driving-backend-b79y.onrender.com";
+  document.querySelector('meta[name="api-base"]')?.content?.replace(/\/$/, "") ||
+  "https://executive-driving-backend-b79y.onrender.com";
 
 // ===== LOAD EVENTS FROM API =====
 
@@ -216,6 +209,8 @@ async function loadEvents() {
     
     const data = await res.json();
     ALL_EVENTS = data.events || [];
+    window.__xdTicketmasterEvents = ALL_EVENTS.slice();
+    document.dispatchEvent(new Event('ticketmaster-events-loaded'));
     console.log("✅ Ticketmaster events:", ALL_EVENTS.length);
 
     try {
@@ -237,7 +232,13 @@ async function loadEvents() {
     renderEvents();
   } catch (err) {
     console.error("❌ Error:", err);
-    list.innerHTML = '<p style="text-align: center; padding: 60px 20px; opacity: .6;">Unable to load events.</p>';
+    list.innerHTML = `
+      <div class="events-fallback">
+        <span class="events-fallback__label">Event planning</span>
+        <h2>The calendar is taking a moment.</h2>
+        <p>Tell us which concert, game or private event you are attending. We can still arrange the vehicle, pickup and return journey directly.</p>
+        <a href="booking.html?service=event" class="ed-button">Plan event transportation</a>
+      </div>`;
   }
 }
 
@@ -273,6 +274,8 @@ function updateFilterCounts() {
 // ===== RENDER EVENTS =====
 
 function renderEvents(append = false) {
+  if (document.body.classList.contains('filters-open')) return;
+  const ACTIVE_FILTERS = APPLIED_FILTERS;
   const list = document.getElementById("events-list");
   if (!list) return;
 
@@ -357,12 +360,35 @@ function renderEvents(append = false) {
   console.log(`✅ Showing all ${filtered.length} events`);
 
   if (filtered.length === 0) {
-    list.innerHTML = '<p style="text-align: center; padding: 60px 20px; opacity: .6; color: rgba(255,255,255,.6);">No events match your filters.</p>';
+    list.innerHTML = '<p class="events-empty" role="status">No events match these filters. Open Filters to try another date or location.</p>';
     return;
   }
 
   list.innerHTML = filtered.map(e => renderEventCard(e)).join("");
 }
+
+function getEventImage(event, category) {
+  const fallback = category === 'sports' ? 'images/ai/hockey.jpg'
+    : (category === 'concert' || category === 'arts') ? 'images/ai/concert.jpg'
+    : 'images/ai/skyline.jpg';
+  const images = Array.isArray(event.images) ? event.images.filter(image =>
+    image && typeof image.url === 'string' && /^https?:\/\//i.test(image.url.trim())) : [];
+  const selected = images.find(image => image.ratio === '16_9' && image.width >= 640)
+    || images.find(image => image.ratio === '16_9')
+    || images.sort((a, b) => (Number(b.width) || 0) - (Number(a.width) || 0))[0];
+  const url = selected ? selected.url.trim().replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;') : fallback;
+  return { url, fallback, description: selected ? 'Event promotional image' : 'AI illustration of an event venue' };
+}
+
+// Remote promotional images can disappear after the feed has loaded.
+document.addEventListener('error', event => {
+  const img = event.target;
+  if (!img?.matches?.('.event-media img[data-fallback]')) return;
+  const fallback = img.dataset.fallback;
+  img.removeAttribute('data-fallback');
+  img.alt = 'AI illustration of an event venue';
+  img.src = fallback;
+}, true);
 
 function renderEventCard(e) {
   const isNightlife = e.type === "nightlife";
@@ -386,9 +412,17 @@ function renderEventCard(e) {
 
     dateDisplay = d.toLocaleDateString("en-CA", {
       weekday: "short",
-      month: "long",
+      month: "short",
       day: "numeric",
     });
+
+    if (e.time && !Number.isNaN(d.getTime())) {
+      timeDisplay = d.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: d.getMinutes() ? '2-digit' : undefined,
+        hour12: true
+      });
+    }
 
     dateBox = `
       <div class="event-date">
@@ -401,14 +435,7 @@ function renderEventCard(e) {
     timeDisplay = e.hours || "See venue for hours";
   }
 
-  let imageUrl = "/FrontEnd/images/Fallback-events.jpg";
-  if (Array.isArray(e.images) && e.images.length) {
-    const img =
-      e.images.find(i => i.ratio === "16_9" && i.width >= 640) ||
-      e.images.find(i => i.ratio === "16_9") ||
-      e.images[0];
-    if (img?.url) imageUrl = img.url;
-  }
+  const eventImage = getEventImage(e, category);
 
   const categoryLabel = 
     category === "concert" ? "Music" :
@@ -417,23 +444,18 @@ function renderEventCard(e) {
     category === "arts" ? "Arts" :
     category === "family" ? "Family" : "";
 
-  const trending = isTrending(eventId);
   const bookingParams = new URLSearchParams({
     event: e.name || "",
     venue: e.venue || "",
     date: d ? d.toLocaleDateString("en-CA") : "",
-    eventTime: timeDisplay || ""
+    eventTime: e.time || ""
   });
   
-  let socialProof = "";
-  if (trending) {
-    socialProof += `<span class="social-proof-badge trending"><i class="ri-fire-line"></i> Trending</span>`;
-  }
 
   return `
     <article class="event-row" data-event-id="${eventId}">
       <div class="event-media">
-        <img src="${imageUrl}" alt="${e.name}" loading="lazy">
+        <img src="${eventImage.url}" alt="${eventImage.description}" data-fallback="${eventImage.fallback}" loading="lazy" decoding="async">
         ${categoryLabel ? `<span class="event-category">${categoryLabel}</span>` : ""}
         ${dateBox}
       </div>
@@ -451,7 +473,6 @@ function renderEventCard(e) {
           ${badge}
         </div>
 
-        ${socialProof ? `<div class="social-proof">${socialProof}</div>` : ""}
       </div>
 
       <div class="event-actions">
@@ -464,13 +485,14 @@ function renderEventCard(e) {
       </div>
 
       <div class="event-right">
+        <p class="event-ride-note">Private pickup. A relaxed ride home.</p>
         <a class="book-btn"
           href="booking.html?${bookingParams.toString()}"
           data-event="${e.name}"
           data-venue="${e.venue}"
           data-date="${d ? d.toLocaleDateString("en-CA") : "TBA"}"
-          data-time="${timeDisplay}">
-          Book Ride <i class="ri-arrow-right-line"></i>
+          data-time="${e.time || ''}">
+          Request a quote <i class="ri-arrow-right-line"></i>
         </a>
       </div>
     </article>
@@ -480,6 +502,10 @@ function renderEventCard(e) {
 // ===== MODERN DROPDOWN UI CONTROLS =====
 
 function initDropdownUI() {
+  if (document.querySelector('.simple-filters')) {
+    initSimpleFilters();
+    return;
+  }
   // Date Dropdown
   const dateToggle = document.getElementById('dateDropdownToggle');
   const dateMenu = document.getElementById('dateDropdownMenu');
@@ -681,6 +707,43 @@ function initDropdownUI() {
 
 // ===== CLEAR FILTERS =====
 
+function initSimpleFilters() {
+  const datePicker = document.getElementById('eventDatePicker');
+  const quickDates = [...document.querySelectorAll('.quick-date-btn')];
+  const cities = [...document.querySelectorAll('[data-city]')];
+  quickDates.forEach(button => button.addEventListener('click', () => {
+    ACTIVE_FILTERS.dateRange = button.dataset.range;
+    ACTIVE_FILTERS.specificDate = null;
+    datePicker.value = '';
+    quickDates.forEach(item => {
+      item.classList.toggle('active', item === button);
+      item.setAttribute('aria-pressed', String(item === button));
+    });
+  }));
+  datePicker?.addEventListener('change', () => {
+    ACTIVE_FILTERS.specificDate = datePicker.value || null;
+    ACTIVE_FILTERS.dateRange = 'all';
+    quickDates.forEach(item => {
+      const selected = !datePicker.value && item.dataset.range === 'all';
+      item.classList.toggle('active', selected);
+      item.setAttribute('aria-pressed', String(selected));
+    });
+  });
+  cities.forEach(button => button.addEventListener('click', () => {
+    ACTIVE_FILTERS.city = button.dataset.city;
+    cities.forEach(item => {
+      item.classList.toggle('active', item === button);
+      item.setAttribute('aria-pressed', String(item === button));
+    });
+  }));
+  document.querySelectorAll('[data-category]').forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      ACTIVE_FILTERS.categories = [...document.querySelectorAll('[data-category]:checked')]
+        .map(input => input.dataset.category);
+    });
+  });
+}
+
 function initClearFilters() {
   const clearBtn = document.getElementById('clear-filters');
   
@@ -730,6 +793,9 @@ function initClearFilters() {
       // Reset search input
       const searchInput = document.getElementById('event-search');
       if (searchInput) searchInput.value = '';
+      document.querySelectorAll('.quick-date-btn, [data-city]').forEach(button => {
+        button.setAttribute('aria-pressed', String(button.classList.contains('active')));
+      });
       
       renderEvents();
     });
@@ -741,20 +807,57 @@ function initClearFilters() {
 function initMobileFilters() {
   const openBtn = document.getElementById('openFilters');
   const sidebar = document.querySelector('.events-sidebar');
+  const closeBtn = document.getElementById('closeFilters');
+  const applyBtn = document.getElementById('applyFilters');
+  const backdrop = document.getElementById('filterBackdrop');
+  if (sidebar) sidebar.inert = true;
+
+  const closeFilters = () => {
+    sidebar?.classList.remove('open');
+    document.body.classList.remove('filters-open');
+    openBtn?.setAttribute('aria-expanded', 'false');
+    sidebar?.setAttribute('aria-hidden', 'true');
+    if (sidebar) sidebar.inert = true;
+    openBtn?.focus();
+    renderEvents();
+  };
+
+  const openFilters = () => {
+    sidebar?.classList.add('open');
+    document.body.classList.add('filters-open');
+    openBtn?.setAttribute('aria-expanded', 'true');
+    sidebar?.setAttribute('aria-hidden', 'false');
+    if (sidebar) sidebar.inert = false;
+    document.getElementById('event-search')?.focus({ preventScroll: true });
+  };
   
   if (openBtn && sidebar) {
     openBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      sidebar.classList.toggle('open');
+      if (sidebar.classList.contains('open')) closeFilters();
+      else openFilters();
     });
-    
-    // Close when clicking outside on mobile
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth <= 1024 && 
-          sidebar.classList.contains('open') &&
-          !sidebar.contains(e.target) &&
-          !openBtn.contains(e.target)) {
-        sidebar.classList.remove('open');
+    closeBtn?.addEventListener('click', closeFilters);
+    backdrop?.addEventListener('click', closeFilters);
+    applyBtn?.addEventListener('click', () => {
+      APPLIED_FILTERS = structuredClone(ACTIVE_FILTERS);
+      const count = (APPLIED_FILTERS.city !== 'all' ? 1 : 0)
+        + APPLIED_FILTERS.categories.length
+        + (APPLIED_FILTERS.search.trim() ? 1 : 0)
+        + (APPLIED_FILTERS.specificDate || APPLIED_FILTERS.dateRange !== 'all' ? 1 : 0);
+      openBtn.classList.toggle('has-filters', count > 0);
+      openBtn.setAttribute('aria-label', count ? `Filter events, ${count} active` : 'Filter events');
+      closeFilters();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sidebar.classList.contains('open')) closeFilters();
+      if (e.key === 'Tab' && sidebar.classList.contains('open') && !sidebar.classList.contains('inline-filters')) {
+        const focusable = [...sidebar.querySelectorAll('button, input, [tabindex="0"]')]
+          .filter(el => !el.disabled && el.getClientRects().length && !el.closest('.dropdown-menu:not(.open)'));
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
       }
     });
   }

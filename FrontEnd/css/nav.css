@@ -639,6 +639,16 @@ html, body { overflow-x: hidden; }
   display:none;
 }
 
+@media (max-width: 420px) {
+  #site-header .mobile-phone { right: 16px; font-size: 11px; white-space: nowrap; }
+  #site-header .top-bar { padding-right: 16px; padding-left: 16px; }
+  #site-header .rr-burger-btn { min-width: 44px; min-height: 44px; }
+}
+@media (max-width: 360px) {
+  #site-header .mobile-phone { width: 44px; height: 44px; justify-content: center; font-size: 0; }
+  #site-header .mobile-phone i { font-size: 20px; }
+}
+
 @media (max-width:960px){
 
   .mobile-phone{

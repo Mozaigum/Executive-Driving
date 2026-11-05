@@ -1,0 +1,12 @@
+body.booking-page .refreshment-fields {
+  min-width: 0; margin: 0 0 28px; padding: 24px;
+  border: 1px solid #ded8cc; border-radius: 2px; background: #f5f2eb;
+  animation: return-trip-reveal .18s ease-out;
+}
+body.booking-page .refreshment-fields[hidden] { display: none; }
+body.booking-page .refreshment-fields legend { float: left; width: 100%; margin: 0 0 8px; padding: 0; color: #282a23; font: 500 17px/1.4 "Inter", sans-serif; letter-spacing: -.02em; }
+body.booking-page .refreshment-fields > p { clear: both; margin: 0 0 20px; color: #797367; font: 400 12px/1.7 "Inter", sans-serif; text-align: left; }
+body.booking-page .refreshment-fields .field { margin: 0; }
+body.booking-page .refreshment-fields textarea { background: transparent; color: #292b23; }
+@media (max-width: 680px) { body.booking-page .refreshment-fields { padding: 20px 16px; } }
+@media (prefers-reduced-motion: reduce) { body.booking-page .refreshment-fields { animation: none; } }

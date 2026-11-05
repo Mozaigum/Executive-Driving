@@ -1,0 +1,219 @@
+.team-story {
+  --team-ink: #0c0c0b;
+  --team-paper: #f3f0e9;
+  --team-muted: #6b675f;
+  --team-gold: #b89559;
+  background: var(--team-paper);
+  color: var(--team-ink);
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.team-story figure { margin: 0; }
+.team-story img { width: 100%; height: 100%; object-fit: cover; }
+
+.team-story__eyebrow {
+  margin: 0 0 24px;
+  color: var(--team-gold);
+  font: 700 10px/1.4 "Inter", sans-serif;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+.team-story__intro {
+  width: min(1180px, calc(100% - 96px));
+  min-height: 500px;
+  margin: 0 auto;
+  padding: 110px 0 90px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 70px;
+  align-items: start;
+}
+
+.team-story__heading h1 {
+  max-width: 850px;
+  margin: 0;
+  color: var(--team-ink);
+  font: 400 clamp(64px, 8.2vw, 116px)/.88 "Playfair Display", Georgia, serif;
+  letter-spacing: -.065em;
+}
+
+.team-story__heading > p {
+  max-width: 610px;
+  margin: 50px 0 0 auto;
+  color: var(--team-muted);
+  font-size: clamp(17px, 1.6vw, 21px);
+  line-height: 1.65;
+}
+
+.founder-profile {
+  display: grid;
+  grid-template-columns: 58% 42%;
+  min-height: 760px;
+  background: #10100f;
+  color: #f7f4ed;
+}
+
+.founder-profile__photo { min-height: 700px; overflow: hidden; }
+.founder-profile__photo img { object-position: 50% 34%; filter: contrast(1.03); }
+
+.founder-profile__copy {
+  padding: clamp(60px, 8vw, 126px) clamp(42px, 7vw, 108px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  text-align: left !important;
+}
+
+.founder-profile__copy h2 {
+  margin: 0 0 38px;
+  color: #fffdf8;
+  font: 400 clamp(52px, 6vw, 88px)/.95 "Playfair Display", Georgia, serif;
+  letter-spacing: -.055em;
+}
+
+.founder-profile__copy > p:not(.team-story__eyebrow) {
+  max-width: 510px;
+  margin: 0 0 22px;
+  color: rgba(255,255,255,.62);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.founder-profile__copy .founder-profile__lead {
+  color: rgba(255,255,255,.9) !important;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(22px, 2.2vw, 31px) !important;
+  line-height: 1.45 !important;
+}
+
+.profile-links { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 14px 28px; }
+.profile-links a, .staff-profile__contact {
+  padding-bottom: 6px;
+  color: inherit;
+  border-bottom: 1px solid var(--team-gold);
+  font: 700 10px/1.3 "Inter", sans-serif;
+  letter-spacing: .13em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.operations-team {
+  width: min(1180px, calc(100% - 96px));
+  margin: 0 auto;
+  padding: 150px 0 170px;
+}
+
+.operations-team__head {
+  max-width: 780px;
+  margin-bottom: 95px;
+  text-align: left !important;
+}
+
+.operations-team__head h2, .team-cta h2 {
+  margin: 0;
+  color: var(--team-ink);
+  font: 400 clamp(45px, 5.4vw, 72px)/1 "Playfair Display", Georgia, serif;
+  letter-spacing: -.05em;
+}
+
+.staff-profile {
+  min-height: 520px;
+  display: grid;
+  grid-template-columns: 1.22fr .78fr;
+  border-top: 1px solid rgba(12,12,11,.2);
+}
+
+.staff-profile:last-child { border-bottom: 1px solid rgba(12,12,11,.2); }
+.staff-profile--reverse { grid-template-columns: .78fr 1.22fr; }
+.staff-profile--reverse .staff-profile__photo { order: 2; }
+.staff-profile__photo { min-height: 520px; overflow: hidden; }
+.staff-profile__photo img { filter: saturate(.86); transition: transform .7s ease; }
+.staff-profile:hover .staff-profile__photo img { transform: scale(1.018); }
+
+.staff-profile__copy {
+  position: relative;
+  padding: 66px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  text-align: left !important;
+}
+
+.staff-profile__number {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  color: #a19c92;
+  font-size: 10px;
+  letter-spacing: .15em;
+}
+
+.staff-profile__copy h3 {
+  margin: 0 0 25px;
+  color: var(--team-ink);
+  font: 400 clamp(40px, 4vw, 58px)/1 "Playfair Display", Georgia, serif;
+  letter-spacing: -.045em;
+}
+
+.staff-profile__copy > p:not(.team-story__eyebrow) {
+  margin: 0 0 34px;
+  color: var(--team-muted);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.staff-profile__contact { align-self: flex-start; color: var(--team-ink); }
+
+.team-cta {
+  min-height: 470px;
+  padding: 100px max(48px, calc((100vw - 1180px) / 2));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background: #ded7ca;
+}
+
+.team-cta h2 { max-width: 720px; margin-bottom: 42px; }
+
+@media (max-width: 900px) {
+  .team-story__intro, .operations-team { width: calc(100% - 48px); }
+  .team-story__intro { min-height: auto; padding: 85px 0; grid-template-columns: 1fr; gap: 20px; }
+  .team-story__heading > p { margin-left: 0; }
+  .founder-profile { grid-template-columns: 1fr; }
+  .founder-profile__photo { min-height: 68vw; }
+  .staff-profile, .staff-profile--reverse { grid-template-columns: 1fr; }
+  .staff-profile--reverse .staff-profile__photo { order: 0; }
+  .staff-profile__photo { min-height: 56vw; }
+  .staff-profile__copy { min-height: 430px; padding: 60px 20px 70px; }
+}
+
+@media (max-width: 560px) {
+  .team-story h1,
+  .team-story h2,
+  .team-story h3,
+  .team-story p {
+    width: auto !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+  }
+  .team-story__intro, .operations-team { width: calc(100% - 40px); }
+  .team-story__intro { padding: 68px 0 75px; }
+  .team-story__heading h1 { font-size: 47px; line-height: .98; }
+  .team-story__heading > p { margin-top: 30px; font-size: 16px; }
+  .founder-profile__photo { min-height: 108vw; }
+  .founder-profile__copy { width: 100%; padding: 58px 22px 70px; overflow: hidden; }
+  .founder-profile__copy h2,
+  .founder-profile__copy p { max-width: 100% !important; overflow-wrap: anywhere; text-align: left !important; }
+  .operations-team { padding: 95px 0 105px; }
+  .operations-team__head { margin-bottom: 55px; }
+  .operations-team__head h2, .team-cta h2 { font-size: 41px; }
+  .staff-profile__photo { min-height: 75vw; }
+  .team-cta { min-height: 400px; padding: 70px 20px; }
+}

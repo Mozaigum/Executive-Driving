@@ -5,7 +5,7 @@ display:block !important;
 
 body{
   display:block !important;
-  zoom:0.85;
+  zoom:1;
 }
 :root {
   --page-bg: #0a0b0d;
@@ -2287,7 +2287,7 @@ section:not(.events-section) {
   z-index: 99999 !important;
 
   /* size/shape */
-  width: var(--pac-width, auto) !important;
+  /* Google sets each suggestion list width; places-fields.js follows its input. */
   /* JS sets this = input width */
   max-height: 320px !important;
   overflow-y: auto !important;
@@ -3699,7 +3699,7 @@ a:hover .footer-icon {
 }
 .pac-container {
   z-index: 999999 !important;
-  position: fixed !important;
+  position: absolute !important;
 }
 /* Prevent zoom on input focus on mobile */
 #booking-form input,

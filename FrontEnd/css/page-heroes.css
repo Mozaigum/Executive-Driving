@@ -1,0 +1,76 @@
+/* One set of proportions for every inner-page photo hero. */
+body #page .site-page-hero {
+  position: relative;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 340px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  isolation: isolate;
+  border: 0 !important;
+  text-align: left;
+}
+body #page .site-page-hero .site-page-hero__inner {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(1180px, calc(100% - 112px)) !important;
+  max-width: none !important;
+  min-height: 0;
+  margin: 0 auto !important;
+  padding: 44px 0 !important;
+}
+body #page .site-page-hero .site-page-hero__eyebrow {
+  display: block !important;
+  margin: 0 0 18px !important;
+  color: #c9b486 !important;
+  font: 600 10px/1.5 var(--ed-sans) !important;
+  letter-spacing: .17em !important;
+  text-transform: uppercase;
+}
+body #page .site-page-hero .site-page-hero__title {
+  width: auto !important;
+  max-width: 900px !important;
+  margin: 0 0 18px !important;
+  color: #f8f5ef !important;
+  font: 400 clamp(48px, 4.5vw, 64px)/1.06 var(--ed-serif) !important;
+  letter-spacing: -.045em !important;
+  text-transform: none !important;
+  text-align: left !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor;
+}
+body #page .site-page-hero .site-page-hero__description {
+  display: block !important;
+  width: auto !important;
+  max-width: 430px !important;
+  margin: 0 !important;
+  color: #d1cec6 !important;
+  font: 400 14px/1.8 var(--ed-sans) !important;
+  letter-spacing: 0;
+  text-align: left !important;
+}
+body #page .site-page-hero--light .site-page-hero__title { color: #171713 !important; }
+body #page .site-page-hero--light .site-page-hero__eyebrow { color: #977743 !important; }
+body #page .site-page-hero--light .site-page-hero__description { color: #605c54 !important; }
+.team-page-hero {
+  background-color: #252522;
+  background-image: linear-gradient(90deg, #141512 0%, rgba(20,21,18,.96) 40%, rgba(20,21,18,.12) 68%), url('../images/ai/team-hero-office.jpg');
+  background-position: center, right center;
+  background-size: 100% 100%, auto 100%;
+  background-repeat: no-repeat;
+}
+.quote-page-hero { background: linear-gradient(90deg, rgba(10,11,9,.93), rgba(10,11,9,.7) 42%, rgba(10,11,9,.12)), url('../images/ai/quote-hero-arrival.jpg') center 58% / cover; }
+.quote-form-intro { margin: 0 0 18px; color: #171713; font: 400 36px/1.15 var(--ed-serif); letter-spacing: -.035em; }
+body.booking-page .booking-page-main { margin-top: 0; }
+@media (max-width: 680px) {
+  .team-page-hero { background-position: center, 67% center; }
+  body #page .site-page-hero { min-height: 330px !important; }
+  body #page .site-page-hero .site-page-hero__inner { width: calc(100% - 40px) !important; padding: 36px 0 !important; }
+  body #page .site-page-hero .site-page-hero__title { font-size: 44px !important; margin-bottom: 14px !important; }
+  body #page .site-page-hero .site-page-hero__eyebrow { font-size: 9px !important; margin-bottom: 14px !important; }
+  body #page .site-page-hero .site-page-hero__description { max-width: 310px !important; font-size: 13px !important; line-height: 1.7 !important; }
+}

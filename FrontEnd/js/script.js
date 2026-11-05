@@ -5,7 +5,7 @@ import { postJSON, API_BOOK, API_BASE } from './api.js';
 console.log('script.js loaded v8');
 
 
-/*  Executive Driving — script.js*/
+/*  Executive Driving,  script.js*/
 
 /* ---------- tiny utilities ---------- */
 (() => {
@@ -51,16 +51,31 @@ const unlockScroll = () => {
   const openBtn = $('.rr-burger-btn') || $('.menu-toggle');
   const closeBtn = overlay?.querySelector('.menu-close');
   if (!overlay || !openBtn || !closeBtn) return;
+  // Keep the sheet outside page stacking contexts and cover the original header.
+  document.body.append(overlay);
+
+  // A shared, full-width navigation sheet across all five pages.
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', 'Main navigation');
+  overlay.inert = true;
+  openBtn.setAttribute('aria-label', 'Open menu');
+  closeBtn.setAttribute('aria-label', 'Close menu');
 
   const setMenuState = (open) => {
+    if (overlay.classList.contains('open') === open) return;
+    overlay.inert = !open;
     overlay.classList.toggle('open', open);
+    document.body.classList.toggle('navigation-open', open);
     overlay.setAttribute('aria-hidden', String(!open));
     openBtn.setAttribute('aria-expanded', String(open));
+    openBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     open ? lockScroll() : unlockScroll();
 
     if (open) {
-      const firstLink = overlay.querySelector('a,button,[tabindex]:not([tabindex="-1"])');
-      firstLink?.focus({ preventScroll: true });
+      window.setTimeout(() => {
+        if (overlay.classList.contains('open')) closeBtn.focus({ preventScroll: true });
+      }, 260);
     } else {
       openBtn.focus({ preventScroll: true });
     }
@@ -75,13 +90,24 @@ const unlockScroll = () => {
 
   on(closeBtn, 'click', closeMenu);
   on(overlay, 'click', (e) => { if (e.target === overlay) closeMenu(); });
-  on(document, 'keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+  on(document, 'keydown', (e) => {
+    if (!overlay.classList.contains('open')) return;
+    if (e.key === 'Escape') closeMenu();
+    if (e.key === 'Tab') {
+      const items = [...overlay.querySelectorAll('a[href], button:not([disabled])')];
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+  on(window, 'resize', () => { if (window.innerWidth > 960) closeMenu(); });
 
-  $$('.overlay-link', overlay).forEach(a => {
+  $$('a', overlay).forEach(a => {
     const opensModal = a.classList.contains('js-open-terms') || a.classList.contains('js-open-privacy');
     on(a, 'click', (e) => {
       if (opensModal) {
         e.preventDefault();
+        closeMenu();
       } else {
         closeMenu();
       }
@@ -103,6 +129,30 @@ const unlockScroll = () => {
 
   const get = (name) => form.querySelector(`[name="${name}"]`);
   const submitBtn = form.querySelector('[type="submit"]');
+
+  // Carry the visitor's intent from service and fleet links into the request.
+  const requestParams = new URLSearchParams(window.location.search);
+  const requestedService = requestParams.get('service');
+  const requestedVehicle = requestParams.get('vehicle');
+  const vehicleNotice = document.getElementById('vehicleAvailabilityNotice');
+  const vehicleName = document.getElementById('requestedVehicleName');
+  if (requestedVehicle && requestedVehicle.trim() && vehicleNotice && vehicleName) {
+    const vehicleLabels = { transit: 'Ford Transit AWD', lincoln: 'Lincoln Navigator L', denali: 'GMC Denali' };
+    vehicleName.textContent = vehicleLabels[requestedVehicle.toLowerCase()] || requestedVehicle.trim().slice(0, 100);
+    vehicleNotice.hidden = false;
+  }
+  const serviceSelect = get('serviceType');
+  const serviceLabels = {
+    airport: 'Airport transfer',
+    corporate: 'Corporate travel',
+    hourly: 'Hourly / as-directed',
+    event: 'Event or occasion',
+    group: 'Group transportation'
+  };
+  if (serviceSelect && serviceLabels[requestedService]) serviceSelect.value = serviceLabels[requestedService];
+  if (requestedVehicle && get('notes') && !get('notes').value) {
+    get('notes').value = `Vehicle requested: ${requestedVehicle}`;
+  }
   
   const setLoading = (on) => {
     if (!submitBtn) return;
@@ -113,6 +163,7 @@ const unlockScroll = () => {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!form.reportValidity()) return;
 
     // Get returnTrip checkbox - try multiple ways to ensure we get it
     const returnTripCheckbox = form.querySelector('input[name="returnTrip"]') || 
@@ -133,8 +184,33 @@ const notifyMeValue = notifyCheckbox ? notifyCheckbox.checked : false;
 console.log('🔔 Notify Me:', notifyMeValue);
 const AlcoholCheckbox = form.querySelector('input[name="alcoholService"]');
 const alcoholValue = AlcoholCheckbox ? AlcoholCheckbox.checked : false;
+const serviceType = get('serviceType')?.value.trim();
+const luggage = get('luggage')?.value.trim();
+const flightNumber = get('flightNumber')?.value.trim();
+
+const journeyDetails = [
+  serviceType ? `Service: ${serviceType}` : '',
+  luggage ? `Luggage: ${luggage} bag(s)` : '',
+  flightNumber ? `Flight: ${flightNumber}` : ''
+].filter(Boolean).join('\n');
+
+const returnDetails = returnTripValue && get('returnPickup') ? {
+  pickup: get('returnPickup').value.trim(),
+  dropoff: get('returnDropoff').value.trim(),
+  date: get('returnDate').value,
+  time: get('returnTime').value
+} : null;
+const returnSummary = returnDetails ? [
+  'RETURN JOURNEY',
+  'Pickup: ' + returnDetails.pickup,
+  'Destination: ' + returnDetails.dropoff,
+  'Date: ' + returnDetails.date,
+  'Pickup time: ' + returnDetails.time,
+  'Same passengers and luggage as the outbound journey.'
+].join('\n') : 'Customer requested a return journey; confirm the details.';
 
 const payload = {
+  serviceType: serviceSelect ? serviceType : 'General journey',
   name: get('name')?.value.trim(),
   phone: get('phone')?.value.trim(),
   email: get('email')?.value.trim(),
@@ -146,13 +222,26 @@ const payload = {
 
   alcoholService: alcoholValue,   // ✅ FIXED NAME
 
-  notes: (get('notes')?.value || '') 
-    + (returnTripValue ? '\n\n Customer wants a RETURN TRIP — please follow up...' : '')
+  notes: (journeyDetails ? `${journeyDetails}\n\n` : '')
+    + (get('notes')?.value || '') 
+    + (returnTripValue ? '\n\n' + returnSummary : '')
     + (alcoholValue ? '\n\n Customer requested LIQUOR SERVICE.' : ''), // ✅ FIXED
 
   returnTrip: returnTripValue,
   notifyMe: notifyMeValue   
 };
+if (returnDetails) payload.returnJourney = returnDetails;
+const refreshmentDetails = get('nonAlcoholicService')?.checked ? get('refreshmentPreferences')?.value.trim() : '';
+if (refreshmentDetails) {
+  payload.nonAlcoholicService = true;
+  payload.refreshmentPreferences = refreshmentDetails;
+  payload.notes += '\n\nNON-ALCOHOLIC REFRESHMENTS\n' + refreshmentDetails;
+}
+const enquiryRefreshments = get('alcoholService')?.checked ? get('serviceRefreshmentPreferences')?.value.trim() : '';
+if (enquiryRefreshments) {
+  payload.serviceRefreshmentPreferences = enquiryRefreshments;
+  payload.notes += '\n\nNON-ALCOHOLIC REFRESHMENTS (SERVICE ENQUIRY)\n' + enquiryRefreshments;
+}
 
     // DEBUG: Log full payload
     console.log('📦 Booking Payload:', payload);
@@ -439,7 +528,7 @@ if (payload.notifyMe === true) {
   const setInfo = (el) => {
     if (!infoBar || !titleEl || !descEl) return;
     const name = el.dataset.name || DEFAULT_TITLE;
-    const desc = el.dataset.desc ? ` — ${el.dataset.desc}` : '';
+    const desc = el.dataset.desc ? `,  ${el.dataset.desc}` : '';
     titleEl.textContent = name;
     descEl.textContent = desc;
     infoBar.classList.add('is-active');
@@ -474,7 +563,7 @@ document.getElementById('year')?.append(new Date().getFullYear());
 /* ==== Universal email compose (site-wide) ==== */
 (function () {
   const DEFAULT_TO = 'info@executivedriving.ca';
-  const SUBJECT = 'Executive Driving — Booking / Inquiry';
+  const SUBJECT = 'Executive Driving,  Booking / Inquiry';
   const BODY = `Hi Executive Driving team,
 
   I’d like to reserve a ride. Details:
@@ -531,65 +620,7 @@ document.getElementById('year')?.append(new Date().getFullYear());
     textNode.parentNode.replaceChild(frag, textNode);
   });
 })();
-// ---- Google Places Autocomplete (pickup & dropoff) ----
-function realInitAutocomplete() {
-  console.log("initAutocomplete (real) running");
-  try {
-    const pickup = document.getElementById("pickup");
-    const dropoff = document.getElementById("dropoff");
-    if (!window.google?.maps?.places) return;
-
-    if (pickup) {
-      new google.maps.places.Autocomplete(pickup, {
-        componentRestrictions: { country: "ca" },
-        fields: ["formatted_address", "geometry"]
-      });
-      gluePacTo(pickup);    // keep dropdown glued to this input
-    }
-
-    if (dropoff) {
-      new google.maps.places.Autocomplete(dropoff, {
-        componentRestrictions: { country: "ca" },
-        fields: ["formatted_address", "geometry"]
-      });
-      gluePacTo(dropoff);   // keep dropdown glued to this input
-    }
-  } catch (e) {
-    console.warn("Autocomplete init skipped:", e);
-  }
-}
-
-/* Keep the Google dropdown (.pac-container) aligned to the focused input */
-function gluePacTo(input) {
-  if (!input) return;
-
-  const place = () => {
-    const pac = document.querySelector('.pac-container');
-    if (!pac) return;
-    pac.style.zIndex = '999999';
-    pac.style.position = 'fixed';
-    const r = input.getBoundingClientRect();
-    pac.style.width = r.width + 'px';
-    pac.style.left = Math.round(r.left) + 'px';
-    pac.style.top = Math.round(r.bottom) + 'px';
-  };
-
-  input.addEventListener('focus', () => requestAnimationFrame(place));
-  input.addEventListener('input', place);
-  input.addEventListener('keydown', place);
-  window.addEventListener('resize', place, { passive: true });
-  window.addEventListener('scroll', place, { passive: true });
-  document.addEventListener('scroll', place, { passive: true, capture: true });
-
-  new MutationObserver(() => {
-    const pac = document.querySelector('.pac-container');
-    if (pac && document.activeElement === input) place();
-  }).observe(document.body, { childList: true, subtree: true });
-}
-
-// Expose for inline callback if needed + run if already loaded
-window.__xdInitAutocomplete = realInitAutocomplete;
-if (window.google?.maps?.places) realInitAutocomplete();
+// Google Places and date/time controls are shared in places-fields.js and field-pickers.js.
 
 /* ---------- Fleet section: reveal title, subline, and cards (slower) ---------- */
 (() => {
@@ -702,11 +733,11 @@ document.addEventListener("DOMContentLoaded", () => {
     name: form.name.value,
     phone: form.phone.value,
     email: form.email.value,
-    pickup: '—',
-    dropoff: '—',
+    pickup: ', ',
+    dropoff: ', ',
     date: form.date.value,
     time: '',
-    passengers: '—',
+    passengers: ', ',
     notes: form.details.value,
     
   };
@@ -741,9 +772,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const icsBtn  = overlay.querySelector('#t-ics');
   const emailBtn= overlay.querySelector('#t-email-link');
 
-  const fmtDate = (d) => d ? new Date(d).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}) : '—';
+  const fmtDate = (d) => d ? new Date(d).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}) : ', ';
   const fmtTime = (t) => {
-    if (!t) return '—';
+    if (!t) return ', ';
     const [h,m] = t.split(':').map(Number); const d=new Date(); d.setHours(h||0,m||0,0,0);
     return d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
   };
@@ -763,7 +794,7 @@ document.addEventListener("DOMContentLoaded", () => {
         'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Executive Driving//Booking//EN',
         'BEGIN:VEVENT',`UID:${Date.now()}@executivedriving.ca`,
         `DTSTAMP:${dt(new Date())}`,`DTSTART:${dt(start)}`,`DTEND:${dt(end)}`,
-        'SUMMARY:Executive Driving — Chauffeur Booking',
+        'SUMMARY:Executive Driving,  Chauffeur Booking',
         `LOCATION:${(p.pickup||'').replace(/\n/g,' ')}`,`DESCRIPTION:${details}`,
         'END:VEVENT','END:VCALENDAR'
       ].join('\r\n');
@@ -796,7 +827,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ['Passengers', payload.passengers], ...(payload.notes?[['Notes', payload.notes]]:[])
       ].forEach(([k,v]) => {
         const li=document.createElement('li'); li.style.margin='2px 0';
-        li.innerHTML = `<strong>${k}:</strong> ${v||'—'}`; sumEl.appendChild(li);
+        li.innerHTML = `<strong>${k}:</strong> ${v||', '}`; sumEl.appendChild(li);
       });
     }
     if (icsBtn) { const blob=buildICS(payload); if (blob) icsBtn.href=URL.createObjectURL(blob); }

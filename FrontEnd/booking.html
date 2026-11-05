@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Reserve Your Ride | Executive Driving</title>
+  <title>Request a Quote | Executive Driving</title>
+  <meta name="description" content="Request a quote for private chauffeur service in Edmonton or Grande Prairie. Share your route and receive written vehicle, availability and rate confirmation.">
 
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -16,8 +17,17 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=fix3">
   <link rel="stylesheet" href="css/nav.css?v=4">
+  <link rel="stylesheet" href="css/premium.css?v=9">
+  <link rel="stylesheet" href="css/mobile-menu.css?v=3">
+  <link rel="stylesheet" href="css/form-controls.css?v=2">
+  <link rel="stylesheet" href="css/return-trip.css?v=2">
+  <link rel="stylesheet" href="css/refreshments.css?v=5">
+  <link rel="stylesheet" href="css/page-heroes.css?v=4">
 
   <meta name="api-base" content="https://executive-driving-backend-b79y.onrender.com">
+  <link rel="stylesheet" href="css/mobile-navigation.css?v=5">
+  <script src="js/mobile-navigation.js?v=3" defer></script>
+  <script src="js/service-select.js?v=1" defer></script>
 </head>
 <body class="booking-page intro-done">
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W7JXP7VP" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -76,15 +86,35 @@
       </div>
     </header>
 
+    <section class="site-page-hero quote-page-hero" aria-labelledby="quoteHeroTitle">
+      <div class="site-page-hero__inner">
+        <p class="site-page-hero__eyebrow">Executive Driving · Alberta</p>
+        <h1 class="site-page-hero__title" id="quoteHeroTitle">Request a quote.</h1>
+        <p class="site-page-hero__description">Share your plans. We’ll confirm the right vehicle and the complete rate in writing.</p>
+      </div>
+    </section>
     <main class="booking-page-main">
       <section class="booking-page-hero" aria-labelledby="bookingTitle">
-        <p class="hero-tag">Private Chauffeur - Edmonton &amp; Grande Prairie</p>
-        <h1 id="bookingTitle">Reserve Your Ride</h1>
-        <p>Share the trip details and our dispatcher will confirm availability shortly.</p>
+        <h2 id="bookingTitle" class="quote-form-intro">Your journey details.</h2>
+        <p>Share the essentials below. We will review the route, recommend the right vehicle and confirm the complete rate in writing.</p>
+        <div class="booking-assurances" aria-label="Booking information">
+          <span>Available 24 hours</span>
+          <span>No charge until confirmed</span>
+          <span>Human response, not an instant dispatch</span>
+        </div>
       </section>
 
       <section class="booking-page-card" aria-label="Reservation form">
         <form id="booking-form" class="booking-form booking-form-page" novalidate>
+          <div class="booking-form-heading">
+            <span>Journey details</span>
+            <small>This is a request. Your ride is confirmed after availability and rate approval.</small>
+          </div>
+          <aside class="vehicle-availability-notice" id="vehicleAvailabilityNotice" role="status" hidden>
+            <i class="ri-information-line" aria-hidden="true"></i>
+            <div><strong>Vehicle preference: <span id="requestedVehicleName"></span></strong><p>Your preferred vehicle is subject to availability and is not guaranteed. If it is unavailable, we may offer a comparable vehicle. We’ll confirm the vehicle with your quote before you proceed.</p></div>
+          </aside>
+          <label class="field"><span>Service</span><select name="serviceType" id="serviceType" required><option value="">Choose a service</option><option value="Airport transfer">Airport transfer</option><option value="Corporate travel">Corporate travel</option><option value="Hourly / as-directed">Hourly / as-directed</option><option value="Event or occasion">Event or occasion</option><option value="Group transportation">Group transportation</option></select></label>
           <div class="booking-grid two">
             <label class="field"><span>Full Name</span><input name="name" type="text" autocomplete="name" required placeholder="John Smith"><small class="err" data-for="name"></small></label>
             <label class="field"><span>Phone</span><input name="phone" type="tel" autocomplete="tel" required placeholder="(825) 973 9800"><small class="err" data-for="phone"></small></label>
@@ -96,23 +126,50 @@
             <label class="field"><span>Date</span><input id="bookDate" name="date" type="date" required><small class="err" data-for="date"></small></label>
             <label class="field"><span>Time</span><input id="bookTime" name="time" type="time" required><small class="err" data-for="time"></small></label>
           </div>
-          <label class="field"><span>Passengers</span><input name="passengers" type="number" min="1" max="7" step="1" required placeholder="select the number of passengers"><small class="err" data-for="passengers"></small></label>
-          <div class="field checkbox-field">
-            <label class="checkbox-label"><input type="checkbox" name="returnTrip" id="returnTrip"><span class="checkbox-custom"></span><span><strong>Book return trip</strong></span></label>
+          <div class="booking-grid two">
+            <label class="field"><span>Passengers</span><input name="passengers" type="number" min="1" max="14" step="1" required placeholder="How many?"><small class="err" data-for="passengers"></small></label>
+            <label class="field"><span>Luggage</span><input name="luggage" type="number" min="0" max="20" step="1" placeholder="Number of bags"></label>
           </div>
+          <label class="field"><span>Flight Number <span style="opacity:.6">(if applicable)</span></span><input name="flightNumber" type="text" autocomplete="off" placeholder="e.g. AC 173"></label>
+          <div class="field checkbox-field">
+            <label class="checkbox-label"><input type="checkbox" name="returnTrip" id="returnTrip" aria-controls="returnTripFields" aria-expanded="false"><span class="checkbox-custom"></span><span><strong>Add a return trip</strong></span></label>
+          </div>
+          <fieldset class="return-trip-fields" id="returnTripFields" hidden disabled>
+            <legend>Your return journey</legend>
+            <p>We've reversed your route. Adjust it if your plans are different.</p>
+            <label class="field"><span>Return pickup</span><input id="returnPickup" name="returnPickup" type="text" placeholder="Where should we collect you?" autocomplete="off" required></label>
+            <label class="field"><span>Return destination</span><input id="returnDropoff" name="returnDropoff" type="text" placeholder="Where are you heading back to?" autocomplete="off" required></label>
+            <div class="booking-grid two">
+              <label class="field"><span>Return date</span><input name="returnDate" type="date" required></label>
+              <label class="field"><span>Return pickup time</span><input name="returnTime" type="time" required></label>
+            </div>
+            <p class="return-trip-passengers">We'll use the same passenger count and luggage details.</p>
+          </fieldset>
           <div class="field alcohol-field">
             <label class="checkbox-label alcohol-label">
-              <input type="checkbox" name="alcoholService" id="alcoholService">
+              <input type="checkbox" name="alcoholService" id="alcoholService" aria-controls="liquorServiceEnquiry" aria-expanded="false">
               <span class="checkbox-custom"></span>
               <span>
-                <strong>Add liquor service</strong>
-                <span class="alcohol-sub">mention your preferences in notes below</span>
+                <strong>ADD liquor service</strong>
               </span>
             </label>
           </div>
+          <fieldset id="liquorServiceEnquiry" class="refreshment-fields" hidden disabled>
+            <legend>Liquor of choice </legend>
+            <p></p>
+            <label class="field"><span>Your drink preferences</span><textarea id="serviceRefreshmentPreferences" name="serviceRefreshmentPreferences" rows="3" maxlength="1000" placeholder="Tell us your preferred non-alcoholic drinks, quantities, Ice and any dietary requirements." required></textarea></label>
+          </fieldset>
+          <div class="field checkbox-field">
+            <label class="checkbox-label"><input type="checkbox" name="n onAlcoholicService" id="nonAlcoholicService" aria-controls="refreshmentFields" aria-expanded="false"><span class="checkbox-custom"></span><span><strong>Add non-alcoholic drinks</strong></span></label>
+          </div>
+          <fieldset id="refreshmentFields" class="refreshment-fields" hidden disabled>
+            <legend>Non-alcoholic refreshments</legend>
+            <p></p>
+            <label class="field"><span>Your drink preferences</span><textarea id="refreshmentPreferences" name="refreshmentPreferences" rows="3" maxlength="1000" placeholder="Tell us your preferred non-alcoholic drinks, quantities and any dietary requirements." required></textarea></label>
+          </fieldset>
           <label class="field"><span>Notes <span style="opacity:.6">(optional)</span></span><textarea name="notes" id="booking-notes" rows="4" placeholder="Special requests, notes..."></textarea></label>
           <div class="booking-actions">
-            <button type="submit" class="btn-rr book">Submit Reservation</button>
+            <button type="submit" class="btn-rr book">Request a quote</button>
             <p class="booking-note"><i class="ri-lock-2-line"></i> Your details are handled under our Privacy Policy.</p>
           </div>
         </form>
@@ -122,7 +179,7 @@
     <footer class="site-footer">
       <div class="container footer-grid">
         <div class="footer-brand">
-          <img src="./images/logo.WebP" alt="Executive Driving" class="footer-logo">
+          <a class="footer-logo-link" href="index.html" aria-label="Executive Driving home"><img class="footer-logo" src="images/logo.WebP" alt="Executive Driving" width="220" height="140" loading="lazy"></a>
           <p class="footer-tag">Private Chauffeur - Edmonton &amp; Grande Prairie</p>
         </div>
         <div class="footer-connect">
@@ -134,23 +191,32 @@
         </div>
       </div>
       <div class="footer-divider"></div>
-      <div class="container footer-copy"><p>© 2025 Executive Driving. All Rights Reserved.</p></div>
+      <div class="container footer-copy">
+        <nav class="footer-policies" aria-label="Legal"><button type="button" class="js-open-terms">Terms &amp; Conditions</button><button type="button" class="js-open-privacy">Privacy Policy</button></nav>
+        <p>© 2026 Executive Driving. All Rights Reserved.</p>
+        <p class="footer-design-credit">Website by <span>Northern Studios</span> / <a href="mailto:Zee.northernStudios@gmail.com">Zee.northernStudios@gmail.com</a></p>
+      </div>
     </footer>
 
-    <div id="menu-overlay" class="menu-overlay" aria-hidden="true" role="dialog">
-      <div class="menu-panel">
-        <button class="menu-close" aria-label="Close menu">x</button>
-        <nav class="overlay-nav" role="menu">
-          <a href="index.html" class="overlay-link" role="menuitem">Home</a>
-          <a href="events.html" class="overlay-link" role="menuitem">Events</a>
-          <a href="fleet.html" class="overlay-link" role="menuitem">Fleet</a>
-          <a href="team.html" class="overlay-link" role="menuitem">Our Team</a>
-          <a href="index.html#contact" class="overlay-link" role="menuitem">Contact</a>
-          <span class="overlay-nav-label">Policy</span>
-          <a href="#" class="overlay-link sub-item js-open-terms" role="menuitem"><i class="ri-file-text-line"></i>Terms &amp; Conditions</a>
-          <a href="#" class="overlay-link sub-item js-open-privacy" role="menuitem"><i class="ri-shield-check-line"></i>Privacy Policy</a>
-          <a href="tel:+18259739800" class="overlay-link phone-pill" role="menuitem"><i class="ri-phone-line"></i>825.973.9800</a>
+    <div id="menu-overlay" class="menu-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Main navigation" inert>
+      <div class="mobile-menu-sheet">
+        <div class="mobile-menu-top">
+          <a href="index.html" aria-label="Executive Driving home"><img src="images/logo.WebP" alt="Executive Driving" width="108" height="72"></a>
+          <button class="menu-close" aria-label="Close menu"><span>Close</span><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
+        </div>
+        <nav class="mobile-menu-pages" aria-label="Pages">
+          <p class="mobile-menu-caption">Explore</p>
+          <a class="mobile-menu-link" href="index.html"><span>Home</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="fleet.html"><span>Fleet</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="events.html"><span>Events</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="team.html"><span>Our team</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="index.html#contact"><span>Contact</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
         </nav>
+        <div class="mobile-menu-bottom">
+          <a class="mobile-menu-quote" href="booking.html">Request a quote <span aria-hidden="true">&nearr;</span></a>
+          <div class="mobile-menu-contact"><span>Let us take care of the drive.</span><a href="tel:+18259739800">825.973.9800</a></div>
+          <div class="mobile-menu-legal"><a href="#" class="js-open-terms">Terms &amp; Conditions</a><a href="#" class="js-open-privacy">Privacy Policy</a></div>
+        </div>
       </div>
     </div>
 
@@ -273,7 +339,11 @@
     </div>
   </div>
 
-  <script type="module" defer src="js/script.js"></script>
+  <script defer src="js/return-trip.js?v=1"></script>
+  <script defer src="js/refreshments.js?v=4"></script>
+  <script defer src="js/places-fields.js?v=4"></script>
+  <script defer src="js/field-pickers.js?v=2"></script>
+  <script type="module" defer src="js/script.js?v=refreshments9"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var params = new URLSearchParams(window.location.search);

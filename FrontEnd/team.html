@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>try { if (sessionStorage.getItem('xd-about-transition')) { document.documentElement.classList.add('about-route'); sessionStorage.removeItem('xd-about-transition'); } } catch (_) {}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Our Team | Executive Driving</title>
+  <meta name="description" content="Meet the people behind Executive Driving's private chauffeur service in Edmonton and Grande Prairie.">
 
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -12,11 +14,18 @@
   })(window,document,'script','dataLayer','GTM-W7JXP7VP');</script>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Josefin+Sans:wght@100;200;300;400;600&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Josefin+Sans:wght@100;200;300;400;600&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=fix2">
+  <link rel="stylesheet" href="css/style.css?v=fix3">
   <link rel="stylesheet" href="css/team.css">
   <link rel="stylesheet" href="css/nav.css?v=4">
+  <link rel="stylesheet" href="css/premium.css?v=9">
+  <link rel="stylesheet" href="css/mobile-menu.css?v=3">
+  <link rel="stylesheet" href="css/form-controls.css?v=2">
+  <link rel="stylesheet" href="css/team-layout.css?v=1">
+  <link rel="stylesheet" href="css/page-heroes.css?v=4">
+  <link rel="stylesheet" href="css/mobile-navigation.css?v=3">
+  <script src="js/mobile-navigation.js?v=3" defer></script>
 </head>
 
 <body>
@@ -43,7 +52,7 @@
 </a>
         <nav class="site-nav" aria-label="Main navigation">
           <div class="site-nav-left">
-            <div class="nav-item"><a href="index.html"  class="nav-link">Home</a></div>
+            <div class="nav-item"><a href="index.html" class="nav-link">Home</a></div>
             <div class="nav-item"><a href="events.html" class="nav-link">Events</a></div>
             <div class="nav-item"><a href="fleet.html"  class="nav-link">Fleet</a></div>
           </div>
@@ -67,73 +76,62 @@
     </header>
 
     <!-- Team Section -->
-    <section class="modern-team-section">
-      <div class="container">
-        <div class="team-header">
-          <h1>Meet Our Team</h1>
 
+    <main class="team-story">
+      <header class="site-page-hero team-page-hero">
+        <div class="site-page-hero__inner">
+          <p class="site-page-hero__eyebrow">Executive Driving &middot; Alberta</p>
+          <h1 class="site-page-hero__title">Our team.</h1>
+          <p class="site-page-hero__description">The people behind every pickup, from your first enquiry to the ride home.</p>
         </div>
-
-        <div class="team-cards">
-
-          <!-- Gezim -->
-          <div class="person-card">
-            <div class="person-photo">
-              <img src="images/Sir-Gez.jpeg" alt="Gezim Veliu — Founder &amp; Owner">
-            </div>
-            <div class="person-details">
+      </header>
+      <section class="team-people" aria-labelledby="teamPeopleTitle">
+        <div class="team-people__intro">
+          <h2 id="teamPeopleTitle">A hands-on team.</h2>
+          <p>Local knowledge and personal attention in Edmonton and Grande Prairie.</p>
+        </div>
+        <div class="team-people__grid">
+          <article class="team-person">
+            <figure class="team-person__photo"><img src="images/ai/gezim.jpg" alt="AI-enhanced portrait of Gezim Veliu" loading="lazy" decoding="async"></figure>
+            <div class="team-person__copy">
+              <p class="team-person__role">Founder &amp; owner</p>
               <h3>Gezim Veliu</h3>
-              <p class="role">Founder &amp; Owner</p>
-              <p class="description">Since 2016, Gezim has built Executive Driving on principles of trust, refinement, and unwavering reliability. His vision transformed luxury ground transportation across Alberta.</p>
-              <div class="social-icons">
-                <a href="https://www.linkedin.com/in/gezim-veliu-413b1a104/" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-                <a href="mailto:info@executivedriving.ca" aria-label="Email"><i class="ri-mail-line"></i></a>
-              </div>
+              <p>Gezim founded Executive Driving in 2016. He stays closely involved in client relationships and daily operations, keeping the service personal and dependable.</p>
+              <div class="team-person__links"><a href="mailto:info@executivedriving.ca">Email Gezim <span aria-hidden="true">&nearr;</span></a><a href="https://www.linkedin.com/in/gezim-veliu-413b1a104/" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">&nearr;</span></a></div>
             </div>
-          </div>
-
-          <!-- Dean -->
-          <div class="person-card">
-            <div class="person-photo">
-              <img src="images/denn.jpg" alt="Dean — GP Operations Lead">
-            </div>
-            <div class="person-details">
+          </article>
+          <article class="team-person">
+            <figure class="team-person__photo"><img src="images/ai/dean.jpg" alt="AI-enhanced portrait of Dean" loading="lazy" decoding="async"></figure>
+            <div class="team-person__copy">
+              <p class="team-person__role">Grande Prairie operations</p>
               <h3>Dean</h3>
-              <p class="role">GP Operations Lead</p>
-              <p class="description">A founding pillar of Executive Driving, Dean's steady leadership ensures seamless operations across Grande Prairie. His commitment to excellence keeps our fleet at the highest standards.</p>
-              <div class="social-icons">
-                <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-                <a href="mailto:info@executivedriving.ca" aria-label="Email"><i class="ri-mail-line"></i></a>
-              </div>
+              <p>One of our earliest team members, Dean coordinates Grande Prairie operations and keeps the fleet prepared for the day ahead.</p>
+              <div class="team-person__links"><a href="mailto:info@executivedriving.ca">Get in touch <span aria-hidden="true">&nearr;</span></a></div>
             </div>
-          </div>
-
-          <!-- Karlee -->
-          <div class="person-card">
-            <div class="person-photo">
-              <img src="images/Mam-Karlee.jpeg" alt="Karlee — Executive Travel Associate">
-            </div>
-            <div class="person-details">
+          </article>
+          <article class="team-person">
+            <figure class="team-person__photo"><img src="images/ai/karlee.jpg" alt="AI-enhanced portrait of Karlee" loading="lazy" decoding="async"></figure>
+            <div class="team-person__copy">
+              <p class="team-person__role">Executive travel associate</p>
               <h3>Karlee</h3>
-              <p class="role">Executive Travel Associate</p>
-              <p class="description">With a rich background in hospitality and healthcare, Karlee brings warmth and meticulous attention to detail to every client journey. Her dedication ensures every passenger feels valued.</p>
-              <div class="social-icons">
-                <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-                <a href="mailto:info@executivedriving.ca" aria-label="Email"><i class="ri-mail-line"></i></a>
-              </div>
+              <p>Karlee brings experience in hospitality and healthcare, with thoughtful communication and a warm welcome for every passenger.</p>
+              <div class="team-person__links"><a href="mailto:info@executivedriving.ca">Get in touch <span aria-hidden="true">&nearr;</span></a></div>
             </div>
-          </div>
-
+          </article>
         </div>
-      </div>
-    </section>
+      </section>
+      <aside class="team-contact">
+        <h2>Let us take care of the drive.</h2>
+        <p>Tell us where you need to be. We'll help with the rest.</p>
+        <a href="booking.html" class="ed-button">Request a quote</a>
+      </aside>
+    </main>
 
-    
     <!-- Footer -->
     <footer class="site-footer">
       <div class="container footer-grid">
         <div class="footer-brand">
-          <img src="./images/logo.WebP" alt="Executive Driving" class="footer-logo">
+          <a class="footer-logo-link" href="index.html" aria-label="Executive Driving home"><img class="footer-logo" src="images/logo.WebP" alt="Executive Driving" width="220" height="140" loading="lazy"></a>
           <p class="footer-tag">Private Chauffeur • Edmonton &amp; Grande Prairie</p>
         </div>
         <div class="footer-connect">
@@ -158,25 +156,34 @@
           <li><img src="images/intract.jpeg" alt="Interac/e-Transfer" loading="lazy"></li>
         </ul>
       </div>
-      <div class="container footer-copy"><p>© 2025 Executive Driving. All Rights Reserved.</p></div>
+      <div class="container footer-copy">
+        <nav class="footer-policies" aria-label="Legal"><button type="button" class="js-open-terms">Terms &amp; Conditions</button><button type="button" class="js-open-privacy">Privacy Policy</button></nav>
+        <p>© 2026 Executive Driving. All Rights Reserved.</p>
+        <p class="footer-design-credit">Website by <span>Northern Studios</span> / <a href="mailto:Zee.northernStudios@gmail.com">Zee.northernStudios@gmail.com</a></p>
+      </div>
     </footer>
 
 
     <!-- Mobile overlay menu -->
-    <div id="menu-overlay" class="menu-overlay" aria-hidden="true">
-      <div class="menu-panel">
-        <button class="menu-close">✕</button>
-        <nav class="overlay-nav">
-          <a href="index.html"         class="overlay-link"        >Home</a>
-          <a href="events.html"        class="overlay-link"        >Events</a>
-          <a href="fleet.html"         class="overlay-link"        >Fleet</a>
-          <a href="team.html"          class="overlay-link active" >Our Team</a>
-          <a href="index.html#contact" class="overlay-link"        >Contact</a>
-          <span class="overlay-nav-label">Policy</span>
-          <a href="#" class="overlay-link sub-item js-open-terms"  ><i class="ri-file-text-line"></i>Terms &amp; Conditions</a>
-          <a href="#" class="overlay-link sub-item js-open-privacy"><i class="ri-shield-check-line"></i>Privacy Policy</a>
-          <a href="tel:+18259739800" class="overlay-link phone-pill"><i class="ri-phone-line"></i>825.973.9800</a>
+    <div id="menu-overlay" class="menu-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Main navigation" inert>
+      <div class="mobile-menu-sheet">
+        <div class="mobile-menu-top">
+          <a href="index.html" aria-label="Executive Driving home"><img src="images/logo.WebP" alt="Executive Driving" width="108" height="72"></a>
+          <button class="menu-close" aria-label="Close menu"><span>Close</span><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
+        </div>
+        <nav class="mobile-menu-pages" aria-label="Pages">
+          <p class="mobile-menu-caption">Explore</p>
+          <a class="mobile-menu-link" href="index.html"><span>Home</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="fleet.html"><span>Fleet</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="events.html"><span>Events</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link is-current" href="team.html" aria-current="page"><span>Our team</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="index.html#contact"><span>Contact</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
         </nav>
+        <div class="mobile-menu-bottom">
+          <a class="mobile-menu-quote" href="booking.html">Request a quote <span aria-hidden="true">&nearr;</span></a>
+          <div class="mobile-menu-contact"><span>Let us take care of the drive.</span><a href="tel:+18259739800">825.973.9800</a></div>
+          <div class="mobile-menu-legal"><a href="#" class="js-open-terms">Terms &amp; Conditions</a><a href="#" class="js-open-privacy">Privacy Policy</a></div>
+        </div>
       </div>
     </div>
 
@@ -186,7 +193,7 @@
       <div class="modal-panel" role="document">
         <button class="modal-close" aria-label="Close Terms">✕</button>
         <div class="modal-content">
-          <h3>Executive Driving Services — Terms &amp; Conditions (Alberta)</h3>
+          <h3>Executive Driving Services,  Terms &amp; Conditions (Alberta)</h3>
           <p><em>Last updated: 11/25/2025</em></p>
           <hr>
           <h4>1) Who we are &amp; Scope</h4>
@@ -244,7 +251,7 @@
       <div class="modal-panel" role="document">
         <button class="modal-close" aria-label="Close Privacy">✕</button>
         <div class="modal-content">
-          <h3>Executive Driving Services — Privacy Policy (Alberta PIPA)</h3>
+          <h3>Executive Driving Services,  Privacy Policy (Alberta PIPA)</h3>
           <p><em>Last updated: 11/25/2025</em></p>
           <hr>
           <h4>1) About this Policy</h4>
@@ -276,6 +283,8 @@
     </div>
   </div><!-- /#page -->
 
-  <script type="module" defer src="js/script.js"></script>
+  <script defer src="js/places-fields.js?v=3"></script>
+  <script defer src="js/field-pickers.js?v=2"></script>
+  <script type="module" defer src="js/script.js?v=controls5"></script>
 </body>
 </html>
