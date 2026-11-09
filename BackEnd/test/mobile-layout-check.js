@@ -66,6 +66,15 @@ try {
       if(file==='booking') {
         for(const id of ['returnTrip','alcoholService','nonAlcoholicService'])await page.locator('label').filter({has:page.locator('#'+id)}).click();
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${file}/${width}: expanded options do not overflow`);
+        for(const panel of await form.locator('.refreshment-fields').evaluateAll(nodes=>nodes.map(node=>{
+          const box=element=>{const r=element.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,right:r.right,bottom:r.bottom};};
+          return {id:node.id,panel:box(node),legend:box(node.querySelector('legend')),field:box(node.querySelector('.field')),textarea:box(node.querySelector('textarea'))};
+        }))) {
+          assert.ok(Math.abs(panel.field.x-panel.legend.x)<1,`${width}/${panel.id}: drink field aligns with its heading`);
+          assert.ok(Math.abs(panel.field.width-panel.legend.width)<1,`${width}/${panel.id}: drink field fills the panel content width`);
+          assert.ok(panel.field.y>=panel.legend.bottom+7,`${width}/${panel.id}: drink field stays below its heading`);
+          assert.ok(panel.textarea.x>=panel.panel.x && panel.textarea.right<=panel.panel.right,`${width}/${panel.id}: textarea stays inside the panel`);
+        }
         for(const input of await form.locator('#returnTripFields input').evaluateAll(nodes=>nodes.map(node=>{const r=node.getBoundingClientRect();return {height:r.height,width:r.width,parentWidth:node.parentElement.getBoundingClientRect().width};}))) {assert.ok(Math.abs(input.height-48)<1);assert.ok(Math.abs(input.width-input.parentWidth)<1);}
       }
       if(width===390 || width===1440) {
