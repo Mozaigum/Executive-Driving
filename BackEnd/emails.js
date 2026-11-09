@@ -47,7 +47,7 @@ function frame(b,{heading='Quote request',copy='CUSTOMER COPY',body,team=false})
   const issued=b.createdAt&&Number.isFinite(+new Date(b.createdAt))?new Intl.DateTimeFormat('en-CA',{day:'2-digit',month:'short',year:'numeric',timeZone:'America/Edmonton'}).format(new Date(b.createdAt)):'';
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quote request received | Executive Driving</title></head>
 <body style="margin:0;padding:0;background:#ffffff;color:${espresso};font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;">
-<div style="display:none;max-height:0;max-width:0;overflow:hidden;font-size:1px;line-height:1px;mso-hide:all;">Your quote request has been received. We will follow up with availability and pricing.</div>
+<div style="display:none;max-height:0;max-width:0;overflow:hidden;font-size:1px;line-height:1px;mso-hide:all;">${team?`New request from ${esc(b.name)}. Review the customer, trip and requested extras.`:'Your quote request has been received. We will follow up with availability and pricing.'}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;background:#ffffff;"><tr><td align="center" style="padding:30px 12px;">
 <!--[if mso]><table role="presentation" width="600"><tr><td><![endif]-->
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:${paper};">
@@ -63,51 +63,20 @@ ${starLine()}
 <!--[if mso]></td></tr></table><![endif]-->
 </td></tr></table></body></html>`;
 }
+function quoteTotal() {
+  return starLine()+`<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;margin-top:23px;font-family:${mono};"><tr><td style="padding:14px 0;font-size:15px;font-weight:bold;line-height:1.5;">QUOTE TOTAL</td><td align="right" style="padding:14px 0;font-size:13px;line-height:1.5;">To be provided</td></tr></table><p style="margin:8px 0 0;font-family:${mono};font-size:10px;line-height:1.7;color:${coffee};">No payment is requested. Pricing and requested extras are subject to written confirmation.</p>`;
+}
 export function renderCustomerConfirmationEmail(b) {
   const customer=details([['Requested by',b.name],['Email',b.email],['Phone',b.phone]]);
-  const total=starLine()+`<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;margin-top:23px;font-family:${mono};"><tr><td style="padding:14px 0;font-size:15px;font-weight:bold;line-height:1.5;">QUOTE TOTAL</td><td align="right" style="padding:14px 0;font-size:13px;line-height:1.5;">To be provided</td></tr></table><p style="margin:8px 0 0;font-family:${mono};font-size:10px;line-height:1.7;color:${coffee};">No payment is requested. Pricing and requested extras are subject to written confirmation.</p>`;
+  const total=quoteTotal();
   const closing=`<p style="margin:20px 0 0;font-family:${mono};font-size:11px;line-height:1.8;">Our team will confirm availability, the vehicle and total price in a written quote. This slip acknowledges your request; your ride is not yet confirmed.</p><p style="margin:10px 0 0;font-family:${mono};font-size:11px;line-height:1.8;">For changes, reply to this email and include your reference.</p>`;
   return frame(b,{body:`<div style="margin-top:16px;">${customer}</div>`+journey(b)+total+closing});
 }
 export function renderBookingEmail(b) {
-  const staffRows = items => `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;table-layout:fixed;">${items.filter(([,value])=>value!==undefined&&value!==null&&value!=='').map(([label,value])=>`<tr><td width="31%" valign="top" style="width:31%;padding:11px 12px 11px 0;border-top:1px solid #eeece4;color:#77796e;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.7;">${esc(label)}</td><td valign="top" style="padding:11px 0;border-top:1px solid #eeece4;color:#292c25;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.7;overflow-wrap:anywhere;word-break:break-word;">${lines(value)}</td></tr>`).join('')}</table>`;
-  const staffSection = (title, content) => `<h2 style="margin:28px 0 15px;color:#292c25;font-family:Georgia,'Times New Roman',serif;font-size:15px;line-height:1.5;font-weight:bold;">${esc(title)}</h2>${content}`;
-  const luggage = typeof b.luggage==='boolean' ? (b.luggage?'Yes':'No') : b.luggage!==undefined&&b.luggage!=='' ? `${b.luggage} bag(s)` : null;
-  let content = staffSection('Customer',staffRows([['Name',b.name],['Email',b.email],['Phone',b.phone]]));
-  content += staffSection('Trip details',staffRows([
-    ['Service',b.serviceType],['Pickup',b.pickup],['Destination',b.dropoff],
-    ['Pickup date & time',`${displayDate(b.date)} · ${displayTime(b.time)} · Alberta time`],
-    ['Passengers',b.passengers],['Luggage',luggage],['Flight',b.flightNumber],['Vehicle preference',b.requestedVehicle],
-    ['Return trip',b.returnTrip?'Included in this request':null]
-  ]));
-  if(b.returnTrip&&b.returnJourney) {
-    const r=b.returnJourney;
-    content += staffSection('Return trip',staffRows([['Pickup',r.pickup],['Destination',r.dropoff],['Pickup date & time',`${displayDate(r.date)} · ${displayTime(r.time)} · Alberta time`]]));
-  }
-  const extras=[];
-  if(b.alcoholService)extras.push(['Liquor service',b.serviceRefreshmentPreferences||'Requested; preferences to be confirmed']);
-  if(b.nonAlcoholicService)extras.push(['Non-alcoholic drinks',b.refreshmentPreferences||'Requested; preferences to be confirmed']);
-  if(extras.length)content+=staffSection('Requested extras',staffRows(extras));
-  const notes=b.customerNotes??b.notes;
-  if(notes?.trim())content+=staffSection('Customer notes',`<p style="margin:0;font-size:13px;line-height:1.8;color:#62665d;overflow-wrap:anywhere;word-break:break-word;">${lines(notes.trim())}</p>`);
-  if(b.escalationNote)content+=staffSection('Team follow-up',`<p style="margin:0;font-size:13px;line-height:1.8;color:#62665d;">${lines(b.escalationNote)}</p>`);
-  const ref=reference(b.reference);
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>New ride request | Executive Driving</title></head>
-<body style="margin:0;padding:0;background:#f4f2eb;color:#292c25;font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;">
-<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;overflow:hidden;mso-hide:all;">New ride request from ${esc(b.name)}. Review the customer, trip and requested extras.</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;background:#f4f2eb;"><tr><td align="center" style="padding:28px 12px;">
-<!--[if mso]><table role="presentation" width="680"><tr><td><![endif]-->
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:680px;background:#fffefa;border:1px solid #deddd4;border-radius:9px;"><tr><td style="padding:28px 25px;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;table-layout:fixed;"><tr><td valign="middle"><h1 style="margin:0;font-size:17px;line-height:1.5;font-weight:600;color:#292c25;">New ride request</h1></td><td width="42%" align="right" valign="middle" style="width:42%;"><img src="cid:executive-logo" alt="Executive Driving" width="116" style="display:block;width:116px;max-width:100%;height:auto;border:0;margin-left:auto;"></td></tr></table>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;margin-top:25px;border-bottom:1px solid #e6e3da;"><tr><td style="padding-bottom:21px;color:#73766d;font-size:12px;line-height:1.7;">Request reference</td><td align="right" style="padding-bottom:21px;color:#292c25;font-family:'Courier New',Courier,monospace;font-size:15px;line-height:1.7;">${esc(ref||'Website request')}</td></tr></table>
-<p style="margin:21px 0 0;font-size:13px;line-height:1.8;color:#62665d;">A new ride request has been received${b.name?` from ${esc(b.name)}`:''}.</p>
-${content}
-<h2 style="margin:28px 0 12px;font-family:Georgia,'Times New Roman',serif;font-size:15px;line-height:1.5;color:#292c25;">Next step</h2>
-<p style="margin:0;font-size:13px;line-height:1.8;color:#62665d;">Review availability and requested extras, then reply to this email to contact the customer with the proposed vehicle and a full written quote. This is a request; the ride is not yet confirmed.</p>
-<p style="margin:26px 0 0;padding-top:19px;border-top:1px solid #e6e3da;font-size:11px;line-height:1.8;color:#77796e;">Executive Driving · Team copy<br>Please handle customer details with care.</p>
-</td></tr></table>
-<!--[if mso]></td></tr></table><![endif]-->
-</td></tr></table></body></html>`;
+  const customer=details([['Requested by',b.name],['Email',b.email],['Phone',b.phone]]);
+  const followUp=b.escalationNote?block('TEAM FOLLOW-UP',`<p style="margin:0;font-family:${mono};font-size:12px;line-height:1.7;overflow-wrap:anywhere;word-break:break-word;">${lines(b.escalationNote)}</p>`):'';
+  const closing=`<p style="margin:20px 0 0;font-family:${mono};font-size:11px;line-height:1.8;">Review availability and requested extras, then reply to this email to contact the customer with the proposed vehicle and a full written quote. This is a request; the ride is not yet confirmed.</p>`;
+  return frame(b,{copy:'TEAM COPY',team:true,body:`<div style="margin-top:16px;">${customer}</div>`+journey(b)+followUp+quoteTotal()+closing});
 }
 export function renderConciergeEmail(b) {
   return frame(b,{heading:'Service enquiry',copy:'OPERATIONS COPY',team:true,body:block('CUSTOMER',details([['Name',b.name],['Email',b.email],['Phone',b.phone],['Service date',displayDate(b.date)]]))+(b.details?block('CUSTOMER MESSAGE',`<p style="margin:0;font-family:${mono};font-size:12px;line-height:1.8;overflow-wrap:anywhere;">${lines(b.details)}</p>`):'')});

@@ -27,3 +27,16 @@ test('customer receipt contains requested details, reference and next steps, wit
   for(const value of ['ED-72C4A8B1','Your quote request has been received','Awaiting quote','November 20, 2026','4:30 PM','0 bag(s)','AC 173','Return trip','8:00 AM','Preferred champagne','Still water','Please meet at arrivals.','To be provided','No payment is requested','your ride is not yet confirmed'])assert.ok(html.toLowerCase().includes(value.toLowerCase()),`Missing customer detail: ${value}`);
   assert.ok(!html.includes('INTERNAL_'));assert.ok(html.includes('src="cid:executive-logo"'));assert.equal((html.match(/aria-hidden="true"/g)||[]).length,2);assert.equal((html.match(/>\*<\/td>/g)||[]).length,56);assert.ok(!/border-(?:top|bottom):/.test(html));
 });
+
+test('team quote email uses the customer receipt design and retains operational details',()=>{
+  const sample={name:'Alex <Morgan>',email:'guest@example.test',phone:'8259739800',reference:'72c4a8b1-ff81-4477-8f49-615ef79fa229',createdAt:'2026-11-08T18:30:00Z',serviceType:'Airport transfer',pickup:'Airport',dropoff:'Hotel',date:'2026-11-20',time:'16:30',passengers:2,luggage:0,flightNumber:'AC 173',requestedVehicle:'SUV',returnTrip:true,returnJourney:{pickup:'Hotel',dropoff:'Airport',date:'2026-11-23',time:'08:00'},alcoholService:true,serviceRefreshmentPreferences:'Champagne',nonAlcoholicService:true,refreshmentPreferences:'Still water',customerNotes:'Meet at arrivals.',escalationNote:'Confirm <special> vehicle.'};
+  const html=renderBookingEmail(sample),customer=renderCustomerConfirmationEmail(sample);
+  for(const value of ['TEAM COPY','REQUIRES FOLLOW-UP','ED-72C4A8B1','guest@example.test','8259739800','Alex &lt;Morgan&gt;','AC 173','SUV','0 bag(s)','RETURN TRIP','8:00 AM','Champagne','Still water','Meet at arrivals.','TEAM FOLLOW-UP','Confirm &lt;special&gt; vehicle.','reply to this email','ride is not yet confirmed'])assert.ok(html.includes(value),`Missing team detail: ${value}`);
+  assert.equal((html.match(/>\*<\/td>/g)||[]).length,56,'Both black star dividers remain');
+  assert.ok(!/border-(?:top|bottom):/.test(html),'Receipt has no card table rules');
+  assert.equal(html.match(/<body style="([^"]+)"/)[1],customer.match(/<body style="([^"]+)"/)[1],'Body styling matches customer copy');
+  assert.ok(html.includes('max-width:600px;background:#ffffff;'));
+  assert.ok(html.includes('src="cid:executive-logo"'));
+  assert.ok(!html.includes('<special>'));
+  assert.ok(!customer.includes('TEAM FOLLOW-UP'));
+});

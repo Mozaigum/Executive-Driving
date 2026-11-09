@@ -108,3 +108,7 @@ Opening “Don't see your event?” no longer focuses its event-name input. User
 The mobile header previously shrank from 80px to 72px while its logo grew from 60px to 80px on scroll. Both now retain their original mobile sizes, and the mobile header entry animation is disabled. Desktop scroll styling is preserved. Shared stylesheet cache versions were updated on all six pages.
 
 Chrome checks passed at 320, 360, 390, 430, 768 and 1440 pixels: custom-event opening/reopening, field selection, switching from filters, overflow, existing form geometry and stable mobile header/logo sizes. Custom-event validation and suggestion regressions also passed. Screenshot: output/mobile-layout/custom-event-390.png. Changes apply to the local test site only.
+
+## Matching team and customer quote emails
+
+The team quote-request email now shares the customer's receipt layout: white background, compact heading, logo on the right, Courier trip details and two black star dividers. It is labelled TEAM COPY and REQUIRES FOLLOW-UP, retains customer contact details, full trip and extras information, and gives staff instructions for replying with a quote. Internal follow-up notes remain restricted to the team email. The customer email output is unchanged. Thirteen tests passed, and actual desktop/mobile previews were rendered without sending email.
