@@ -24,7 +24,7 @@ html, body {
   color:var(--main-text);
   font-family:"Inter", system-ui, Arial, sans-serif;
   overflow-x:hidden;
-  
+
 }
 
 
@@ -1680,165 +1680,54 @@ section:not(.events-section) {
    ========================= */
 
 
-.xd-chat[hidden] {
-  display: none !important;
-}
+
 
 /* reliable close */
 
-.xd-chat {
-  position: fixed;
-  right: 20px;
-  bottom: 100px;
-  width: min(380px, 92vw);
-  height: 520px;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  overflow: hidden;
-  background: #0f1013;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, .08);
-  border-radius: 16px;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, .55);
-  z-index: 1400;
-  /* above menu (1200) and modal (1300) */
-}
+
 
 /* Apple-style smooth open/close for chat widget */
-.xd-chat {
-  transform: scale(0.9);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
+
 
 /* When active */
-.xd-chat.open {
-  transform: scale(1);
-  opacity: 1;
-  pointer-events: auto;
-}
 
 
-.xd-chat__hdr {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
-  background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
-  position: relative;
-  z-index: 1;
-  /* clickable header */
-}
 
-.xd-chat__brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
 
-.xd-chat__avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-}
 
-.xd-chat__close {
-  background: transparent;
-  border: 0;
-  color: #ddd;
-  font-size: 20px;
-  cursor: pointer;
-}
 
-.xd-chat__close:hover {
-  color: #d4af37;
-}
 
-.xd-chat__body {
-  padding: 14px;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  background:
-    radial-gradient(700px 280px at 85% 10%, rgba(212, 175, 55, .08), transparent 60%),
-    linear-gradient(135deg, #111216 0%, #0b0c0f 70%);
-}
 
-.xd-chat__row {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-}
 
-.xd-chat__row--user {
-  justify-content: flex-end;
-}
 
-.xd-chat__row--ai {
-  justify-content: flex-start;
-}
 
-.xd-chat__msg {
-  max-width: 75%;
-  padding: 10px 12px;
-  border-radius: 14px;
-  line-height: 1.5;
-  font-size: 14.5px;
-  word-wrap: break-word;
-  border: 1px solid rgba(255, 255, 255, .06);
-}
 
-.xd-chat__row--user .xd-chat__msg {
-  background: linear-gradient(135deg, #f0d989, #d4af37);
-  color: #111;
-  border-color: transparent;
-  border-bottom-right-radius: 6px;
-  text-align: right;
-  /* only change requested */
-}
 
-.xd-chat__row--ai .xd-chat__msg {
-  background: rgba(255, 255, 255, .06);
-  border-color: rgba(255, 255, 255, .12);
-  border-bottom-left-radius: 6px;
-}
 
-.xd-chat__row--user .xd-chat__avatar {
-  order: 2;
-}
 
-.xd-chat__row--user .xd-chat__msg {
-  order: 1;
-}
 
-.xd-chat__typing {
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-}
 
-.xd-chat__typing span {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #cfcfcf;
-  animation: xdDots 1.2s infinite ease-in-out;
-}
 
-.xd-chat__typing span:nth-child(2) {
-  animation-delay: .15s;
-}
 
-.xd-chat__typing span:nth-child(3) {
-  animation-delay: .3s;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @keyframes xdDots {
 
@@ -1855,52 +1744,18 @@ section:not(.events-section) {
   }
 }
 
-.xd-chat__ftr {
-  display: flex;
-  gap: 8px;
-  padding: 10px;
-  border-top: 1px solid rgba(255, 255, 255, .08);
-  background: rgba(255, 255, 255, .02);
-}
 
-.xd-chat__input {
-  flex: 1;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, .12);
-  background: rgba(255, 255, 255, .04);
-  color: #fff;
-  outline: none;
-}
 
-.xd-chat__input::placeholder {
-  color: #9aa0a6;
-}
 
-.xd-chat__send {
-  padding: 0 16px;
-  border: 0;
-  border-radius: 12px;
-  cursor: pointer;
-  background: #d4af37;
-  color: #111;
-  font-weight: 700;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, .3);
-}
+
+
+
+
 
 @media (max-width:480px) {
-  .xd-chat {
-    right: 12px;
-    left: 12px;
-    width: auto;
-    height: 70vh;
-    bottom: 92px;
-  }
 
-  .xd-chat__toggle {
-    right: 12px;
-    bottom: 12px;
-  }
+
+
 }
 
 /* ===== Partners Marquee (HTML block you pasted) ===== */
@@ -2550,7 +2405,7 @@ section:not(.events-section) {
 
 .lux-section h2,
 .lux-section h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
 }
 
 .gold-em {
@@ -2684,114 +2539,29 @@ section:not(.events-section) {
 }
 
 /* Fix chat toggle: pill, gold text */
-.xd-chat__toggle {
-  width: auto !important;
-  height: auto !important;
-  padding: 12px 22px !important;
-  border-radius: 999px !important;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
 
-  background: #111 !important;
-  color: var(--gold) !important;
-  border: 1px solid var(--border-line);
-  font-weight: 800;
-  font-size: 15px !important;
-  letter-spacing: .04em;
-  line-height: 1;
-  /* keeps it single-line tight */
-  white-space: nowrap;
-  /* prevents wrapping */
-  box-shadow: 0 10px 24px rgba(0, 0, 0, .4);
-  z-index: 1400;
-}
 
-.xd-chat__toggle:hover {
-  background: var(--gold) !important;
-  color: #111 !important;
-  border-color: var(--gold);
-}
 
 /* === Force “Ask NAVI” to gold pill === */
-#page .xd-chat__toggle {
-  position: fixed !important;
-  right: 20px !important;
-  bottom: 20px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  height: 44px !important;
-  padding: 0 18px !important;
-  border-radius: 999px !important;
 
-  /* solid gold background */
-  background: var(--gold) !important;
-  color: #111 !important;
-  /* black text */
-  border: 1px solid var(--gold) !important;
 
-  font-weight: 800 !important;
-  letter-spacing: .08em !important;
-  text-transform: uppercase !important;
-  font-size: 13px !important;
-  white-space: nowrap !important;
 
-  box-shadow: 0 10px 28px rgba(0, 0, 0, .45) !important;
-  transition: transform .25s, box-shadow .25s, background .25s, color .25s !important;
-  z-index: 1400 !important;
-}
 
-#page .xd-chat__toggle::before {
-  content: "" !important;
-  width: 8px !important;
-  height: 8px !important;
-  border-radius: 50% !important;
-  background: #111 !important;
-  box-shadow: 0 0 6px rgba(0, 0, 0, .5) !important;
-}
 
-#page .xd-chat__toggle:hover {
-  background: #111 !important;
-  color: var(--gold) !important;
-  border-color: var(--gold) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, .55) !important;
-}
 
 
 /* tiny gold “live” dot */
 /* tiny dot: white by default */
-#page .xd-chat__toggle::before {
-  content: "" !important;
-  width: 8px !important;
-  height: 8px !important;
-  border-radius: 50% !important;
-  background: #fff !important;
-  /* white */
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6) !important;
-  /* white glow */
-  transition: background .25s, box-shadow .25s !important;
-}
+
 
 /* hover: dot turns gold */
-#page .xd-chat__toggle:hover::before,
-#page .xd-chat__toggle:focus-visible::before {
-  background: var(--gold) !important;
-  /* gold */
-  box-shadow: 0 0 10px rgba(212, 175, 55, .6) !important;
-  /* gold glow */
-}
+
 
 
 /* mobile nudge */
 @media (max-width:480px) {
-  #page .xd-chat__toggle {
-    right: 12px !important;
-    bottom: 12px !important;
-  }
+
 }
 
 /* =======================
@@ -2854,19 +2624,10 @@ section:not(.events-section) {
   }
 
 
-  /* Chatbot (Ask NAVI) */
-  .xd-chat {
-    width: 100% !important;
-    max-width: 95vw !important;
-    height: 70vh !important;
-    /* prevent zoom issues */
-    bottom: 80px !important;
-  }
 
-  .xd-chat__toggle {
-    font-size: 12px !important;
-    padding: 10px 16px !important;
-  }
+
+
+
 }
 
 /* =======================
@@ -2900,24 +2661,12 @@ img {
   min-height: 100vh;
 }
 
-/* Chatbot fixes */
-.xd-chat__input {
-  width: 100%;
-  font-size: 16px;
-  padding: 12px;
-  border-radius: 8px;
-  box-sizing: border-box;
-}
 
-.xd-chat__ftr {
-  display: flex;
-  gap: 8px;
-  flex-wrap: nowrap;
-}
 
-#xdChatSend {
-  flex-shrink: 0;
-}
+
+
+
+
 
 /* =======================
    Responsive Layouts
@@ -3251,8 +3000,8 @@ body {
 /* make date and time inputs smaller inside the booking modal */
 .booking-form input[type="date"],
 .booking-form input[type="time"] {
-  width: 85%;    
-  max-width: 85%;
+  width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
 }
 /* === Thank You — Booking Received (canonical) === */
@@ -3391,10 +3140,7 @@ a:hover .footer-icon {
 
 /* Hide NAVI toggle & chat when the menu overlay is visible (mobile only) */
 @media (max-width: 768px) {
-  #menu-overlay[aria-hidden="false"] ~ .xd-chat__toggle,
-  #menu-overlay[aria-hidden="false"] ~ .xd-chat {
-    display: none !important;
-  }
+
 }
 /* === Booking submit → loading spinner === */
 #booking-form [type="submit"].is-loading {
@@ -3652,7 +3398,7 @@ a:hover .footer-icon {
   background: #d4af37;
 }
 .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
-  content: '✓';
+  content: "✓";
   color: #000;
   font-size: 12px;
   font-weight: 700;

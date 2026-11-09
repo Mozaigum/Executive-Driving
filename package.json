@@ -1,0 +1,13 @@
+{
+  "name": "executive-driving-workspace",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node BackEnd/server.js",
+    "dev": "node --watch BackEnd/server.js",
+    "test": "node --test BackEnd/test/*.test.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

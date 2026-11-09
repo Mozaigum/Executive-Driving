@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Request Received | Executive Driving</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Your Executive Driving request receipt and next steps.">
+
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W7JXP7VP');</script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=fix3">
+  <link rel="stylesheet" href="css/nav.css?v=4">
+  <link rel="stylesheet" href="css/premium.css?v=9">
+  <link rel="stylesheet" href="css/mobile-menu.css?v=3">
+  <link rel="stylesheet" href="css/form-controls.css?v=count-controls1">
+  <link rel="stylesheet" href="css/return-trip.css?v=2">
+  <link rel="stylesheet" href="css/refreshments.css?v=5">
+  <link rel="stylesheet" href="css/page-heroes.css?v=4">
+
+  <meta name="api-base" content="https://executive-driving-backend-b79y.onrender.com">
+  <link rel="stylesheet" href="css/mobile-navigation.css?v=stable-mobile1">
+  <script src="js/site-icons.js?v=1" defer></script>
+  <script src="js/mobile-navigation.js?v=submit-feedback1" defer></script>
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/thank-you.css?v=1">
+  <style>@view-transition { navigation: none; }</style>
+</head>
+<body class="booking-page thankyou-page intro-done">
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W7JXP7VP" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+  <div id="page">
+    <header id="site-header">
+      <div class="top-bar">
+        <button class="menu-toggle rr-burger-btn" aria-controls="menu-overlay" aria-expanded="false">
+          <span class="rr-burger" aria-hidden="true">
+            <span class="bar bar-1"></span>
+            <span class="bar bar-2"></span>
+            <span class="bar bar-3"></span>
+          </span>
+          <span class="rr-label">
+            <span class="label-open">Menu</span>
+            <span class="label-close">Close</span>
+          </span>
+        </button>
+
+        <a href="index.html" class="logo-link" aria-label="Executive Driving - Home">
+          <img src="images/logo.WebP" alt="Executive Driving" class="logo-img">
+        </a>
+        <a href="tel:+18259739800" class="mobile-phone">
+          <i class="ri-phone-line"></i> 825.973.9800
+        </a>
+
+        <nav class="site-nav" aria-label="Main navigation">
+          <div class="site-nav-left">
+            <div class="nav-item"><a href="index.html" class="nav-link">Home</a></div>
+            <div class="nav-item"><a href="events.html" class="nav-link">Events</a></div>
+            <div class="nav-item"><a href="fleet.html" class="nav-link">Fleet</a></div>
+          </div>
+          <div class="site-nav-right">
+            <div class="nav-item"><a href="team.html" class="nav-link">Our Team</a></div>
+            <div class="nav-item"><a href="index.html#contact" class="nav-link">Contact</a></div>
+            <div class="nav-item">
+              <button class="nav-link" aria-haspopup="true" aria-expanded="false">
+                Policy <i class="ri-arrow-down-s-line nav-arrow"></i>
+              </button>
+              <ul class="nav-dropdown" role="menu">
+                <li>
+                  <button class="nav-dropdown-item js-open-terms">
+                    <i class="ri-file-text-line"></i>Terms &amp; Conditions
+                  </button>
+                </li>
+                <li>
+                  <button class="nav-dropdown-item js-open-privacy">
+                    <i class="ri-shield-check-line"></i>Privacy Policy
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <a href="tel:+18259739800" class="nav-phone"><i class="ri-phone-line"></i>825.973.9800</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="request-received" id="main-content">
+      <div class="receipt-intro">
+        <h1 id="receiptTitle">Thank you for getting in touch.</h1>
+        <p id="receiptMessage">Your request details will appear here after you submit.</p>
+      </div>
+      <div class="receipt-panel" id="receivedContent">
+        <div class="receipt-reference" id="receiptReferenceRow" hidden><span>Your reference</span><strong id="receiptReference"></strong></div>
+        <p class="receipt-email" id="receiptEmail">Our team will follow up using the contact details you provided.</p>
+        <section id="receiptSummary" hidden aria-labelledby="receiptSummaryTitle"><h2 id="receiptSummaryTitle">Your trip</h2><dl class="receipt-details" id="receiptDetails"></dl></section>
+        <section class="receipt-next" aria-labelledby="receiptNextTitle"><h2 id="receiptNextTitle">What happens next</h2><p id="receiptNextStep">Our team will review your plans and get back to you.</p></section>
+      </div>
+      <div class="receipt-links"><a class="receipt-primary" href="index.html">Back to home <span aria-hidden="true">&nbsp; &rarr;</span></a><a class="receipt-secondary" href="tel:+18259739800">Need a change? Call 825-973-9800</a></div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a class="footer-logo-link" href="index.html" aria-label="Executive Driving home"><img class="footer-logo" src="images/logo.WebP" alt="Executive Driving" width="220" height="140" loading="lazy"></a>
+          <p class="footer-tag">Private Chauffeur - Edmonton &amp; Grande Prairie</p>
+        </div>
+        <div class="footer-connect">
+          <h4 class="footer-h">Connect</h4>
+          <ul class="footer-contact">
+            <li><a href="tel:+18259739800"><i class="ri-phone-line footer-icon"></i>825.973.9800</a></li>
+            <li><a href="mailto:info@executivedriving.ca"><i class="ri-mail-line footer-icon mail-icon"></i>info@executivedriving.ca</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="container footer-copy">
+        <nav class="footer-policies" aria-label="Legal"><button type="button" class="js-open-terms">Terms &amp; Conditions</button><button type="button" class="js-open-privacy">Privacy Policy</button></nav>
+        <p>© 2026 Executive Driving. All Rights Reserved.</p>
+        <p class="footer-design-credit">Website by <span>Northern Studios</span> / <a href="mailto:Zee.northernStudios@gmail.com">Zee.northernStudios@gmail.com</a></p>
+      </div>
+    </footer>
+
+    <div id="menu-overlay" class="menu-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Main navigation" inert>
+      <div class="mobile-menu-sheet">
+        <div class="mobile-menu-top">
+          <a href="index.html" aria-label="Executive Driving home"><img src="images/logo.WebP" alt="Executive Driving" width="108" height="72"></a>
+          <button class="menu-close" aria-label="Close menu"><span>Close</span><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
+        </div>
+        <nav class="mobile-menu-pages" aria-label="Pages">
+          <p class="mobile-menu-caption">Explore</p>
+          <a class="mobile-menu-link" href="index.html"><span>Home</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="fleet.html"><span>Fleet</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="events.html"><span>Events</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="team.html"><span>Our team</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="mobile-menu-link" href="index.html#contact"><span>Contact</span><span class="mobile-menu-arrow" aria-hidden="true">&rarr;</span></a>
+        </nav>
+        <div class="mobile-menu-bottom">
+          <a class="mobile-menu-quote" href="booking.html">Request a quote <span aria-hidden="true">&nearr;</span></a>
+          <div class="mobile-menu-contact"><span>Let us take care of the drive.</span><a href="tel:+18259739800">825.973.9800</a></div>
+          <div class="mobile-menu-legal"><a href="#" class="js-open-terms">Terms &amp; Conditions</a><a href="#" class="js-open-privacy">Privacy Policy</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="terms-overlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-panel" role="document">
+        <button class="modal-close" aria-label="Close Terms">x</button>
+        <div class="modal-content">
+          <h3>Executive Driving Services - Terms &amp; Conditions (Alberta)</h3>
+          <p><em>Last updated: 11/25/2025</em></p>
+          <hr>
+          <h4>1) Who we are &amp; Scope</h4>
+          <p>These Terms &amp; Conditions govern all executive/private SUV transportation and concierge services provided by Executive Driving Services. By placing a booking or using our services, you agree to these Terms.</p>
+          <h4>2) Bookings, Changes &amp; Substitutions</h4>
+          <ul>
+            <li><strong>Accuracy:</strong> You must provide correct pickup times, locations, passenger count, luggage info, and any special requirements.</li>
+            <li><strong>Verification:</strong> A pre-authorization may be placed before dispatch.</li>
+            <li><strong>Vehicle Substitution:</strong> We may substitute a comparable or higher-class vehicle if required for safety or operational reasons, at no extra cost.</li>
+            <li><strong>Delays Outside Our Control:</strong> Weather, traffic, road closures may affect ETA. We are not liable for indirect losses such as missed flights.</li>
+          </ul>
+          <h4>3) Rates, Waiting Time &amp; Extras</h4>
+          <ul>
+            <li>Quoted rates include vehicle, chauffeur, and standard distance/time.</li>
+            <li><strong>Waiting Time:</strong> 15-minute grace period, then billed in 15-minute increments.</li>
+            <li><strong>Tolls/Parking:</strong> Charged at cost.</li>
+            <li>After-hours/peak surcharges may apply.</li>
+          </ul>
+          <h4>4) Cancellations &amp; No-Shows</h4>
+          <ul>
+            <li><strong>Sedan/SUV:</strong> Free cancel >= 24 hours; 50% charge 2-24 hours; 100% charge &lt; 2 hours or no-show.</li>
+            <li><strong>Special Events:</strong> Free until 72 hours prior; 100% charge within 72 hours.</li>
+          </ul>
+          <h4>5) Passenger Conduct &amp; Safety</h4>
+          <ul>
+            <li>Seatbelts mandatory for all passengers.</li>
+            <li>No smoking/vaping strictly prohibited.</li>
+            <li>No open liquor or cannabis consumption in vehicles.</li>
+            <li>Service animals allowed; pets must be pre-declared.</li>
+          </ul>
+          <h4>6) Cleaning, Damage &amp; Downtime</h4>
+          <ul>
+            <li>Standard detailing: $95-$150</li>
+            <li>Spill/stain extraction: $150-$300</li>
+            <li>Biohazard cleanup: $300-$600 + downtime</li>
+            <li>Smoke/vape odour remediation: $250-$500</li>
+          </ul>
+          <h4>7) Payment &amp; Chargebacks</h4>
+          <ul>
+            <li>Accepted: credit cards, e-Transfer, invoicing (approved), cash.</li>
+            <li>Overdue balances accrue interest at 1.5%/month.</li>
+            <li>Unjust chargebacks may incur a $200 admin fee plus legal/processor costs.</li>
+          </ul>
+          <h4>8) Non-Refundable Deposit</h4>
+          <p>A 50% deposit is required to secure all bookings. This deposit is <strong>non-refundable at all times</strong>.</p>
+          <h4>9) Contact</h4>
+          <p><strong>Executive Driving Services</strong><br>Phone: 825.973.9800<br>Email: info@executivedriving.ca</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="privacy-overlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-panel" role="document">
+        <button class="modal-close" aria-label="Close Privacy">x</button>
+        <div class="modal-content">
+          <h3>Executive Driving Services - Privacy Policy (Alberta PIPA)</h3>
+          <p><em>Last updated: 11/25/2025</em></p>
+          <hr>
+          <h4>1) About this Policy</h4>
+          <p>We are committed to protecting your personal information in accordance with Alberta's Personal Information Protection Act (PIPA).</p>
+          <h4>2) What We Collect</h4>
+          <ul>
+            <li><strong>Identity &amp; Contact:</strong> name, company, phone, email.</li>
+            <li><strong>Trip Data:</strong> pickup/drop-off locations, dates/times, routing, instructions.</li>
+            <li><strong>Communications:</strong> calls, emails, messages through apps or website.</li>
+            <li><strong>Payment Data:</strong> tokenized card details via payment processor. We do not store full card numbers.</li>
+            <li><strong>Safety &amp; Compliance:</strong> incident reports, lost-and-found records, driver notes.</li>
+          </ul>
+          <h4>3) Purposes</h4>
+          <ul>
+            <li>Accept, manage, and complete bookings.</li>
+            <li>Dispatch drivers and provide concierge support.</li>
+            <li>Verify identity, prevent fraud, and manage payments/chargebacks.</li>
+            <li>Ensure safety and comply with Alberta laws.</li>
+            <li>Send transactional notices; with consent, send marketing communications under CASL.</li>
+          </ul>
+          <h4>4) Consent &amp; Your Choices</h4>
+          <p>We rely on your express or implied consent under PIPA. You may withdraw consent at any time, subject to legal and contractual limits.</p>
+          <h4>5) Security &amp; Retention</h4>
+          <p>We use appropriate safeguards and retain information only as long as necessary. Afterwards, we securely delete or de-identify the data.</p>
+          <h4>6) Contact</h4>
+          <p><strong>Executive Driving Services</strong><br>Phone: 825.973.9800<br>Email: info@executivedriving.ca<br><strong>OIPC Alberta:</strong> 1-888-878-4044</p>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <script type="module" src="js/script.js?v=submit-feedback1"></script>
+  <script defer src="js/thank-you.js?v=1"></script>
+</body>
+</html>

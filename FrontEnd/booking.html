@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="js/mobile-form-focus.js?v=1"></script>
   <title>Request a Quote | Executive Driving</title>
   <meta name="description" content="Request a quote for private chauffeur service in Edmonton or Grande Prairie. Share your route and receive written vehicle, availability and rate confirmation.">
 
@@ -19,19 +20,21 @@
   <link rel="stylesheet" href="css/nav.css?v=4">
   <link rel="stylesheet" href="css/premium.css?v=9">
   <link rel="stylesheet" href="css/mobile-menu.css?v=3">
-  <link rel="stylesheet" href="css/form-controls.css?v=2">
+  <link rel="stylesheet" href="css/form-controls.css?v=count-controls1">
   <link rel="stylesheet" href="css/return-trip.css?v=2">
   <link rel="stylesheet" href="css/refreshments.css?v=5">
   <link rel="stylesheet" href="css/page-heroes.css?v=4">
 
   <meta name="api-base" content="https://executive-driving-backend-b79y.onrender.com">
-  <link rel="stylesheet" href="css/mobile-navigation.css?v=10">
+  <link rel="stylesheet" href="css/mobile-navigation.css?v=stable-mobile1">
   <script src="js/site-icons.js?v=1" defer></script>
-  <script src="js/mobile-navigation.js?v=3" defer></script>
-  <script src="js/service-select.js?v=2" defer></script>
+  <script src="js/mobile-navigation.js?v=submit-feedback1" defer></script>
+  <script src="js/service-select.js?v=20261108-repair" defer></script>
   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64">
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <style>@view-transition { navigation: none; }</style>
+  <link rel="stylesheet" href="css/form-layout.css?v=1">
 </head>
 <body class="booking-page intro-done">
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W7JXP7VP" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -119,9 +122,9 @@
             <div><strong>Vehicle preference: <span id="requestedVehicleName"></span></strong><p>Your preferred vehicle is subject to availability and is not guaranteed. If it is unavailable, we may offer a comparable vehicle. We’ll confirm the vehicle with your quote before you proceed.</p></div>
           </aside>
           <div class="field"><span id="serviceTypeLabel">Service</span><select name="serviceType" id="serviceType" aria-labelledby="serviceTypeLabel" required><option value="">Choose a service</option><option value="Airport transfer">Airport transfer</option><option value="Corporate travel">Corporate travel</option><option value="Hourly / as-directed">Hourly / as-directed</option><option value="Event or occasion">Event or occasion</option><option value="Group transportation">Group transportation</option></select></div>
-          <div class="booking-grid two">
+          <div class="booking-grid two booking-contact-row">
             <label class="field"><span>Full Name</span><input name="name" type="text" autocomplete="name" required placeholder="John Smith"><small class="err" data-for="name"></small></label>
-            <label class="field"><span>Phone</span><input name="phone" type="tel" autocomplete="tel" required placeholder="(825) 973 9800"><small class="err" data-for="phone"></small></label>
+            <label class="field"><span>Phone number</span><small class="phone-label-hint">Include the area code</small><input name="phone" type="tel" autocomplete="tel" required placeholder="(825) 973 9800"><small class="err" data-for="phone"></small></label>
           </div>
           <label class="field"><span>Email</span><input name="email" type="email" autocomplete="email" required placeholder="you@example.com"><small class="err" data-for="email"></small></label>
           <label class="field"><span>Pickup Location</span><input id="pickup" name="pickup" type="text" required placeholder="1400 John St, Edmonton"><small class="err" data-for="pickup"></small></label>
@@ -130,7 +133,7 @@
             <label class="field"><span>Date</span><input id="bookDate" name="date" type="date" required><small class="err" data-for="date"></small></label>
             <label class="field"><span>Time</span><input id="bookTime" name="time" type="time" required><small class="err" data-for="time"></small></label>
           </div>
-          <div class="booking-grid two">
+          <div class="booking-grid two booking-count-row">
             <label class="field"><span>Passengers</span><input name="passengers" type="number" min="1" max="14" step="1" required placeholder="How many?"><small class="err" data-for="passengers"></small></label>
             <label class="field"><span>Luggage</span><input name="luggage" type="number" min="0" max="20" step="1" placeholder="Number of bags"></label>
           </div>
@@ -154,17 +157,17 @@
               <input type="checkbox" name="alcoholService" id="alcoholService" aria-controls="liquorServiceEnquiry" aria-expanded="false">
               <span class="checkbox-custom"></span>
               <span>
-                <strong>ADD liquor service</strong>
+                <strong>Add liquor service</strong>
               </span>
             </label>
           </div>
           <fieldset id="liquorServiceEnquiry" class="refreshment-fields" hidden disabled>
-            <legend>Liquor of choice </legend>
-            <p></p>
-            <label class="field"><span>Your drink preferences</span><textarea id="serviceRefreshmentPreferences" name="serviceRefreshmentPreferences" rows="3" maxlength="1000" placeholder="Tell us your preferred non-alcoholic drinks, quantities, Ice and any dietary requirements." required></textarea></label>
+            <legend>Liquor preferences</legend>
+            <p>Share your preferences. Availability and service details will be confirmed with your quote.</p>
+            <label class="field"><span>Your drink preferences</span><textarea id="serviceRefreshmentPreferences" name="serviceRefreshmentPreferences" rows="3" maxlength="1000" placeholder="Tell us your preferred liquor, quantities, mixers and ice." required></textarea></label>
           </fieldset>
           <div class="field checkbox-field">
-            <label class="checkbox-label"><input type="checkbox" name="n onAlcoholicService" id="nonAlcoholicService" aria-controls="refreshmentFields" aria-expanded="false"><span class="checkbox-custom"></span><span><strong>Add non-alcoholic drinks</strong></span></label>
+            <label class="checkbox-label"><input type="checkbox" name="nonAlcoholicService" id="nonAlcoholicService" aria-controls="refreshmentFields" aria-expanded="false"><span class="checkbox-custom"></span><span><strong>Add non-alcoholic drinks</strong></span></label>
           </div>
           <fieldset id="refreshmentFields" class="refreshment-fields" hidden disabled>
             <legend>Non-alcoholic refreshments</legend>
@@ -336,18 +339,19 @@
             </svg>
           </div>
           <h3 id="thanks-title">Thank you</h3>
-          <p class="lead">We've received your request and sent a confirmation to <strong id="t-email"></strong></p>
+          <p class="lead">We've received your request. Our team will follow up at <strong id="t-email"></strong></p>
           <p class="lead"><i class="fa-solid fa-clock"></i> Our dispatcher will contact you shortly to confirm final details.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <script defer src="js/return-trip.js?v=1"></script>
-  <script defer src="js/refreshments.js?v=4"></script>
+  <script defer src="js/number-controls.js?v=1"></script>
+  <script defer src="js/return-trip.js?v=20261108-repair"></script>
+  <script defer src="js/refreshments.js?v=20261108-repair"></script>
   <script defer src="js/places-fields.js?v=4"></script>
-  <script defer src="js/field-pickers.js?v=2"></script>
-  <script type="module" defer src="js/script.js?v=mobile-fixes10"></script>
+  <script defer src="js/field-pickers.js?v=mobile-spacing1"></script>
+  <script type="module" defer src="js/script.js?v=mobile-spacing1"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var params = new URLSearchParams(window.location.search);

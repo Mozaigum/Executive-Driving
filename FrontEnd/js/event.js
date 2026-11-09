@@ -32,7 +32,7 @@ function isToday(date) {
 function isThisWeekend(date) {
   const day = date.getDay();
   const today = new Date();
-  
+
   if (day === 0 || day === 6) {
     const diff = Math.abs(date - today);
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
@@ -63,11 +63,11 @@ function getEventCategory(event) {
   if (event.type === "nightlife") {
     return "nightlife";
   }
-  
+
   const classification = (event.classification || "").toLowerCase();
   const genre = (event.genre || "").toLowerCase();
   const name = (event.name || "").toLowerCase();
-  
+
   if (classification.includes("music") || classification.includes("concert")) {
     return "concert";
   }
@@ -80,14 +80,14 @@ function getEventCategory(event) {
   if (classification.includes("family")) {
     return "family";
   }
-  
+
   if (genre.includes("music") || genre.includes("concert")) {
     return "concert";
   }
   if (genre.includes("sport")) {
     return "sports";
   }
-  
+
   if (name.includes("concert") || name.includes("music")) {
     return "concert";
   }
@@ -97,39 +97,43 @@ function getEventCategory(event) {
   if (name.includes("family")) {
     return "family";
   }
-  
+
   return "other";
 }
 
 // ===== CALENDAR EXPORT FUNCTION =====
 
+function icsText(value) { return String(value || '').replace(/\\/g, '\\\\').replace(/\r?\n/g, '\\n').replace(/;/g, '\\;').replace(/,/g, '\\,'); }
+
 function generateICS(event) {
-  const eventDate = new Date(`${event.date}T${event.time || "00:00"}`);
+  const eventDate = new Date(`${event.date}T${event.time || "00:00"}Z`);
   const endDate = new Date(eventDate.getTime() + 3 * 60 * 60 * 1000);
-  
+
   const formatDate = (date) => {
-    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const pad = value => String(value).padStart(2, '0');
+    return `${date.getUTCFullYear()}${pad(date.getUTCMonth()+1)}${pad(date.getUTCDate())}T${pad(date.getUTCHours())}${pad(date.getUTCMinutes())}${pad(date.getUTCSeconds())}`;
   };
-  
+
   const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Executive Driving//Events//EN
 BEGIN:VEVENT
-UID:${event.id || event.name}@executivedriving.ca
-DTSTAMP:${formatDate(new Date())}
-DTSTART:${formatDate(eventDate)}
-DTEND:${formatDate(endDate)}
-SUMMARY:${event.name}
-DESCRIPTION:Event at ${event.venue}. Book your ride with Executive Driving!
-LOCATION:${event.venue}
+UID:${encodeURIComponent(event.id || event.name)}@executivedriving.ca
+DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+DTSTART;TZID=America/Edmonton:${formatDate(eventDate)}
+DTEND;TZID=America/Edmonton:${formatDate(endDate)}
+SUMMARY:${icsText(event.name)}
+DESCRIPTION:Event at ${icsText(event.venue)}. Book your ride with Executive Driving!
+LOCATION:${icsText(event.venue)}
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR`;
-  
+
   return icsContent;
 }
 
 function downloadICS(event) {
+  if (!event.date) return;
   const icsContent = generateICS(event);
   const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
   const link = document.createElement('a');
@@ -138,6 +142,7 @@ function downloadICS(event) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 }
 
 // ===== SHARE FUNCTION =====
@@ -148,7 +153,7 @@ async function shareEvent(event) {
     text: `Check out ${event.name} at ${event.venue}!`,
     url: window.location.href
   };
-  
+
   if (navigator.share) {
     try {
       await navigator.share(shareData);
@@ -175,11 +180,11 @@ function showToast(message) {
   toast.className = 'toast-notification';
   toast.textContent = message;
   document.body.appendChild(toast);
-  
+
   setTimeout(() => {
     toast.classList.add('show');
   }, 100);
-  
+
   setTimeout(() => {
     toast.classList.remove('show');
     setTimeout(() => toast.remove(), 300);
@@ -189,6 +194,7 @@ function showToast(message) {
 // ===== API CONFIG =====
 
 const API_BASE =
+  (["localhost", "127.0.0.1"].includes(location.hostname) ? "http://localhost:3001" : "") ||
   document.querySelector('meta[name="api-base"]')?.content?.replace(/\/$/, "") ||
   "https://executive-driving-backend-b79y.onrender.com";
 
@@ -208,7 +214,7 @@ async function loadEvents() {
 
     const res = await fetch(`${API_BASE}/api/events/ticketmaster?city=all`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    
+
     const data = await res.json();
     ALL_EVENTS = data.events || [];
     window.__xdTicketmasterEvents = ALL_EVENTS.slice();
@@ -283,7 +289,7 @@ function renderEvents(resetPage = true) {
   if (resetPage) currentEventPage = 1;
 
   let filtered = ALL_EVENTS;
-  
+
   console.log("🎯 Starting with", filtered.length, "events");
 
   // Filter by city
@@ -323,9 +329,9 @@ function renderEvents(resetPage = true) {
   else if (ACTIVE_FILTERS.dateRange !== "all") {
     filtered = filtered.filter(e => {
       if (!e.date || e.type === "nightlife") return ACTIVE_FILTERS.dateRange === "all";
-      
+
       const eventDate = new Date(`${e.date}T${e.time || "00:00"}`);
-      
+
       switch (ACTIVE_FILTERS.dateRange) {
         case "today":
           return isToday(eventDate);
@@ -420,11 +426,15 @@ document.addEventListener('error', event => {
   img.src = fallback;
 }, true);
 
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
+
 function renderEventCard(e) {
   const isNightlife = e.type === "nightlife";
   const category = getEventCategory(e);
   const eventId = e.id || e.name;
-  
+
   let d = null;
   let badge = "";
   let dateDisplay = "";
@@ -433,7 +443,7 @@ function renderEventCard(e) {
 
   if (!isNightlife && e.date) {
     d = new Date(`${e.date}T${e.time || "00:00"}`);
-    
+
     if (isToday(d)) {
       badge = `<span class="event-badge today">Today</span>`;
     } else if (isThisWeekend(d)) {
@@ -467,7 +477,7 @@ function renderEventCard(e) {
 
   const eventImage = getEventImage(e, category);
 
-  const categoryLabel = 
+  const categoryLabel =
     category === "concert" ? "Music" :
     category === "sports" ? "Sports" :
     category === "nightlife" ? "Nightlife" :
@@ -480,10 +490,10 @@ function renderEventCard(e) {
     date: d ? d.toLocaleDateString("en-CA") : "",
     eventTime: e.time || ""
   });
-  
+
 
   return `
-    <article class="event-row" data-event-id="${eventId}">
+    <article class="event-row" data-event-id="${escapeHTML(eventId)}">
       <div class="event-media">
         <img src="${eventImage.url}" alt="${eventImage.description}" data-fallback="${eventImage.fallback}" loading="lazy" decoding="async">
         ${categoryLabel ? `<span class="event-category">${categoryLabel}</span>` : ""}
@@ -491,14 +501,14 @@ function renderEventCard(e) {
       </div>
 
       <div class="event-content">
-        <h3 class="event-title">${e.name}</h3>
-        
+        <h3 class="event-title">${escapeHTML(e.name)}</h3>
+
         <div class="event-meta">
           <div class="event-location">
-            <i class="ri-map-pin-line"></i> ${e.venue}
+            <i class="ri-map-pin-line"></i> ${escapeHTML(e.venue)}
           </div>
           <div class="event-datetime">
-            <i class="ri-time-line"></i> ${dateDisplay} • ${timeDisplay}
+            <i class="ri-time-line"></i> ${dateDisplay} • ${escapeHTML(timeDisplay)}
           </div>
           ${badge}
         </div>
@@ -506,7 +516,7 @@ function renderEventCard(e) {
       </div>
 
       <div class="event-actions">
-        <button class="action-btn calendar-btn" data-action="calendar" title="Add to Calendar">
+        <button class="action-btn calendar-btn" data-action="calendar" title="Add to Calendar"${!e.date ? ' disabled aria-disabled="true"' : ''}>
           <i class="ri-calendar-line"></i>
         </button>
         <button class="action-btn share-btn" data-action="share" title="Share Event">
@@ -518,10 +528,10 @@ function renderEventCard(e) {
         <p class="event-ride-note">Private pickup. A relaxed ride home.</p>
         <a class="book-btn"
           href="booking.html?${bookingParams.toString()}"
-          data-event="${e.name}"
-          data-venue="${e.venue}"
+          data-event="${escapeHTML(e.name)}"
+          data-venue="${escapeHTML(e.venue)}"
           data-date="${d ? d.toLocaleDateString("en-CA") : "TBA"}"
-          data-time="${e.time || ''}">
+          data-time="${escapeHTML(e.time || '')}">
           Request a quote <i class="ri-arrow-right-line"></i>
         </a>
       </div>
@@ -539,11 +549,11 @@ function initDropdownUI() {
   // Date Dropdown
   const dateToggle = document.getElementById('dateDropdownToggle');
   const dateMenu = document.getElementById('dateDropdownMenu');
-  
+
   // City Dropdown
   const cityToggle = document.getElementById('cityDropdownToggle');
   const cityMenu = document.getElementById('cityDropdownMenu');
-  
+
   // Event Type Dropdown
   const typeToggle = document.getElementById('typeDropdownToggle');
   const typeMenu = document.getElementById('typeDropdownMenu');
@@ -560,7 +570,7 @@ function initDropdownUI() {
   function toggleDropdown(toggle, menu) {
     const isOpen = menu.classList.contains('open');
     closeAllDropdowns();
-    
+
     if (!isOpen) {
       menu.classList.add('open');
       toggle.classList.add('active');
@@ -611,19 +621,19 @@ function initDropdownUI() {
   quickDateBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const range = btn.getAttribute('data-range');
-      
+
       quickDateBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      
+
       dateLabel.textContent = btn.textContent;
-      
+
       ACTIVE_FILTERS.dateRange = range;
       ACTIVE_FILTERS.specificDate = null; // Clear specific date
-      
+
       if (datePicker) datePicker.value = '';
-      
+
       renderEvents();
-      
+
       setTimeout(() => {
         dateMenu.classList.remove('open');
         dateToggle.classList.remove('active');
@@ -635,18 +645,18 @@ function initDropdownUI() {
     datePicker.addEventListener('change', (e) => {
       if (e.target.value) {
         quickDateBtns.forEach(b => b.classList.remove('active'));
-        
+
         const selectedDate = new Date(e.target.value);
-        dateLabel.textContent = selectedDate.toLocaleDateString('en-US', { 
-          month: 'short', 
-          day: 'numeric' 
+        dateLabel.textContent = selectedDate.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric'
         });
-        
+
         ACTIVE_FILTERS.specificDate = e.target.value;
         ACTIVE_FILTERS.dateRange = "all"; // Clear range when using picker
-        
+
         renderEvents();
-        
+
         setTimeout(() => {
           dateMenu.classList.remove('open');
           dateToggle.classList.remove('active');
@@ -662,15 +672,15 @@ function initDropdownUI() {
   cityItems.forEach(item => {
     item.addEventListener('click', () => {
       const city = item.getAttribute('data-city');
-      
+
       cityItems.forEach(i => i.classList.remove('active'));
       item.classList.add('active');
-      
+
       cityLabel.textContent = item.textContent.trim();
-      
+
       ACTIVE_FILTERS.city = city.toLowerCase();
       renderEvents();
-      
+
       setTimeout(() => {
         cityMenu.classList.remove('open');
         cityToggle.classList.remove('active');
@@ -685,12 +695,12 @@ function initDropdownUI() {
   checkboxItems.forEach(item => {
     item.addEventListener('click', (e) => {
       if (e.target.tagName === 'INPUT') return; // Let checkbox handle itself
-      
+
       const checkbox = item.querySelector('input[type="checkbox"]');
       checkbox.checked = !checkbox.checked;
-      
+
       const category = checkbox.getAttribute('data-category');
-      
+
       if (checkbox.checked) {
         if (!ACTIVE_FILTERS.categories.includes(category)) {
           ACTIVE_FILTERS.categories.push(category);
@@ -698,7 +708,7 @@ function initDropdownUI() {
       } else {
         ACTIVE_FILTERS.categories = ACTIVE_FILTERS.categories.filter(c => c !== category);
       }
-      
+
       updateTypeLabel();
       renderEvents();
     });
@@ -706,7 +716,7 @@ function initDropdownUI() {
     const checkbox = item.querySelector('input[type="checkbox"]');
     checkbox.addEventListener('change', () => {
       const category = checkbox.getAttribute('data-category');
-      
+
       if (checkbox.checked) {
         if (!ACTIVE_FILTERS.categories.includes(category)) {
           ACTIVE_FILTERS.categories.push(category);
@@ -714,7 +724,7 @@ function initDropdownUI() {
       } else {
         ACTIVE_FILTERS.categories = ACTIVE_FILTERS.categories.filter(c => c !== category);
       }
-      
+
       updateTypeLabel();
       renderEvents();
     });
@@ -722,7 +732,7 @@ function initDropdownUI() {
 
   function updateTypeLabel() {
     const checkedBoxes = document.querySelectorAll('.dropdown-checkbox-item input[type="checkbox"]:checked');
-    
+
     if (checkedBoxes.length === 0) {
       typeLabel.textContent = 'All Types';
     } else if (checkedBoxes.length === 1) {
@@ -776,7 +786,7 @@ function initSimpleFilters() {
 
 function initClearFilters() {
   const clearBtn = document.getElementById('clear-filters');
-  
+
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       // Reset filters
@@ -785,11 +795,11 @@ function initClearFilters() {
       ACTIVE_FILTERS.city = "all";
       ACTIVE_FILTERS.dateRange = "all";
       ACTIVE_FILTERS.specificDate = null;
-      
+
       // Reset date picker
       const datePicker = document.getElementById('eventDatePicker');
       if (datePicker) datePicker.value = '';
-      
+
       // Reset quick date buttons
       document.querySelectorAll('.quick-date-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -797,7 +807,7 @@ function initClearFilters() {
           btn.classList.add('active');
         }
       });
-      
+
       // Reset city dropdown
       document.querySelectorAll('#cityDropdownMenu .dropdown-item').forEach(item => {
         item.classList.remove('active');
@@ -805,28 +815,32 @@ function initClearFilters() {
           item.classList.add('active');
         }
       });
-      
+
       // Reset event type checkboxes
       document.querySelectorAll('.dropdown-checkbox-item input[type="checkbox"]').forEach(cb => {
         cb.checked = false;
       });
-      
+
       // Reset labels
       const dateLabel = document.querySelector('#dateDropdownToggle .dropdown-label');
       const cityLabel = document.querySelector('#cityDropdownToggle .dropdown-label');
       const typeLabel = document.querySelector('#typeDropdownToggle .dropdown-label');
-      
+
       if (dateLabel) dateLabel.textContent = 'Select Date';
       if (cityLabel) cityLabel.textContent = 'All Cities';
       if (typeLabel) typeLabel.textContent = 'All Types';
-      
+
       // Reset search input
       const searchInput = document.getElementById('event-search');
       if (searchInput) searchInput.value = '';
       document.querySelectorAll('.quick-date-btn, [data-city]').forEach(button => {
         button.setAttribute('aria-pressed', String(button.classList.contains('active')));
       });
-      
+
+      APPLIED_FILTERS = structuredClone(ACTIVE_FILTERS);
+      document.querySelectorAll('[data-category]').forEach(input => { input.checked = false; });
+      document.querySelectorAll('[data-city]').forEach(button => button.classList.toggle('active', button.dataset.city === 'all'));
+      clearBtn.closest('.events-sidebar') && document.getElementById('openFilters')?.classList.remove('has-filters');
       renderEvents();
     });
   }
@@ -848,7 +862,7 @@ function initMobileFilters() {
     openBtn?.setAttribute('aria-expanded', 'false');
     sidebar?.setAttribute('aria-hidden', 'true');
     if (sidebar) sidebar.inert = true;
-    openBtn?.focus();
+    openBtn?.focus({ preventScroll: true });
     renderEvents();
   };
 
@@ -858,9 +872,11 @@ function initMobileFilters() {
     openBtn?.setAttribute('aria-expanded', 'true');
     sidebar?.setAttribute('aria-hidden', 'false');
     if (sidebar) sidebar.inert = false;
-    document.getElementById('event-search')?.focus({ preventScroll: true });
+    if (!window.matchMedia('(any-pointer: coarse)').matches) {
+      document.getElementById('event-search')?.focus({ preventScroll: true });
+    }
   };
-  
+
   if (openBtn && sidebar) {
     openBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -897,16 +913,16 @@ function initMobileFilters() {
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("🚀 Events page loaded - Enhanced with Dropdowns");
-  
+
   // Load events from API
   loadEvents();
-  
+
   // Initialize dropdown UI
   initDropdownUI();
-  
+
   // Initialize clear filters
   initClearFilters();
-  
+
   // Initialize mobile filters
   initMobileFilters();
 
@@ -915,6 +931,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
       ACTIVE_FILTERS.search = e.target.value;
+      APPLIED_FILTERS.search = ACTIVE_FILTERS.search;
       renderEvents();
     });
   }
@@ -931,7 +948,7 @@ document.addEventListener("click", (e) => {
     const eventRow = actionBtn.closest(".event-row");
     const eventId = eventRow.dataset.eventId;
     const event = ALL_EVENTS.find(ev => (ev.id || ev.name) === eventId);
-    
+
     if (!event) return;
 
     switch (action) {
@@ -962,84 +979,3 @@ document.addEventListener("click", (e) => {
     window.location.href = `booking.html?${params.toString()}`;
   }
 });
-
-// ===== NOTIFY ME FEATURE =====
-
-(() => {
-  const bookingForm = document.getElementById("booking-form");
-  if (!bookingForm) return;
-  
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-        const thanksOverlay = document.getElementById('thanks-overlay');
-        if (thanksOverlay && thanksOverlay.classList.contains('open')) {
-          handleNotifySubscription();
-          observer.disconnect();
-        }
-      }
-    });
-  });
-  
-  const thanksOverlay = document.getElementById('thanks-overlay');
-  if (thanksOverlay) {
-    observer.observe(thanksOverlay, { attributes: true });
-  }
-  
-  async function handleNotifySubscription() {
-    const notifyMeCheckbox = document.getElementById("notifyMe");
-    const emailInput = bookingForm.querySelector('input[name="email"]');
-    const email = emailInput ? emailInput.value : '';
-    
-    if (!notifyMeCheckbox || !notifyMeCheckbox.checked || !email) {
-      return;
-    }
-    
-    try {
-      const notesField = bookingForm.querySelector('textarea[name="notes"]');
-      const currentEventName = notesField ? notesField.value : '';
-      
-      let categories = [];
-      const notesLower = currentEventName.toLowerCase();
-      
-      if (notesLower.includes('concert') || notesLower.includes('music')) {
-        categories.push('concert');
-      }
-      if (notesLower.includes('sport') || notesLower.includes('game')) {
-        categories.push('sports');
-      }
-      if (notesLower.includes('club') || notesLower.includes('nightlife')) {
-        categories.push('nightlife');
-      }
-      if (notesLower.includes('art') || notesLower.includes('theatre') || notesLower.includes('theater')) {
-        categories.push('arts');
-      }
-      if (notesLower.includes('family')) {
-        categories.push('family');
-      }
-      
-      if (categories.length === 0) {
-        categories = ['concert', 'sports', 'nightlife', 'arts', 'family'];
-      }
-      
-      const notifyResponse = await fetch(`${API_BASE}/api/notify/subscribe`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: email,
-          categories: categories,
-          city: ACTIVE_FILTERS.city !== "all" ? ACTIVE_FILTERS.city : "all"
-        })
-      });
-      
-      if (notifyResponse.ok) {
-        console.log('✅ Notification subscription successful');
-        showToast('You\'ll be notified about similar events!');
-      }
-    } catch (err) {
-      console.warn('⚠️ Notification subscription failed:', err);
-    }
-  }
-})();
-
-console.log("✅ Event.js Enhanced with Dropdowns loaded");

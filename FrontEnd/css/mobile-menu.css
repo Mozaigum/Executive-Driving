@@ -1,30 +1,30 @@
 /* Navigation uses isolated classes so page and policy links keep their hierarchy. */
 body.navigation-open #site-header { visibility: hidden; }
-body.navigation-open .xd-chat, body.navigation-open .xd-chat__toggle { display: none !important; }
+
 #menu-overlay { position: fixed; inset: 0; z-index: 12000; display: block; margin: 0; padding: 0; background: #111310; backdrop-filter: none; -webkit-backdrop-filter: none; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .22s ease, visibility .22s; }
 #menu-overlay.open { opacity: 1; visibility: visible; pointer-events: auto; }
-#menu-overlay .mobile-menu-sheet { display: flex; flex-direction: column; width: 100%; height: 100%; height: 100dvh; overflow: auto; overscroll-behavior: contain; background: #111310; color: #f2efe8; font-family: 'Inter', Arial, sans-serif; text-align: left; transform: translateY(-10px); transition: transform .28s ease; }
+#menu-overlay .mobile-menu-sheet { display: flex; flex-direction: column; width: 100%; height: 100%; height: 100dvh; overflow: auto; overscroll-behavior: contain; background: #111310; color: #f2efe8; font-family: "Inter", Arial, sans-serif; text-align: left; transform: translateY(-10px); transition: transform .28s ease; }
 #menu-overlay.open .mobile-menu-sheet { transform: none; }
 #menu-overlay .mobile-menu-top { position: relative; display: flex; flex-shrink: 0; align-items: center; justify-content: space-between; min-height: 100px; margin: 0 26px; padding-top: env(safe-area-inset-top); border-bottom: 1px solid #2c2e28; }
 #menu-overlay .mobile-menu-top img { display: block; width: 108px; height: 72px; object-fit: contain; }
-#menu-overlay .menu-close { position: static; display: flex; align-items: center; justify-content: center; gap: 9px; width: auto; height: 44px; min-width: 44px; margin: 0 -8px 0 0; padding: 0 8px; border: 0; border-radius: 0; background: transparent; color: #d9d8d0; font: 400 12px/1.4 'Inter', Arial, sans-serif; letter-spacing: 0; cursor: pointer; }
+#menu-overlay .menu-close { position: static; display: flex; align-items: center; justify-content: center; gap: 9px; width: auto; height: 44px; min-width: 44px; margin: 0 -8px 0 0; padding: 0 8px; border: 0; border-radius: 0; background: transparent; color: #d9d8d0; font: 400 12px/1.4 "Inter", Arial, sans-serif; letter-spacing: 0; cursor: pointer; }
 #menu-overlay .menu-close::before, #menu-overlay .menu-close::after, #menu-overlay .menu-close span::before, #menu-overlay .menu-close span::after { content: none; }
 #menu-overlay .menu-close { align-self: center; }
-#menu-overlay .menu-close span { font: 400 12px/1.4 'Inter', Arial, sans-serif; }
+#menu-overlay .menu-close span { font: 400 12px/1.4 "Inter", Arial, sans-serif; }
 #menu-overlay .mobile-menu-pages { flex-shrink: 0; padding: 24px 26px 14px; }
-#menu-overlay .mobile-menu-caption { margin: 0 0 12px; color: #85887d; font: 500 10px/1.4 'Inter', Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; text-align: left; }
-#menu-overlay .mobile-menu-link { display: flex; align-items: center; justify-content: space-between; min-height: 59px; padding: 9px 0; border: 0; border-bottom: 1px solid #282b25; background: transparent; color: #e8e8e0; font: 400 26px/1.35 'Inter', Arial, sans-serif; letter-spacing: -.045em; text-transform: none; text-decoration: none; }
+#menu-overlay .mobile-menu-caption { margin: 0 0 12px; color: #85887d; font: 500 10px/1.4 "Inter", Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; text-align: left; }
+#menu-overlay .mobile-menu-link { display: flex; align-items: center; justify-content: space-between; min-height: 59px; padding: 9px 0; border: 0; border-bottom: 1px solid #282b25; background: transparent; color: #e8e8e0; font: 400 26px/1.35 "Inter", Arial, sans-serif; letter-spacing: -.045em; text-transform: none; text-decoration: none; }
 #menu-overlay .mobile-menu-link.is-current { color: #c7b38b; }
 #menu-overlay .mobile-menu-arrow { color: #666b60; font: 300 23px/1 Arial, sans-serif; }
 #menu-overlay .mobile-menu-link.is-current .mobile-menu-arrow { color: #c7b38b; }
 #menu-overlay .mobile-menu-bottom { flex-shrink: 0; margin-top: auto; padding: 24px 26px max(26px, env(safe-area-inset-bottom)); }
-#menu-overlay .mobile-menu-quote { display: flex; align-items: center; justify-content: space-between; min-height: 50px; padding: 0 18px; border: 1px solid #ded8cb; border-radius: 4px; background: #eee9df; color: #171914; font: 600 13px/1.4 'Inter', Arial, sans-serif; letter-spacing: 0; text-decoration: none; }
+#menu-overlay .mobile-menu-quote { display: flex; align-items: center; justify-content: space-between; min-height: 50px; padding: 0 18px; border: 1px solid #ded8cb; border-radius: 4px; background: #eee9df; color: #171914; font: 600 13px/1.4 "Inter", Arial, sans-serif; letter-spacing: 0; text-decoration: none; }
 #menu-overlay .mobile-menu-quote span { font-size: 21px; font-weight: 400; }
 #menu-overlay .mobile-menu-contact { display: flex; flex-direction: column; gap: 8px; margin: 24px 0; }
-#menu-overlay .mobile-menu-contact > span { color: #85887d; font: 400 11px/1.5 'Inter', Arial, sans-serif; }
-#menu-overlay .mobile-menu-contact a { width: fit-content; color: #e0e0d6; font: 400 15px/1.5 'Inter', Arial, sans-serif; letter-spacing: .015em; text-decoration: none; }
+#menu-overlay .mobile-menu-contact > span { color: #85887d; font: 400 11px/1.5 "Inter", Arial, sans-serif; }
+#menu-overlay .mobile-menu-contact a { width: fit-content; color: #e0e0d6; font: 400 15px/1.5 "Inter", Arial, sans-serif; letter-spacing: .015em; text-decoration: none; }
 #menu-overlay .mobile-menu-legal { display: flex; flex-wrap: wrap; gap: 10px 22px; padding-top: 16px; border-top: 1px solid #2c2e28; }
-#menu-overlay .mobile-menu-legal a { display: inline-flex; align-items: center; min-height: 32px; color: #8d9184; font: 400 10px/1.4 'Inter', Arial, sans-serif; letter-spacing: 0; text-transform: none; text-decoration: none; }
+#menu-overlay .mobile-menu-legal a { display: inline-flex; align-items: center; min-height: 32px; color: #8d9184; font: 400 10px/1.4 "Inter", Arial, sans-serif; letter-spacing: 0; text-transform: none; text-decoration: none; }
 #menu-overlay a:focus-visible, #menu-overlay button:focus-visible { outline: 1px solid #c7b38b; outline-offset: 5px; }
 @media (max-height: 680px) {
   #menu-overlay .mobile-menu-top { min-height: 78px; }

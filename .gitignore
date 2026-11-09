@@ -17,3 +17,10 @@ npm-debug.log*
 backend/node_modules/
 frontend/node_modules/
 .env
+
+# Private runtime data and local review artifacts
+BackEnd/data/
+BackEnd/*.db*
+BackEnd/*.sqlite*
+BackEnd/*.log
+output/

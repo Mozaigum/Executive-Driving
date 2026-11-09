@@ -24,8 +24,9 @@
     panel.hidden = !open;
     toggle.setAttribute('aria-expanded', String(open));
     toggle.querySelector('span').textContent = open ? '\u2212' : '+';
-    if (open) panel.querySelector('input[name="event"]').focus({ preventScroll: true });
-    else if (restoreFocus) toggle.focus({ preventScroll: true });
+    // Opening the panel must not summon the mobile keyboard.
+    // Keep focus on its toggle; fields receive focus when the user selects them.
+    if (!open && restoreFocus) toggle.focus({ preventScroll: true });
   };
   toggle.addEventListener('click', () => {
     const open = panel.hidden;

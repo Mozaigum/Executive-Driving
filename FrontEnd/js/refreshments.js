@@ -10,7 +10,7 @@
     if (!toggle || !panel || !input) return;
     const form = input.form;
     const validate = () => {
-      input.setCustomValidity(toggle.checked && !input.value.trim() ? 'Tell us which non-alcoholic drinks you would like.' : '');
+      input.setCustomValidity(toggle.checked && !input.value.trim() ? (toggleId === 'alcoholService' ? 'Tell us your liquor preferences.' : 'Tell us which non-alcoholic drinks you would like.') : '');
     };
     const update = () => {
       panel.hidden = !toggle.checked;

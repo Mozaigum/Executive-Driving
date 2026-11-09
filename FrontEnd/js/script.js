@@ -2,8 +2,6 @@ import { postJSON, API_BOOK, API_BASE } from './api.js';
 
 
 
-console.log('script.js loaded v8');
-
 
 /*  Executive Driving,  script.js*/
 
@@ -41,6 +39,27 @@ const unlockScroll = () => {
 
   // Export helpers to window 
   window.__XD__ = { $, $$, on, lockScroll, unlockScroll };
+})();
+
+/* Shared form completion and phone checks. */
+(() => {
+  window.__XD__.completeRequest = details => {
+    const receipt = {reference:details.reference,email:details.email,pickup:details.pickup,dropoff:details.dropoff,date:details.date,time:details.time,passengers:details.passengers,returnTrip:details.returnTrip,alcoholService:details.alcoholService,nonAlcoholicService:details.nonAlcoholicService,customerEmailSent:details.customerEmailSent,requestType:details.requestType || 'quote',savedAt:Date.now()};
+    try { sessionStorage.setItem('xd-request-receipt', JSON.stringify(receipt)); } catch (_) {}
+    window.location.assign('thank-you.html#received');
+  };
+  document.querySelectorAll('input[name="phone"]').forEach(input => {
+    input.setAttribute('inputmode', 'tel');
+    const validate = () => {
+      const digits = input.value.replace(/\D/g, '');
+      input.setCustomValidity(!input.value.trim() || /^(?:1)?\d{10}$/.test(digits) ? '' : 'Enter a 10-digit phone number with area code, for example 8259739800. A leading 1 is also accepted.');
+    };
+    input.addEventListener('input', validate);
+    input.addEventListener('change', validate);
+    input.form?.addEventListener('submit', validate, true);
+    input.form?.addEventListener('reset', () => setTimeout(validate, 0));
+    validate();
+  });
 })();
 
 /* ---------- Overlay menu ---------- */
@@ -127,8 +146,21 @@ const unlockScroll = () => {
 
   const overlay = document.getElementById('booking-overlay');
 
-  const get = (name) => form.querySelector(`[name="${name}"]`);
+  const get = (name) => form.elements.namedItem(name);
+  let requestKey = null, requestBody = null;
+  const status = document.createElement('p');
+  status.setAttribute('role', 'status');
+  status.setAttribute('aria-live', 'polite');
+  status.className = 'booking-submit-status';
+  status.tabIndex = -1;
+  form.querySelector('.booking-actions')?.append(status);
   const submitBtn = form.querySelector('[type="submit"]');
+  const submitLabel = submitBtn?.textContent || 'Request a quote';
+  const progress = document.createElement('span');
+  progress.className = 'submission-progress';
+  progress.setAttribute('aria-hidden', 'true');
+  progress.hidden = true;
+  form.querySelector('.booking-actions')?.append(progress);
 
   // Carry the visitor's intent from service and fleet links into the request.
   const requestParams = new URLSearchParams(window.location.search);
@@ -149,20 +181,25 @@ const unlockScroll = () => {
     event: 'Event or occasion',
     group: 'Group transportation'
   };
-  if (serviceSelect && serviceLabels[requestedService]) serviceSelect.value = serviceLabels[requestedService];
-  if (requestedVehicle && get('notes') && !get('notes').value) {
-    get('notes').value = `Vehicle requested: ${requestedVehicle}`;
-  }
+  if (serviceSelect && serviceLabels[requestedService]) { serviceSelect.value = serviceLabels[requestedService]; serviceSelect.dispatchEvent(new Event('change', { bubbles: true })); }
+
   
   const setLoading = (on) => {
     if (!submitBtn) return;
     submitBtn.classList.toggle('is-loading', !!on);
     submitBtn.disabled = !!on;
     submitBtn.setAttribute('aria-busy', on ? 'true' : 'false');
+    form.setAttribute('aria-busy', String(Boolean(on)));
+    submitBtn.textContent = on ? 'Sending request...' : submitLabel;
+    progress.hidden = !on;
+    status.textContent = on ? 'Sending your request securely. Please keep this page open.' : status.textContent;
   };
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (submitBtn?.disabled) return;
+    status.textContent = '';
+    status.classList.remove('is-error');
     if (!form.reportValidity()) return;
 
     // Get returnTrip checkbox - try multiple ways to ensure we get it
@@ -171,8 +208,7 @@ const unlockScroll = () => {
     const returnTripValue = returnTripCheckbox ? returnTripCheckbox.checked : false;
 
     // DEBUG: Log to console to verify
-    console.log('🔄 Return Trip Checkbox:', returnTripCheckbox);
-    console.log('🔄 Return Trip Value:', returnTripValue);
+
 
     // Get "Notify me about similar events" checkbox (events page only)
 const notifyCheckbox =
@@ -181,7 +217,7 @@ const notifyCheckbox =
 
 const notifyMeValue = notifyCheckbox ? notifyCheckbox.checked : false;
 
-console.log('🔔 Notify Me:', notifyMeValue);
+
 const AlcoholCheckbox = form.querySelector('input[name="alcoholService"]');
 const alcoholValue = AlcoholCheckbox ? AlcoholCheckbox.checked : false;
 const serviceType = get('serviceType')?.value.trim();
@@ -211,6 +247,10 @@ const returnSummary = returnDetails ? [
 
 const payload = {
   serviceType: serviceSelect ? serviceType : 'General journey',
+  customerNotes: get('notes')?.value.trim() || '',
+  requestedVehicle: requestedVehicle?.trim() || '',
+  luggage: luggage || '',
+  flightNumber: flightNumber || '',
   name: get('name')?.value.trim(),
   phone: get('phone')?.value.trim(),
   email: get('email')?.value.trim(),
@@ -240,31 +280,35 @@ if (refreshmentDetails) {
 const enquiryRefreshments = get('alcoholService')?.checked ? get('serviceRefreshmentPreferences')?.value.trim() : '';
 if (enquiryRefreshments) {
   payload.serviceRefreshmentPreferences = enquiryRefreshments;
-  payload.notes += '\n\nNON-ALCOHOLIC REFRESHMENTS (SERVICE ENQUIRY)\n' + enquiryRefreshments;
+  payload.notes += '\n\nLIQUOR SERVICE REQUEST\n' + enquiryRefreshments;
 }
 
     // DEBUG: Log full payload
-    console.log('📦 Booking Payload:', payload);
-    console.log('📦 returnTrip in payload:', payload.returnTrip);
 
-   for (const [k, v] of Object.entries(payload)) {
-  if (['notes', 'returnTrip', 'notifyMe','alcoholService'].includes(k)) continue;
-  if (!v) { alert('Please fill all required fields.'); return; }
-}
 
+    const required = ['name', 'phone', 'email', 'pickup', 'dropoff', 'date', 'time', 'passengers'];
+    if (required.some(name => !String(payload[name] ?? '').trim())) {
+      status.textContent = 'Please complete the required journey and contact details.';
+      return;
+    }
+    const serialized = JSON.stringify(payload);
+    if (serialized !== requestBody) {
+      requestKey = window.crypto?.randomUUID?.() || `request_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      requestBody = serialized;
+    }
     setLoading(true);
     
     try {
-      const data = await postJSON(API_BOOK, payload);
+      const data = await postJSON(API_BOOK, payload, { 'Idempotency-Key': requestKey });
       // 🔔 Notify-me subscription
 if (payload.notifyMe === true) {
   try {
     await postJSON(`${API_BASE}/api/notify/subscribe`, {
       email: payload.email,
       categories: ["concert", "sports", "nightlife"],
-      city: payload.pickup || "all"
+      city: 'all'
     });
-    console.log("🔔 Notify subscription sent");
+
   } catch (err) {
     console.warn("Notify subscription failed:", err.message);
   }
@@ -272,21 +316,17 @@ if (payload.notifyMe === true) {
 
 
       if (data.ok) {
-        // ✅ close booking modal + open the Thank You overlay with details
+        requestKey = null; requestBody = null;
         form.reset();
-        overlay?.classList.remove('open');
-        overlay?.setAttribute('aria-hidden', 'true');
-
-        if (window.__XD__?.openThanks) {
-          window.__XD__.openThanks(payload);
-        } else {
-          alert('Thanks! Your request was sent. We will confirm shortly.');
-        }
+        window.__XD__.completeRequest({...payload,reference:data.reference,customerEmailSent:data.customerEmailSent});
       } else {
-        alert('Sorry could not send just now. Please call 825-973-9800 or email info@executivedriving.ca.');
+        throw new Error('Unable to send your request. Please call 825-973-9800 or try again.');
       }
     } catch (e) {
-      alert(e.message || 'Network error. Please try again or contact us directly.');
+      status.textContent = e.message || 'Network error. Please try again or call 825-973-9800.';
+      status.classList.add('is-error');
+      status.focus({preventScroll:true});
+      status.scrollIntoView({block:'nearest',behavior:'smooth'});
     }
     finally {
       setLoading(false);
@@ -678,57 +718,36 @@ document.getElementById('year')?.append(new Date().getFullYear());
   });
 })();
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("client-form");
-
+  const form = document.getElementById('client-form');
   if (form) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault(); // stop reload
-
-      const formData = {
-        type: "concierge",
-        name: form.name.value,
-        phone: form.phone.value,
-        email: form.email.value,
-        date: form.date.value,
-        details: form.details.value,
-        ReturnTrip:form.returnTrip.checked
-      };
-
+    const button = form.querySelector('[type="submit"]');
+    const buttonLabel = button.textContent;
+    const status = document.createElement('p');
+    status.setAttribute('role', 'status');
+    status.className = 'booking-submit-status';
+    status.tabIndex = -1;
+    form.append(status);
+    let lastBody = '', requestKey = '';
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (button.disabled || !form.reportValidity()) return;
+      const value = name => form.elements.namedItem(name).value.trim();
+      const body = {type:'concierge',name:value('name'),phone:value('phone'),email:value('email'),date:value('date'),details:value('details')};
+      const serialized = JSON.stringify(body);
+      if (serialized !== lastBody) {lastBody = serialized;requestKey = window.crypto?.randomUUID?.() || `care_${Date.now()}_${Math.random().toString(36).slice(2)}`;}
+      button.disabled = true;
+      button.setAttribute('aria-busy','true');
+      button.classList.add('is-loading');
+      button.textContent = 'Sending request...';
+      status.classList.remove('is-error');
+      status.textContent = 'Sending your request. Please keep this page open.';
       try {
-        const res = await fetch(API_BOOK, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData)
-        });
-
-
-
-        const data = await res.json();
-        console.log("Server response:", data);
-
-      if (data.ok) {
-  const payload2 = {
-    name: form.name.value,
-    phone: form.phone.value,
-    email: form.email.value,
-    pickup: ', ',
-    dropoff: ', ',
-    date: form.date.value,
-    time: '',
-    passengers: ', ',
-    notes: form.details.value,
-    
-  };
-  window.__XD__?.openThanks(payload2);
-  form.reset();
-} else {
-  alert(" Error: " + data.error);
-}
-
-      } catch (err) {
-        console.error("Fetch failed:", err);
-        alert(" Could not send request. Check console.");
-      }
+        const data = await postJSON(API_BOOK, body, {'Idempotency-Key':requestKey});
+        if (!data?.ok) throw new Error('Unable to send your request. Please call 825-973-9800.');
+        window.__XD__.completeRequest({...body,reference:data.reference,customerEmailSent:false,requestType:'enquiry'});
+        form.reset();lastBody = '';requestKey = '';
+      } catch (error) {status.textContent = error.message || 'Unable to send your request. Please call 825-973-9800.';status.classList.add('is-error');status.focus({preventScroll:true});status.scrollIntoView({block:'nearest',behavior:'smooth'});}
+      finally {button.disabled = false;button.setAttribute('aria-busy','false');button.classList.remove('is-loading');button.textContent = buttonLabel;}
     });
   }
   // ---- Booking Received modal helpers ----
@@ -750,7 +769,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const icsBtn  = overlay.querySelector('#t-ics');
   const emailBtn= overlay.querySelector('#t-email-link');
 
-  const fmtDate = (d) => d ? new Date(d).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}) : ', ';
+  const fmtDate = (d) => d ? new Date(`${d}T12:00:00`).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}) : ', ';
   const fmtTime = (t) => {
     if (!t) return ', ';
     const [h,m] = t.split(':').map(Number); const d=new Date(); d.setHours(h||0,m||0,0,0);
@@ -759,10 +778,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function buildICS(p) {
     try {
-      const start = new Date(`${p.date}T${p.time||'09:00'}:00`);
+      const start = new Date(`${p.date}T${p.time||'09:00'}:00Z`);
       const end   = new Date(start.getTime() + 60*60*1000);
       const pad=(n)=>String(n).padStart(2,'0');
       const dt=(d)=> d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+'00Z';
+      const icsText = value => String(value || '').replace(/\\/g, '\\\\').replace(/\r?\n/g, '\\n').replace(/;/g, '\\;').replace(/,/g, '\\,');
       const details = [
         `Name: ${p.name||''}`, `Phone: ${p.phone||''}`, `Email: ${p.email||''}`,
         `Pickup: ${p.pickup||''}`, `Drop-off: ${p.dropoff||''}`,
@@ -771,9 +791,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const ics = [
         'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Executive Driving//Booking//EN',
         'BEGIN:VEVENT',`UID:${Date.now()}@executivedriving.ca`,
-        `DTSTAMP:${dt(new Date())}`,`DTSTART:${dt(start)}`,`DTEND:${dt(end)}`,
-        'SUMMARY:Executive Driving,  Chauffeur Booking',
-        `LOCATION:${(p.pickup||'').replace(/\n/g,' ')}`,`DESCRIPTION:${details}`,
+        `DTSTAMP:${dt(new Date())}`,`DTSTART;TZID=America/Edmonton:${p.date.replace(/-/g,'')}T${(p.time||'09:00').replace(':','')}00`,`DTEND;TZID=America/Edmonton:${end.getUTCFullYear()}${pad(end.getUTCMonth()+1)}${pad(end.getUTCDate())}T${pad(end.getUTCHours())}${pad(end.getUTCMinutes())}00`,
+        'SUMMARY:Executive Driving Chauffeur Request',
+        `LOCATION:${icsText(p.pickup)}`,`DESCRIPTION:${icsText(details)}`,
         'END:VEVENT','END:VCALENDAR'
       ].join('\r\n');
       return new Blob([ics], { type:'text/calendar' });
@@ -799,13 +819,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sumEl) {
       sumEl.innerHTML = '';
       [
-        ['Name', payload.name], ['Phone', payload.phone],
+        ...(payload.reference ? [['Reference', payload.reference]] : []), ['Name', payload.name], ['Phone', payload.phone],
         ['Pickup', payload.pickup], ['Drop-off', payload.dropoff],
         ['Date', fmtDate(payload.date)], ['Time', fmtTime(payload.time)],
         ['Passengers', payload.passengers], ...(payload.notes?[['Notes', payload.notes]]:[])
       ].forEach(([k,v]) => {
         const li=document.createElement('li'); li.style.margin='2px 0';
-        li.innerHTML = `<strong>${k}:</strong> ${v||', '}`; sumEl.appendChild(li);
+        const label = document.createElement('strong'); label.textContent = `${k}: `;
+        li.append(label, document.createTextNode(String(v || '?'))); sumEl.appendChild(li);
       });
     }
     if (icsBtn) { const blob=buildICS(payload); if (blob) icsBtn.href=URL.createObjectURL(blob); }

@@ -2,18 +2,17 @@ export const API_BASE =
   window.location.hostname === "localhost" ||
   window.location.hostname === "127.0.0.1"
     ? "http://localhost:3001"
-    : "https://executive-driving-backend-b79y.onrender.com";
+    : (document.querySelector('meta[name="api-base"]')?.content?.replace(/\/$/, "") || "https://executive-driving-backend-b79y.onrender.com");
 
-export const API_CHAT = `${API_BASE}/chat`;        // matches app.post("/chat", ...)
 export const API_BOOK = `${API_BASE}/book`;
-   // change to /book if your backend uses /book
 
 // /js/api.js
-export async function postJSON(url, body) {
+export async function postJSON(url, body, headers = {}) {
   const r = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...headers },
     body: JSON.stringify(body),
+    signal: AbortSignal.timeout(60000),
   });
 
   let data = null;

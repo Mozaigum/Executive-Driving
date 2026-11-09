@@ -1,0 +1,39 @@
+.thankyou-page .request-received { max-width: 920px; margin: 0 auto; padding: 158px 24px 85px; color: #242720; }
+.thankyou-page .receipt-intro { max-width: 720px; margin-bottom: 35px; }
+.thankyou-page .receipt-check { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 24px; border: 1px solid #bfcab9; border-radius: 50%; background: #edf3e9; color: #395139; animation: receipt-appear .45s ease-out both; }
+.thankyou-page .receipt-check svg { width: 23px; height: 23px; stroke-dasharray: 30; stroke-dashoffset: 30; animation: receipt-draw .5s .15s ease forwards; }
+.thankyou-page .receipt-eyebrow { margin: 0 0 13px; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #776b52; }
+.thankyou-page h1 { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(30px, 4vw, 44px); line-height: 1.2; font-weight: 400; margin: 0 0 18px; letter-spacing: -.025em; }
+.thankyou-page .receipt-intro > p:last-child { font-size: 15px; line-height: 1.8; color: #62665d; max-width: 660px; }
+.thankyou-page .receipt-panel { padding: 27px 30px; background: #fffefa; border: 1px solid #deddd4; border-radius: 9px; }
+.thankyou-page .receipt-panel section { padding: 0; margin: 0; min-height: 0; text-align: left; }
+.thankyou-page .receipt-panel dt, .thankyou-page .receipt-panel dd { text-align: left; }
+.thankyou-page #site-header .nav-item, .thankyou-page #site-header .nav-phone { animation: none; opacity: 1; transform: none; }
+.thankyou-page .receipt-reference { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding-bottom: 20px; border-bottom: 1px solid #e6e3da; }
+.thankyou-page .receipt-reference span { color: #73766d; font-size: 12px; }
+.thankyou-page .receipt-reference strong { font-family: 'Courier New', monospace; font-size: 16px; font-weight: 500; }
+.thankyou-page .receipt-email { margin: 19px 0 0; color: #62665d; font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+.thankyou-page .receipt-panel h2 { margin: 26px 0 15px; font-size: 14px; font-weight: 600; letter-spacing: 0; }
+.thankyou-page .receipt-details { margin: 0; }
+.thankyou-page .receipt-details > div { display: grid; grid-template-columns: 155px 1fr; gap: 18px; padding: 10px 0; border-top: 1px solid #eeece4; font-size: 13px; line-height: 1.7; }
+.thankyou-page .receipt-details dt { color: #77796e; }
+.thankyou-page .receipt-details dd { margin: 0; overflow-wrap: anywhere; }
+.thankyou-page .receipt-next { padding-top: 1px; }
+.thankyou-page .receipt-next p { color: #62665d; font-size: 13px; line-height: 1.8; margin: 0; }
+.thankyou-page .receipt-links { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 26px; margin-top: 27px; }
+.thankyou-page .receipt-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 12px 22px; background: #282b24; border-radius: 5px; color: #fffefa; text-decoration: none; font-size: 13px; }
+.thankyou-page .receipt-secondary { color: #44483c; font-size: 13px; text-underline-offset: 4px; }
+.thankyou-page [hidden] { display: none !important; }
+@keyframes receipt-appear { from { opacity: 0; transform: translateY(6px) scale(.94); } to { opacity: 1; transform: none; } }
+@keyframes receipt-draw { to { stroke-dashoffset: 0; } }
+@media (max-width: 680px) {
+  .thankyou-page .request-received { padding: 118px 19px 50px; }
+  .thankyou-page .receipt-panel { padding: 22px 20px; }
+  .thankyou-page .receipt-details > div { grid-template-columns: 1fr; gap: 2px; }
+  .thankyou-page .receipt-links { align-items: stretch; flex-direction: column; }
+  .thankyou-page .receipt-secondary { text-align: center; padding: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { .thankyou-page .receipt-check, .thankyou-page .receipt-check svg { animation: none; stroke-dashoffset: 0; } }
+.thankyou-page, .thankyou-page #page { background: #f4f2eb; }
+.thankyou-page .request-received h1 { color: #242720; }
+@view-transition { navigation: none; }

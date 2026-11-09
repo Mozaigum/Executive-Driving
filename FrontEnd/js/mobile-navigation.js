@@ -36,7 +36,7 @@
   nav.innerHTML = items.map(([href, label, icon]) => `<a href="${href}"><svg viewBox="0 0 24 24" aria-hidden="true">${icon}</svg><span>${label}</span></a>`).join('');
   const updateCurrent = () => {
     nav.querySelectorAll('a').forEach((link, index) => {
-      const active = location.hash === '#contact' && page === 'index.html' ? index === 4 : !items[index][0].includes('#') && items[index][0] === page;
+      const active = location.hash === '#contact' && page === 'index.html' ? index === 4 : !items[index][0].includes('#') && items[index][0] === (page === 'thank-you.html' ? 'booking.html' : page);
       if (active) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     });

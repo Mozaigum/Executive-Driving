@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="js/mobile-form-focus.js?v=1"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
   <title>Events | Executive Driving</title>
   <meta name="description" content="Discover events in Edmonton and Grande Prairie, then arrange private transportation with Executive Driving.">
@@ -21,7 +22,7 @@
   <link rel="stylesheet" href="css/nav.css?v=4">
   <link rel="stylesheet" href="css/premium.css?v=9">
   <link rel="stylesheet" href="css/mobile-menu.css?v=3">
-  <link rel="stylesheet" href="css/form-controls.css?v=2">
+  <link rel="stylesheet" href="css/form-controls.css?v=count-controls1">
   <link rel="stylesheet" href="css/events-refined.css?v=29">
   <link rel="stylesheet" href="css/page-heroes.css?v=4">
 
@@ -31,12 +32,14 @@
     /* Events page: page is visible immediately (no intro splash) */
     body.intro-done #page { opacity: 1; }
   </style>
-  <link rel="stylesheet" href="css/mobile-navigation.css?v=9">
+  <link rel="stylesheet" href="css/mobile-navigation.css?v=stable-mobile1">
   <script src="js/site-icons.js?v=1" defer></script>
-  <script src="js/mobile-navigation.js?v=3" defer></script>
+  <script src="js/mobile-navigation.js?v=submit-feedback1" defer></script>
   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64">
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <style>@view-transition { navigation: none; }</style>
+  <link rel="stylesheet" href="css/form-layout.css?v=1">
 </head>
 
 <body class="intro-done">
@@ -234,15 +237,15 @@
           <div class="card-sheen"></div>
           <h3 class="card-title"><i class="ri-quill-pen-line"></i> Client Care Request</h3>
           <form id="client-form" class="lux-form" novalidate>
-            <div class="field-group">
+            <div class="field-group client-care-contact-row">
               <label class="lux-field"><span>Name</span><input type="text" name="name" placeholder="Jane Doe" required></label>
-              <label class="lux-field"><span>Phone</span><input type="tel" name="phone" placeholder="+1 (___) ___ ____" required></label>
+              <label class="lux-field"><span>Phone number</span><small class="phone-label-hint">Include the area code</small><input type="tel" name="phone" placeholder="+1 (___) ___ ____" required></label>
             </div>
             <div class="field-group">
               <label class="lux-field"><span>Email</span><input type="email" name="email" placeholder="you@company.com" required></label>
               <label class="lux-field"><span>Service Date</span><input type="date" name="date" required></label>
             </div>
-            <label class="lux-field"><span>Request</span><textarea name="details" rows="4" placeholder="Pickup address, flight number, stops, notes…"></textarea></label>
+            <label class="lux-field"><span>Request</span><textarea name="details" rows="4" placeholder="Pickup address, flight number, stops, notes..."></textarea></label>
             <button type="submit" class="btn-rr btn-block">Submit</button>
             <p class="micro-note"><i class="ri-lock-2-line"></i> Your details are handled under our Privacy Policy.</p>
           </form>
@@ -438,10 +441,10 @@
       </div>
     </div>
   <script defer src="js/places-fields.js?v=3"></script>
-  <script defer src="js/field-pickers.js?v=2"></script>
-  <script type="module" defer src="js/script.js?v=mobile-fixes10"></script>
-  <script type="module" defer src="js/event.js?v=13"></script>
-  <script defer src="js/custom-event.js?v=2"></script>
+  <script defer src="js/field-pickers.js?v=mobile-spacing1"></script>
+  <script type="module" defer src="js/script.js?v=mobile-spacing1"></script>
+  <script type="module" defer src="js/event.js?v=event-focus3"></script>
+  <script defer src="js/custom-event.js?v=event-focus3"></script>
   <script defer src="js/event-name-search.js?v=2"></script>
   <script>
     window.initAutocomplete = function () {

@@ -57,3 +57,41 @@ body .field-picker-trigger:focus-visible { outline: 2px solid #9e7a3d; outline-o
 @media (max-width: 680px) {
   body .field-picker input, #customEventPanel input { font-size: 16px; }
 }
+
+.booking-submit-status { flex-basis: 100%; max-width: 100%; overflow-wrap: anywhere; line-height: 1.5; }
+.booking-submit-status:empty { display: none; }
+
+/* Submission feedback stays within the form while the request is in flight. */
+.booking-actions { position: relative; }
+.booking-actions .submission-progress { position: absolute; bottom: -8px; left: 0; right: 0; height: 2px; overflow: hidden; border-radius: 2px; background: #e8e6df; }
+.booking-actions .submission-progress[hidden] { display: none; }
+.booking-actions .submission-progress::after { content: ''; display: block; height: 100%; width: 38%; background: linear-gradient(90deg, transparent, #9b8252, #292d25); animation: submission-sweep 1.2s cubic-bezier(.4,0,.2,1) infinite; }
+#booking-form [type="submit"].is-loading, #client-form [type="submit"].is-loading { display: inline-flex; align-items: center; justify-content: center; gap: 11px; opacity: .88; cursor: wait; color: #fffefa; }
+#booking-form [type="submit"].is-loading::after { content: none; }
+#booking-form [type="submit"].is-loading::before, #client-form [type="submit"].is-loading::before { content: ''; width: 14px; height: 14px; flex: 0 0 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: submission-spin .7s linear infinite; }
+.booking-submit-status { color: #62665d; font-size: 13px; }
+.booking-submit-status.is-error { color: #9e2926; padding: 11px 13px; border-left: 2px solid #ad423b; background: #fff4f0; }
+.booking-submit-status:focus { outline: 0; }
+.phone-format-hint { display: block; color: #77796e; font-size: 11px; line-height: 1.6; margin-top: 4px; text-transform: none; letter-spacing: 0; }
+#booking-form .booking-contact-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; align-items: start; gap: 12px; }
+#booking-form .booking-contact-row > .field, #booking-form .booking-contact-row input { min-width: 0; width: 100%; }
+#booking-form .booking-contact-row > .field { display: grid; grid-template-rows: auto 20px auto auto; align-content: start; }
+#booking-form .booking-contact-row > .field > input { grid-row: 3; }
+#booking-form .booking-contact-row > .field > .err { grid-row: 4; }
+#booking-form .phone-label-hint { grid-row: 2; display: block; margin: 0; color: #77796e; font-size: 10px; line-height: 1.6; letter-spacing: 0; text-transform: none; }
+#booking-form .booking-count-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; align-items: start; gap: 12px; }
+#booking-form .booking-count-row > .field { min-width: 0; }
+#booking-form .number-control { display: block; position: relative; width: 100%; min-width: 0; }
+#booking-form .number-control input { width: 100%; min-width: 0; padding-right: 42px !important; appearance: textfield; -moz-appearance: textfield; }
+#booking-form .number-control input::-webkit-inner-spin-button, #booking-form .number-control input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+#booking-form .number-control-buttons { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: grid; grid-template-rows: 24px 24px; width: 34px; }
+#booking-form .number-control-buttons button { display: grid; place-items: center; width: 34px; min-width: 34px; height: 24px; min-height: 24px; margin: 0; padding: 0; border: 0; border-radius: 3px; background: transparent; color: #9e7a3d; box-shadow: none; cursor: pointer; }
+#booking-form .number-control-buttons button:hover:not(:disabled) { background: rgba(158,122,61,.08); color: #332c21; }
+#booking-form .number-control-buttons button:disabled { opacity: .28; cursor: default; }
+#booking-form .number-control-buttons button:focus-visible { outline: 2px solid #9e7a3d; outline-offset: -2px; }
+@keyframes submission-spin { to { transform: rotate(360deg); } }
+@keyframes submission-sweep { from { transform: translateX(-110%); } to { transform: translateX(370%); } }
+@media (prefers-reduced-motion: reduce) {
+  .booking-actions .submission-progress::after, #booking-form [type="submit"].is-loading::before, #client-form [type="submit"].is-loading::before { animation: none; }
+  .booking-actions .submission-progress::after { width: 100%; opacity: .6; }
+}

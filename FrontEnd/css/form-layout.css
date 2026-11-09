@@ -1,0 +1,39 @@
+/* Shared field geometry for Quote and Client Care. */
+#booking-form, #client-form { --form-row-gap: 24px; --form-column-gap: 12px; display: grid; gap: var(--form-row-gap) !important; }
+#booking-form .booking-grid, #client-form .field-group { min-width: 0; gap: var(--form-row-gap) var(--form-column-gap); }
+#booking-form .field:not(.checkbox-field):not(.alcohol-field), #client-form .lux-field { display: grid; align-content: start; min-width: 0; margin: 0 !important; gap: 6px; text-align: left; }
+#booking-form .field > span:first-child, #client-form .lux-field > span:first-child { display: block; min-height: 14px; line-height: 14px; }
+#booking-form input:not([type="checkbox"]):not([type="radio"]), #client-form input {
+  display: block; box-sizing: border-box; width: 100% !important; max-width: 100% !important; min-width: 0; min-inline-size: 0;
+  height: 48px; min-height: 48px; font-size: 16px; line-height: 22px;
+  padding-top: 12px !important; padding-bottom: 12px !important;
+}
+#booking-form textarea, #client-form textarea { display: block; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 0; min-height: 112px; height: 112px; padding-top: 12px !important; padding-bottom: 12px !important; font-size: 16px; line-height: 22px; resize: vertical; }
+#booking-form .err:empty { display: none; min-height: 0; }
+#booking-form .err:not(:empty) { min-height: 0; line-height: 1.5; }
+#booking-form .booking-contact-row, #client-form .client-care-contact-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important; align-items: start; column-gap: var(--form-column-gap); }
+#booking-form .booking-contact-row > .field, #client-form .client-care-contact-row > .lux-field { grid-template-rows: 14px 20px 48px; gap: 6px; }
+#booking-form .booking-contact-row input, #client-form .client-care-contact-row input { grid-row: 3; }
+#booking-form .booking-contact-row .err { grid-row: 4; }
+#booking-form .phone-label-hint, #client-form .phone-label-hint { display: block; grid-row: 2; min-height: 0; margin: 0; color: #77796e; font-size: 10px; line-height: 16px; font-weight: 400; letter-spacing: 0; text-transform: none; }
+#booking-form .field-picker, #client-form .field-picker, #booking-form .place-input-anchor, #booking-form .number-control { display: block; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 0; }
+#booking-form .field-picker input, #client-form .field-picker input { width: 100% !important; max-width: 100% !important; min-inline-size: 0; }
+#booking-form input[type="date"], #booking-form input[type="time"], #client-form input[type="date"] { appearance: none; -webkit-appearance: none; text-align: left; }
+#booking-form input::-webkit-date-and-time-value, #client-form input::-webkit-date-and-time-value { min-width: 0; text-align: left; }
+#booking-form .service-select-trigger { box-sizing: border-box; width: 100%; min-width: 0; height: 48px; min-height: 48px; padding-top: 12px !important; padding-bottom: 12px !important; line-height: 22px; }
+#booking-form .service-select { min-width: 0; }
+#booking-form .booking-count-row { column-gap: var(--form-column-gap); }
+#booking-form .checkbox-field, #booking-form .alcohol-field { margin: 0 !important; min-width: 0; }
+#booking-form #returnTripFields, #booking-form .refreshment-fields { margin: 0; }
+#booking-form #returnTripFields > .field { margin-bottom: var(--form-row-gap) !important; }
+#booking-form #returnTripFields > p:empty, #booking-form .refreshment-fields > p:empty { display: none; margin: 0; }
+#booking-form #returnTripFields .booking-grid > .field { margin: 0 !important; }
+#booking-form .booking-actions { gap: 14px; margin: 0; }
+#booking-form .booking-note, #client-form .micro-note { margin: 0; line-height: 1.7; }
+#client-form .booking-submit-status:empty { display: none; }
+#client-form [type="submit"] { min-height: 48px; }
+@media (max-width: 680px) {
+  #booking-form .booking-grid:not(.booking-contact-row):not(.booking-count-row), #client-form .field-group:not(.client-care-contact-row) { grid-template-columns: minmax(0,1fr) !important; }
+  #booking-form .booking-contact-row, #client-form .client-care-contact-row { column-gap: 12px; }
+  #booking-form .booking-contact-row > .field > span:first-child, #client-form .client-care-contact-row > .lux-field > span:first-child { letter-spacing: .1em; }
+}
