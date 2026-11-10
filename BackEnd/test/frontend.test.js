@@ -4,7 +4,7 @@ import vm from 'node:vm';
 import {fileURLToPath} from 'node:url';
 import {readFile} from 'node:fs/promises';
 import nodemailer from 'nodemailer';
-import {renderBookingEmail,renderCustomerConfirmationEmail} from '../emails.js';
+import {renderBookingEmail,renderCustomerConfirmationEmail,renderConciergeEmail} from '../emails.js';
 
 test('external event values are escaped and undated venues cannot export calendars',async()=>{
   const source=await readFile(new URL('../../FrontEnd/js/event.js',import.meta.url),'utf8');
@@ -28,15 +28,32 @@ test('customer receipt contains requested details, reference and next steps, wit
   assert.ok(!html.includes('INTERNAL_'));assert.ok(html.includes('src="cid:executive-logo"'));assert.equal((html.match(/aria-hidden="true"/g)||[]).length,2);assert.equal((html.match(/>\*<\/td>/g)||[]).length,56);assert.ok(!/border-(?:top|bottom):/.test(html));
 });
 
-test('team quote email uses the customer receipt design and retains operational details',()=>{
+test('original team email style includes the complete quote request and operational details',()=>{
   const sample={name:'Alex <Morgan>',email:'guest@example.test',phone:'8259739800',reference:'72c4a8b1-ff81-4477-8f49-615ef79fa229',createdAt:'2026-11-08T18:30:00Z',serviceType:'Airport transfer',pickup:'Airport',dropoff:'Hotel',date:'2026-11-20',time:'16:30',passengers:2,luggage:0,flightNumber:'AC 173',requestedVehicle:'SUV',returnTrip:true,returnJourney:{pickup:'Hotel',dropoff:'Airport',date:'2026-11-23',time:'08:00'},alcoholService:true,serviceRefreshmentPreferences:'Champagne',nonAlcoholicService:true,refreshmentPreferences:'Still water',customerNotes:'Meet at arrivals.',escalationNote:'Confirm <special> vehicle.'};
   const html=renderBookingEmail(sample),customer=renderCustomerConfirmationEmail(sample);
-  for(const value of ['TEAM COPY','REQUIRES FOLLOW-UP','ED-72C4A8B1','guest@example.test','8259739800','Alex &lt;Morgan&gt;','AC 173','SUV','0 bag(s)','RETURN TRIP','8:00 AM','Champagne','Still water','Meet at arrivals.','TEAM FOLLOW-UP','Confirm &lt;special&gt; vehicle.','reply to this email','ride is not yet confirmed'])assert.ok(html.includes(value),`Missing team detail: ${value}`);
-  assert.equal((html.match(/>\*<\/td>/g)||[]).length,56,'Both black star dividers remain');
-  assert.ok(!/border-(?:top|bottom):/.test(html),'Receipt has no card table rules');
-  assert.equal(html.match(/<body style="([^"]+)"/)[1],customer.match(/<body style="([^"]+)"/)[1],'Body styling matches customer copy');
-  assert.ok(html.includes('max-width:600px;background:#ffffff;'));
+  for(const value of ['New quote request','Team copy','ED-72C4A8B1','guest@example.test','8259739800','Alex &lt;Morgan&gt;','AC 173','SUV','0 bag(s)','Return trip','8:00 AM','Champagne','Still water','Meet at arrivals.','Team follow-up','Confirm &lt;special&gt; vehicle.','Reply to this email','ride is not yet confirmed'])assert.ok(html.includes(value),`Missing team detail: ${value}`);
+  assert.ok(!html.includes('QUOTE TOTAL'),'Team email is a request message');
+  assert.ok(!html.includes('Courier New'),'Team email uses a regular sans-serif font');
+  assert.ok(html.includes('font-size:20px'),'Original heading size is retained');
+  assert.ok(html.includes('href="tel:8259739800"'),'Phone number is callable');
+  assert.ok(html.includes('href="mailto:guest%40example.test"'),'Email address is linked');
+  assert.ok(html.includes('background:#0a0b0d'),'Original black logo header and footer remain');
+  assert.ok(html.includes('font-family:Inter,Arial,sans-serif'),'Original font stack remains');
+  assert.ok(html.indexOf('<b>Name:</b>')<html.indexOf('<b>Pickup:</b>'),'Original contact-first field order remains');
+  for(const label of ['Return pickup','Return drop-off','Return date','Return time','Liquor preferences','Drink preferences'])assert.ok(html.includes(`<b>${label}:</b>`),`Missing extra detail: ${label}`);
   assert.ok(html.includes('src="cid:executive-logo"'));
   assert.ok(!html.includes('<special>'));
-  assert.ok(!customer.includes('TEAM FOLLOW-UP'));
+  assert.ok(!customer.includes('Team follow-up'));
+});
+
+test('email templates request light-only rendering and explicitly set a white background',()=>{
+  const sample={name:'Guest',pickup:'Airport',dropoff:'Hotel',date:'2099-12-20',time:'18:00',passengers:2};
+  for(const render of [renderBookingEmail,renderCustomerConfirmationEmail,renderConciergeEmail]) {
+    const html=render(sample);
+    assert.ok(html.includes('<meta name="color-scheme" content="light only">'));
+    assert.ok(html.includes('<meta name="supported-color-schemes" content="light">'));
+    assert.ok(html.includes('bgcolor="#ffffff"'));
+    assert.ok(html.includes('@media (prefers-color-scheme:dark)'));
+    assert.ok(html.includes('[data-ogsb] .email-paper'));
+  }
 });

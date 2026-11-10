@@ -112,3 +112,11 @@ Chrome checks passed at 320, 360, 390, 430, 768 and 1440 pixels: custom-event op
 ## Matching team and customer quote emails
 
 The team quote-request email now shares the customer's receipt layout: white background, compact heading, logo on the right, Courier trip details and two black star dividers. It is labelled TEAM COPY and REQUIRES FOLLOW-UP, retains customer contact details, full trip and extras information, and gives staff instructions for replying with a quote. Internal follow-up notes remain restricted to the team email. The customer email output is unchanged. Thirteen tests passed, and actual desktop/mobile previews were rendered without sending email.
+
+## Original team email restored with full details and light-mode preferences
+
+Restored the original team email's black logo header/footer, Inter/Arial font stack, bold field labels and compact table layout. Added complete return pickup/drop-off/date/time, liquor and non-alcoholic drink preferences, luggage count, flight, vehicle preference, notes and request reference. Team emails use the original light logo attachment; customer emails retain the existing dark logo and receipt design.
+
+Outgoing templates now request light-only rendering using color-scheme metadata, an explicit white background and supported dark-mode/Outlook selectors. Customer desktop/mobile screenshots remain visually identical to the approved design, and browser light/dark-preference screenshots match. Fourteen tests passed, including every extras combination and correct per-recipient logo attachments. No real emails were sent during verification.
+
+Actual email apps can still force recolouring or ignore supported CSS. Browser preference emulation does not reproduce every mail app's dark-mode algorithm, so identical colours cannot be guaranteed on every phone. The light-only Gmail behaviour is documented at https://emailmarkup.org/en/blog/2026/gmail-app-dark-mode-update/ and applies to supported Gmail apps receiving mail in Google accounts.

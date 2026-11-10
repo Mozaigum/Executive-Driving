@@ -35,6 +35,8 @@ test('all eight combinations of return, liquor and non-alcoholic requests reach 
   assert.equal(f.messages.length,16);
   assert.equal((await readdir(path.join(f.dataDir,'bookings'))).length,8);
   assert.ok(f.messages.every(message=>message.attachments?.some(item=>item.cid==='executive-logo')));
+  assert.ok(f.messages.filter(message=>message.to==='team@example.test').every(message=>message.attachments[0].path.endsWith('logo-email.png')),'Team uses the original light logo for its black header');
+  assert.ok(f.messages.filter(message=>message.to===base.email).every(message=>message.attachments[0].path.endsWith('logo-email-dark.png')),'Customer keeps its dark logo on white');
   assert.ok(f.messages.filter(message=>message.to===base.email).every(message=>message.subject.startsWith('Request received | Executive Driving | ED-')));
 });
 test('server rejects malformed contacts, dates, times, counts and conditional details',()=>{
