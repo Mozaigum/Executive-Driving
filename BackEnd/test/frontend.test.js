@@ -34,11 +34,11 @@ test('original team email style includes the complete quote request and operatio
   for(const value of ['New quote request','Team copy','ED-72C4A8B1','guest@example.test','8259739800','Alex &lt;Morgan&gt;','AC 173','SUV','0 bag(s)','Return trip','8:00 AM','Champagne','Still water','Meet at arrivals.','Team follow-up','Confirm &lt;special&gt; vehicle.','Reply to this email','ride is not yet confirmed'])assert.ok(html.includes(value),`Missing team detail: ${value}`);
   assert.ok(!html.includes('QUOTE TOTAL'),'Team email is a request message');
   assert.ok(!html.includes('Courier New'),'Team email uses a regular sans-serif font');
-  assert.ok(html.includes('font-size:20px'),'Original heading size is retained');
+  assert.ok(html.includes('font-size:24px'),'Original heading size is retained');
   assert.ok(html.includes('href="tel:8259739800"'),'Phone number is callable');
   assert.ok(html.includes('href="mailto:guest%40example.test"'),'Email address is linked');
   assert.ok(html.includes('background:#0a0b0d'),'Original black logo header and footer remain');
-  assert.ok(html.includes('font-family:Inter,Arial,sans-serif'),'Original font stack remains');
+  assert.ok(html.includes('font-family:Inter,Arial,Helvetica,sans-serif'),'Original font stack remains');
   assert.ok(html.indexOf('<b>Name:</b>')<html.indexOf('<b>Pickup:</b>'),'Original contact-first field order remains');
   for(const label of ['Return pickup','Return drop-off','Return date','Return time','Liquor preferences','Drink preferences'])assert.ok(html.includes(`<b>${label}:</b>`),`Missing extra detail: ${label}`);
   assert.ok(html.includes('src="cid:executive-logo"'));
@@ -46,14 +46,14 @@ test('original team email style includes the complete quote request and operatio
   assert.ok(!customer.includes('Team follow-up'));
 });
 
-test('email templates request light-only rendering and explicitly set a white background',()=>{
-  const sample={name:'Guest',pickup:'Airport',dropoff:'Hotel',date:'2099-12-20',time:'18:00',passengers:2};
-  for(const render of [renderBookingEmail,renderCustomerConfirmationEmail,renderConciergeEmail]) {
+test('customer keeps its light receipt while owner emails support light and dark themes',()=>{
+  const sample={name:'Guest',pickup:'Airport',dropoff:'Hotel',date:'2099-12-20',time:'18:00',passengers:2,details:'Corporate enquiry'};
+  assert.ok(renderCustomerConfirmationEmail(sample).includes('<meta name="color-scheme" content="light only">'));
+  for(const render of [renderBookingEmail,renderConciergeEmail]) {
     const html=render(sample);
-    assert.ok(html.includes('<meta name="color-scheme" content="light only">'));
-    assert.ok(html.includes('<meta name="supported-color-schemes" content="light">'));
-    assert.ok(html.includes('bgcolor="#ffffff"'));
+    assert.ok(html.includes('<meta name="color-scheme" content="light dark">'));
     assert.ok(html.includes('@media (prefers-color-scheme:dark)'));
-    assert.ok(html.includes('[data-ogsb] .email-paper'));
+    assert.ok(!html.includes('Courier New'));
+    assert.ok(html.includes('src="cid:executive-logo"'));
   }
 });

@@ -357,7 +357,7 @@ img { display: block; }
 .partners { padding: 72px var(--ed-pad) !important; background: var(--ed-white) !important; color: var(--ed-ink) !important; }
 .partners h2 { font-size: clamp(32px, 4vw, 54px) !important; text-align: left !important; }
 .marquee { margin-top: 44px !important; border-block: 1px solid var(--ed-line-light); }
-.partner { border-radius: 0 !important; box-shadow: none !important; filter: grayscale(1); opacity: .6; transition: filter .2s ease, opacity .2s ease; }
+.partner { border-radius: 0 !important; box-shadow: none !important; filter: none; opacity: 1; transition: filter .2s ease, opacity .2s ease; }
 .partner:hover { filter: grayscale(0); opacity: 1; transform: none !important; }
 .partner-infobar { display: none !important; }
 
@@ -479,7 +479,7 @@ img { display: block; }
 .site-footer .footer-design-credit a:hover { color: #eee9df; }
 .footer-h, .footer-pay-h { color: var(--ed-gold-light) !important; font-size: 10px !important; letter-spacing: .18em; text-transform: uppercase; }
 .social-btn { background: transparent !important; border: 1px solid var(--ed-line-dark) !important; border-radius: 0 !important; color: var(--ed-white) !important; }
-.pay-logos img { filter: grayscale(1); opacity: .7; }
+.pay-logos img { filter: none; opacity: 1; }
 
 /* Mobile ---------------------------------------------------------------- */
 @media (max-width: 960px) {

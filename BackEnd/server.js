@@ -77,7 +77,7 @@ export function createApp({env = process.env, mailer, dataDir, fetcher = fetch, 
       const notes = bookingNotes(b);
       const emailDetails = {...b,notes,reference:record.id,createdAt:record.createdAt};
       const attachments = [{filename:'executive-driving.png',path:path.join(directory,'assets','logo-email-dark.png'),cid:'executive-logo'}];
-      const teamAttachments = b.type === 'concierge' ? attachments : [{filename:'executive-driving.png',path:path.join(directory,'assets','logo-email.png'),cid:'executive-logo'}];
+      const teamAttachments = [{filename:'executive-driving.png',path:path.join(directory,'assets','logo-email.png'),cid:'executive-logo'}];
       try {
         await transport.sendMail({to:env.BOOKING_EMAIL_TO,from,replyTo:b.email,subject:b.type === 'concierge' ? `Client Care Request — ${b.name}` : `New ride request | ${b.name} | ${b.date}`,html:b.type === 'concierge' ? renderConciergeEmail(emailDetails) : renderBookingEmail(emailDetails),attachments:teamAttachments});
       } catch {

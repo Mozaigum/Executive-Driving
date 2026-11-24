@@ -85,11 +85,39 @@ export function renderCustomerConfirmationEmail(b) {
   const closing=`<p style="margin:20px 0 0;font-family:${mono};font-size:11px;line-height:1.8;">Our team will confirm availability, the vehicle and total price in a written quote. This slip acknowledges your request; your ride is not yet confirmed.</p><p style="margin:10px 0 0;font-family:${mono};font-size:11px;line-height:1.8;">For changes, reply to this email and include your reference.</p>`;
   return frame(b,{body:`<div style="margin-top:16px;">${customer}</div>`+journey(b)+total+closing});
 }
+function ownerFrame(b,heading,content) {
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><title>${esc(heading)} | Executive Driving</title>
+<style>
+:root { color-scheme:light dark; supported-color-schemes:light dark; }
+.owner-page { margin:0; padding:20px 12px; background:#f3f4f5; color:#171717; font-family:Inter,Arial,Helvetica,sans-serif; -webkit-text-size-adjust:100%; }
+.owner-card { width:100%; max-width:640px; margin:0 auto; border:1px solid #dedede; border-radius:10px; overflow:hidden; background:#fff; }
+.owner-header { background:#0a0b0d; padding:22px; text-align:center; }
+.owner-body { padding:24px; font-size:16px; line-height:1.65; color:#171717; }
+.owner-body table { font:inherit; color:inherit; }
+.owner-body h1 { margin:0 0 22px; font-size:24px; line-height:1.35; }
+.owner-body a { color:#1769aa !important; }
+.owner-divider { border:0; border-top:1px solid #dedede; margin:24px 0; }
+.owner-muted { color:#606060; font-size:13px; }
+.owner-footer { background:#0a0b0d; padding:16px; color:#d0d0d0; text-align:center; font-size:12px; }
+@media (prefers-color-scheme:dark) {
+ .owner-page { background:#111111 !important; color:#f1f1f1 !important; }
+ .owner-card,.owner-body { background:#171717 !important; color:#f1f1f1 !important; }
+ .owner-card { border-color:#444 !important; }
+ .owner-body a { color:#83bfff !important; }
+ .owner-muted { color:#c3c3c3 !important; }
+ .owner-divider { border-color:#444 !important; }
+}
+[data-ogsc] .owner-body,[data-ogsc] .owner-card { background:#171717 !important; color:#f1f1f1 !important; }
+[data-ogsc] .owner-body a { color:#83bfff !important; }
+[data-ogsc] .owner-muted { color:#c3c3c3 !important; }
+@media (max-width:420px) { .owner-page { padding:12px 6px; } .owner-body { padding:22px 16px; } }
+</style></head><body class="owner-page"><div class="owner-card"><div class="owner-header"><img src="cid:executive-logo" alt="Executive Driving" width="154" style="width:154px;max-width:100%;height:auto;display:block;margin:0 auto;border:0;"></div><div class="owner-body"><h1>${esc(heading)}</h1>${content}<hr class="owner-divider"><p class="owner-muted">Reference: ${esc(reference(b.reference)||'Website request')}</p><p class="owner-muted">Reply to this email to contact the customer.</p><p class="owner-muted">Executive Driving<br><a href="tel:+18259739800">825-973-9800</a></p></div><div class="owner-footer">&copy; ${new Date().getFullYear()} Executive Driving. All rights reserved. &middot; Team copy</div></div></body></html>`;
+}
 export function renderBookingEmail(b) {
-  const row=(label,value,{background='',color='#111',bold=false}={})=>value===undefined||value===null||value===''?'':`<tr${background?` style="background:${background};"`:''}><td width="31%" valign="top" style="width:31%;padding:6px 8px 6px 0;"><b>${esc(label)}:</b></td><td valign="top" style="padding:6px 0;color:${color};${bold?'font-weight:700;':''}overflow-wrap:anywhere;word-break:break-word;">${lines(value)}</td></tr>`;
-  const phone=b.phone?`<a href="tel:${esc(String(b.phone).replace(/[^\d+]/g,''))}" style="color:#111;text-decoration:underline;">${esc(b.phone)}</a>`:'';
-  const email=b.email?`<a href="mailto:${esc(encodeURIComponent(b.email))}" style="color:#111;text-decoration:underline;">${esc(b.email)}</a>`:'';
-  const contactRow=(label,value)=>`<tr><td width="31%" valign="top" style="width:31%;padding:6px 8px 6px 0;"><b>${label}:</b></td><td valign="top" style="padding:6px 0;overflow-wrap:anywhere;word-break:break-word;">${value}</td></tr>`;
+  const row=(label,value,{background='',color='#111',bold=false}={})=>value===undefined||value===null||value===''?'':`<tr><td width="31%" valign="top" style="width:31%;padding:9px 12px 9px 0;"><b>${esc(label)}:</b></td><td valign="top" style="padding:9px 0;${bold?'font-weight:700;':''}overflow-wrap:anywhere;word-break:break-word;">${lines(value)}</td></tr>`;
+  const phone=b.phone?`<a href="tel:${esc(String(b.phone).replace(/[^\d+]/g,''))}" style="color:#1769aa;text-decoration:underline;">${esc(b.phone)}</a>`:'';
+  const email=b.email?`<a href="mailto:${esc(encodeURIComponent(b.email))}" style="color:#1769aa;text-decoration:underline;">${esc(b.email)}</a>`:'';
+  const contactRow=(label,value)=>`<tr><td width="31%" valign="top" style="width:31%;padding:9px 12px 9px 0;"><b>${label}:</b></td><td valign="top" style="padding:9px 0;overflow-wrap:anywhere;word-break:break-word;">${value}</td></tr>`;
   const luggage=typeof b.luggage==='boolean'?(b.luggage?'Yes':'No'):b.luggage!==undefined&&b.luggage!==''?`${b.luggage} bag(s)`:null;
   let rows=row('Name',b.name)+contactRow('Phone',phone)+contactRow('Email',email)+row('Service',b.serviceType)+row('Pickup',b.pickup)+row('Drop-off',b.dropoff)+row('Date',displayDate(b.date))+row('Time',`${displayTime(b.time)} / Alberta time`)+row('Passengers',b.passengers)+row('Luggage',luggage)+row('Flight',b.flightNumber)+row('Vehicle preference',b.requestedVehicle);
   if(b.returnTrip) {
@@ -102,27 +130,12 @@ export function renderBookingEmail(b) {
   if(b.alcoholService)rows+=row('Liquor service','Requested',{background:'#f0f9ff',color:'#1a6b3a',bold:true})+row('Liquor preferences',b.serviceRefreshmentPreferences||'To be confirmed',{background:'#f0f9ff'});
   if(b.nonAlcoholicService)rows+=row('Non-alcoholic drinks','Requested',{background:'#f0f9ff',color:'#1a6b3a',bold:true})+row('Drink preferences',b.refreshmentPreferences||'To be confirmed',{background:'#f0f9ff'});
   const notes=b.customerNotes??b.notes;
-  const noteHtml=notes?.trim()?`<p style="margin:24px 0 0;line-height:1.6;overflow-wrap:anywhere;word-break:break-word;"><b>Notes:</b> ${lines(notes.trim())}</p>`:'';
-  const followUp=b.escalationNote?`<p style="margin:16px 0 0;color:#426632;overflow-wrap:anywhere;word-break:break-word;"><b>Team follow-up:</b> ${lines(b.escalationNote)}</p>`:'';
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${lightModeHead}<title>New quote request | Executive Driving</title></head>
-<body class="email-page" bgcolor="#ffffff" style="margin:0;padding:20px 12px;background:#ffffff;font-family:Inter,Arial,sans-serif;color-scheme:light only;-webkit-text-size-adjust:100%;">
-<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;mso-hide:all;">New quote request from ${esc(b.name)} for ${esc(displayDate(b.date))} at ${esc(displayTime(b.time))}.</div>
-<!--[if mso]><table role="presentation" width="640" align="center"><tr><td><![endif]-->
-<div style="font-family:Inter,Arial,sans-serif;max-width:640px;margin:0 auto;border:1px solid #eee;border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.12);">
-<div class="email-dark" style="background:#0a0b0d;padding:20px;text-align:center;"><img src="cid:executive-logo" alt="Executive Driving" width="124" style="width:124px;max-width:100%;height:auto;max-height:80px;margin:0 auto;display:block;border:0;"></div>
-<div class="email-paper" style="padding:24px;background:#fff;color:#111;font-size:14px;line-height:1.6;">
-<h1 style="margin:0 0 16px;font-size:20px;line-height:1.4;color:#0a0b0d;">&#128664; New quote request</h1>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:14px;line-height:1.6;">${rows}</table>
-${noteHtml}${followUp}
-<p style="margin:20px 0 0;font-size:13px;color:#555;">Reply to this email to contact the customer with availability and a full quote. The ride is not yet confirmed.</p>
-<p style="margin:12px 0 0;font-size:12px;color:#555;">Reference: ${esc(reference(b.reference)||'Website request')}</p>
-<hr style="margin:24px 0;border:none;border-top:1px solid #eee;">
-<p style="margin:0;font-size:13px;color:#555;text-align:center;">This request was submitted via the Executive Driving website.<br><a href="tel:+18259739800" style="color:#555;text-decoration:none;">825-973-9800</a> &nbsp; | &nbsp; <a href="mailto:info@executivedriving.ca" style="color:#555;text-decoration:none;">info@executivedriving.ca</a></p>
-</div><div class="email-dark" style="background:#0a0b0d;padding:14px;text-align:center;font-size:12px;color:#aaa;">&copy; ${new Date().getFullYear()} Executive Driving. All rights reserved. &middot; Team copy</div>
-</div>
-<!--[if mso]></td></tr></table><![endif]-->
-</body></html>`;
+  const noteHtml=notes?.trim()?`<hr class="owner-divider"><p style="margin:0 0 10px;"><b>Notes:</b></p><p style="margin:0;overflow-wrap:anywhere;word-break:break-word;">${lines(notes.trim())}</p>`:'';
+  const followUp=b.escalationNote?`<p style="margin:16px 0 0;overflow-wrap:anywhere;word-break:break-word;"><b>Team follow-up:</b> ${lines(b.escalationNote)}</p>`:'';
+  return ownerFrame(b,'New quote request',`<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;table-layout:fixed;border-collapse:collapse;">${rows}</table>${noteHtml}${followUp}<p class="owner-muted" style="margin-top:22px;">The ride is not yet confirmed. Reply with availability and a full quote.</p>`);
 }
 export function renderConciergeEmail(b) {
-  return frame(b,{heading:'Service enquiry',copy:'OPERATIONS COPY',team:true,body:block('CUSTOMER',details([['Name',b.name],['Email',b.email],['Phone',b.phone],['Service date',displayDate(b.date)]]))+(b.details?block('CUSTOMER MESSAGE',`<p style="margin:0;font-family:${mono};font-size:12px;line-height:1.8;overflow-wrap:anywhere;">${lines(b.details)}</p>`):'')});
+  const row=(label,value)=>`<tr><td width="31%" valign="top" style="width:31%;padding:9px 12px 9px 0;"><b>${esc(label)}:</b></td><td valign="top" style="padding:9px 0;overflow-wrap:anywhere;word-break:break-word;">${value}</td></tr>`;
+  const rows=row('Name',esc(b.name))+row('Phone',`<a href="tel:${esc(String(b.phone||'').replace(/[^\d+]/g,''))}">${esc(b.phone)}</a>`)+row('Email',`<a href="mailto:${esc(encodeURIComponent(b.email||''))}">${esc(b.email)}</a>`)+row('Service date',esc(displayDate(b.date)));
+  return ownerFrame(b,'Client Care Request',`<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;table-layout:fixed;border-collapse:collapse;">${rows}</table>${b.details?`<hr class="owner-divider"><p style="margin:0 0 10px;"><b>Message:</b></p><p style="margin:0;overflow-wrap:anywhere;word-break:break-word;">${lines(b.details)}</p>`:''}`);
 }
